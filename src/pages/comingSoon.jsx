@@ -37,16 +37,15 @@ export default function ComingSoon() {
       </div>
 
       <section className="relative z-10 w-full max-w-[840px] px-5 py-10 text-center">
-        <div className="mb-7 flex justify-center gap-1" aria-hidden="true">
-          <span className="block h-1 w-[42px] rounded-sm bg-[#d90012] max-[480px]:w-[30px]"></span>
-          <span className="block h-1 w-[42px] rounded-sm bg-[#0033a0] max-[480px]:w-[30px]"></span>
-          <span className="block h-1 w-[42px] rounded-sm bg-[#f2a800] max-[480px]:w-[30px]"></span>
-        </div>
-
-        <h1 className="mb-2.5 font-['Playfair_Display',Georgia,serif] text-[clamp(2rem,6vw,3.5rem)] font-bold tracking-[1px] text-white [text-shadow:2px_4px_20px_rgba(0,0,0,0.3)]">
-          Armenian Business Club
+        <h1 className="mb-2 font-['Playfair_Display',Georgia,serif] text-[clamp(3.1rem,11vw,6.4rem)] font-bold leading-none tracking-[0.08em] [text-shadow:2px_4px_20px_rgba(0,0,0,0.3)]">
+          <span className="text-[#d90012]">A</span>
+          <span className="text-[#0033a0]">B</span>
+          <span className="text-[#f2a800]">C</span>
         </h1>
-        <p className="mb-[42px] text-[clamp(0.95rem,2.8vw,1.24rem)] font-light uppercase tracking-[2px] text-white/85">
+        <h2 className="mb-2.5 font-['Playfair_Display',Georgia,serif] text-[clamp(1.15rem,3.1vw,3rem)] font-semibold tracking-[1px] text-white/95 [text-shadow:2px_4px_20px_rgba(0,0,0,0.3)]">
+          Panarmenian Business Union
+        </h2>
+        <p className="mb-[42px] text-[clamp(0.95rem,2.8vw,1rem)] font-light uppercase tracking-[2px] text-white/85">
           Building Bridges, Creating Opportunities
         </p>
         <p className="mb-[34px] text-[clamp(0.82rem,2vw,1.05rem)] font-bold uppercase tracking-[4px] text-[#ff778a]">
