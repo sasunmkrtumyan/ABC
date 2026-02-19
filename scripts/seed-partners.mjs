@@ -1,24 +1,21 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, Timestamp } from "firebase/firestore";
+import { createClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
 
 config({ path: ".env.local" });
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-};
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!firebaseConfig.projectId) {
-  throw new Error("Missing Firebase env variables. Set them in .env.local first.");
+if (!supabaseUrl || !serviceRoleKey) {
+  throw new Error(
+    "Missing Supabase env variables. Set SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY in .env.local."
+  );
 }
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Service role bypasses RLS; keep this key server-only.
+const supabase = createClient(supabaseUrl, serviceRoleKey, {
+  auth: { persistSession: false, autoRefreshToken: false },
+});
 
 const slugify = (input) =>
   String(input)
@@ -73,16 +70,21 @@ const mockPartners = [
 }));
 
 const seed = async () => {
-  for (const item of mockPartners) {
-    await addDoc(collection(db, "partners"), {
-      ...item,
-      slug: slugify(item.name.en),
-      logoUrl: "",
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now(),
-    });
-  }
-  console.log(`Seeded ${mockPartners.length} mock partners`);
+  const rows = mockPartners.map((item) => ({
+    slug: slugify(item.name.en),
+    name: item.name,
+    description: item.description,
+    email: item.email,
+    location: item.location,
+    phones: item.phones,
+    tags: item.tags,
+    logo_url: "",
+  }));
+
+  const { error } = await supabase.from("partners").insert(rows);
+  if (error) throw error;
+
+  console.log(`Seeded ${rows.length} mock partners (Supabase)`);
 };
 
 seed();

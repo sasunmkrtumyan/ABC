@@ -1,76 +1,44 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { auth } from "../../lib/firebase/client";
+import { getSession, onAuthStateChange, signInWithPassword, signOut as supabaseSignOut } from "../../lib/supabase/auth";
 import {
   createPartner,
   deletePartner,
   fetchPartnerById,
-  subscribePartners,
+  fetchPartners,
   updatePartner,
-} from "../../lib/firebase/partners";
-import { createTag, deleteTag, subscribeTags, updateTag } from "../../lib/firebase/tags";
-import { uploadPartnerLogo } from "../../lib/firebase/storage";
+} from "../../lib/supabase/partners";
+import { createTag, deleteTag, fetchTags, updateTag } from "../../lib/supabase/tags";
+import { uploadPartnerLogo } from "../../lib/supabase/storage";
 import { slugify } from "../../lib/slugify";
-import {
-  readLocalPartners,
-  readLocalTags,
-  toLocalId,
-  writeLocalPartners,
-  writeLocalTags,
-} from "../../lib/localDb";
 
 const ADMIN_USERNAME = "abc1111";
-const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "abc1111@abc1111.am";
-const LOCAL_ADMIN_PASSWORD = "Ernestabc1111";
-const LOCAL_ADMIN_SESSION_KEY = "abc_local_admin_session";
-const ENABLE_LOCAL_ADMIN_FALLBACK =
-  process.env.NODE_ENV !== "production" &&
-  process.env.NEXT_PUBLIC_ENABLE_LOCAL_ADMIN_FALLBACK !== "false";
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "sasunmkrtumyan92@gmail.com";
 
-function getLoginErrorMessage(errorCode) {
-  const code = (errorCode || "").toLowerCase();
+function getMissingTableName(error) {
+  const msg = String(error?.message || "");
+  const match = msg.match(/'([^']+)'/);
+  return match?.[1] || "";
+}
 
-  if (code.includes("auth/invalid-credential")) {
-    return "Սխալ գաղտնաբառ կամ email";
-  }
-  if (code.includes("auth/invalid-login-credentials")) {
+function getLoginErrorMessage(error) {
+  const message = String(error?.message || error || "").toLowerCase();
+
+  if (message.includes("invalid login credentials")) {
     return "Սխալ email կամ գաղտնաբառ";
   }
-  if (code.includes("auth/wrong-password")) {
-    return "Սխալ գաղտնաբառ";
+  if (message.includes("email not confirmed")) {
+    return "Email-ը հաստատված չէ (Supabase Auth)";
   }
-  if (code.includes("auth/user-not-found")) {
-    return "Ադմին օգտատեր չի գտնվել Firebase-ում";
+  if (message.includes("user not found")) {
+    return "Ադմին օգտատեր չի գտնվել Supabase-ում";
   }
-  if (code.includes("auth/invalid-email")) {
-    return "NEXT_PUBLIC_ADMIN_EMAIL-ը սխալ է";
-  }
-  if (code.includes("auth/user-disabled")) {
-    return "Այս ադմին օգտատերը անջատված է";
-  }
-  if (code.includes("auth/too-many-requests")) {
-    return "Շատ անհաջող փորձեր կան, փորձեք քիչ հետո";
-  }
-  if (code.includes("auth/network-request-failed")) {
+  if (message.includes("network") || message.includes("fetch")) {
     return "Ցանցային խնդիր կա, ստուգեք ինտերնետ կապը";
   }
-  if (code.includes("auth/operation-not-allowed")) {
-    return "Firebase-ում Email/Password մուտքը միացված չէ";
-  }
-  if (code.includes("auth/configuration-not-found")) {
-    return "Firebase Authentication-ը կազմաձևված չէ";
-  }
-  if (code.includes("auth/internal-error")) {
-    return "Firebase ներքին սխալ. փորձեք կրկին";
-  }
 
-  return `Մուտքը չհաջողվեց (${errorCode || "unknown"}). Ստուգեք կարգավորումները`;
+  return `Մուտքը չհաջողվեց (${error?.message || "unknown"}). Ստուգեք կարգավորումները`;
 }
 
 const emptyForm = {
@@ -91,7 +59,6 @@ function pickLocalizedValue(valueByLang = {}) {
 export default function AdminPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [isLocalAdmin, setIsLocalAdmin] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -107,60 +74,66 @@ export default function AdminPage() {
   const [editingTagId, setEditingTagId] = useState("");
   const [editingTagName, setEditingTagName] = useState("");
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
-  const [dataMode, setDataMode] = useState("firebase");
 
   const isEdit = useMemo(() => Boolean(editingId), [editingId]);
-  const isAuthenticated = Boolean(user || isLocalAdmin);
+  const isAuthenticated = Boolean(user);
 
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setTimeout(() => setSuccessMessage(""), 2500);
   };
 
-  const switchToLocalMode = (message) => {
-    setDataMode("local");
-    setPartners(readLocalPartners());
-    setAvailableTags(readLocalTags());
-    if (message) setError(message);
+  const loadSupabaseData = async () => {
+    try {
+      const [partnersData, tagsData] = await Promise.all([fetchPartners(), fetchTags()]);
+      setPartners(partnersData);
+      setAvailableTags(tagsData);
+    } catch (loadError) {
+      const code = loadError?.code || loadError?.status || "unknown";
+      if (code === "PGRST205") {
+        const missing = getMissingTableName(loadError);
+        setError(
+          `Supabase schema is not ready (missing table${missing ? `: ${missing}` : "s"}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`
+        );
+      } else {
+        setError(`Supabase հասանելի չէ (${code}). ${String(loadError?.message || "")}`.trim());
+      }
+      setPartners([]);
+      setAvailableTags([]);
+    }
   };
 
   useEffect(() => {
-    const hasLocalSession = window.localStorage.getItem(LOCAL_ADMIN_SESSION_KEY) === "1";
-    if (hasLocalSession && ENABLE_LOCAL_ADMIN_FALLBACK) {
-      setIsLocalAdmin(true);
-      setIsLoading(false);
-    }
+    let cancelled = false;
 
-    const unsub = onAuthStateChanged(auth, (nextUser) => {
-      setUser(nextUser);
-      if (!hasLocalSession) setIsLoading(false);
+    getSession()
+      .then(({ data }) => {
+        if (cancelled) return;
+        setUser(data?.session?.user || null);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setIsLoading(false);
+      });
+
+    const { data } = onAuthStateChange((session) => {
+      if (cancelled) return;
+      setUser(session?.user || null);
+      setIsLoading(false);
     });
 
-    return () => unsub();
+    return () => {
+      cancelled = true;
+      data?.subscription?.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
     if (!isAuthenticated) return undefined;
-    if (dataMode === "local") {
-      setPartners(readLocalPartners());
-      setAvailableTags(readLocalTags());
-      return undefined;
-    }
-
-    const unsubPartners = subscribePartners(
-      (data) => setPartners(data),
-      () => switchToLocalMode("Firebase հասանելի չէ. անցում տեղային ռեժիմի")
-    );
-    const unsubTags = subscribeTags(
-      (data) => setAvailableTags(data),
-      () => switchToLocalMode("Firebase հասանելի չէ. tag-երը տեղային ռեժիմում են")
-    );
-
-    return () => {
-      unsubPartners();
-      unsubTags();
-    };
-  }, [isAuthenticated, dataMode]);
+    loadSupabaseData();
+    return undefined;
+  }, [isAuthenticated]);
 
   const login = async (event) => {
     event.preventDefault();
@@ -171,46 +144,29 @@ export default function AdminPage() {
     }
 
     const emailCandidates = Array.from(
-      new Set([ADMIN_EMAIL, "abc1111@abc1111.am", "abc1111@gmail.com"].filter(Boolean))
+      new Set([ADMIN_EMAIL, "sasunmkrtumyan92@gmail.com", "abc1111@gmail.com"].filter(Boolean))
     );
 
-    let lastErrorCode = "";
+    let lastError = null;
     try {
       for (const email of emailCandidates) {
-        try {
-          await signInWithEmailAndPassword(auth, email, password);
-          return;
-        } catch (candidateError) {
-          lastErrorCode = candidateError?.code || "";
-          // Stop early for non-credential/config errors.
-          if (
-            lastErrorCode &&
-            !lastErrorCode.includes("auth/user-not-found") &&
-            !lastErrorCode.includes("auth/invalid-credential") &&
-            !lastErrorCode.includes("auth/invalid-login-credentials")
-          ) {
-            break;
-          }
-        }
+        const { error } = await signInWithPassword(email, password);
+        if (!error) return;
+
+        lastError = error;
+        // Stop early for non-credential/config errors.
+        const msg = String(error?.message || "").toLowerCase();
+        if (!msg.includes("invalid login credentials") && !msg.includes("user not found")) break;
       }
 
-      if (ENABLE_LOCAL_ADMIN_FALLBACK && password === LOCAL_ADMIN_PASSWORD) {
-        window.localStorage.setItem(LOCAL_ADMIN_SESSION_KEY, "1");
-        setIsLocalAdmin(true);
-        setError("");
-        return;
-      }
-
-      setError(getLoginErrorMessage(lastErrorCode));
+      setError(getLoginErrorMessage(lastError));
     } catch (loginError) {
-      setError(getLoginErrorMessage(loginError?.code || lastErrorCode));
+      setError(getLoginErrorMessage(loginError || lastError));
     }
   };
 
   const handleLogout = async () => {
-    if (user) await signOut(auth);
-    window.localStorage.removeItem(LOCAL_ADMIN_SESSION_KEY);
-    setIsLocalAdmin(false);
+    if (user) await supabaseSignOut();
     setUser(null);
   };
 
@@ -292,51 +248,6 @@ export default function AdminPage() {
     let logoUrl = null;
 
     try {
-      if (dataMode === "local") {
-        if (logoFile) {
-          logoUrl = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(String(reader.result || ""));
-            reader.onerror = reject;
-            reader.readAsDataURL(logoFile);
-          });
-        }
-
-        const payload = {
-          slug,
-          name: { am: form.name, en: form.name, ru: form.name },
-          description: {
-            am: form.descriptionAm || "",
-            en: form.descriptionEn || "",
-            ru: form.descriptionRu || "",
-          },
-          email: form.email,
-          location: form.location || "",
-          phones,
-          tags,
-          ...(logoUrl ? { logoUrl } : {}),
-        };
-
-        if (isEdit) {
-          const updated = partners.map((item) =>
-            item.id === editingId ? { ...item, ...payload, updatedAt: Date.now() } : item
-          );
-          setPartners(updated);
-          writeLocalPartners(updated);
-          showSuccess("Գործընկերը հաջողությամբ թարմացվեց (local)");
-        } else {
-          const next = [
-            { id: toLocalId("partner"), ...payload, createdAt: Date.now(), updatedAt: Date.now() },
-            ...partners,
-          ];
-          setPartners(next);
-          writeLocalPartners(next);
-          showSuccess("Գործընկերը հաջողությամբ ավելացվեց (local)");
-        }
-        closePartnerModal();
-        return;
-      }
-
       if (logoFile) logoUrl = await uploadPartnerLogo(logoFile, slug);
 
       const payload = {
@@ -362,18 +273,33 @@ export default function AdminPage() {
         showSuccess("Գործընկերը հաջողությամբ ավելացվեց");
       }
 
+      await loadSupabaseData();
       closePartnerModal();
     } catch (submitError) {
       const code = submitError?.code || "";
-      if (code.includes("permission-denied") || String(submitError?.message || "").includes("PERMISSION_DENIED")) {
-        switchToLocalMode("Firebase access denied. Անցում տեղային ռեժիմի");
-      }
-      if (code.includes("storage/unauthorized")) {
-        setError("Storage թույլտվություն չկա. ստուգեք Firebase Storage Rules-ը");
-      } else if (code.includes("storage/object-not-found") || String(submitError?.message || "").includes("404")) {
-        setError("Storage bucket-ը չի գտնվել (404). Ստուգեք Firebase Storage-ի bucket կարգավորումը");
+      const status = submitError?.status;
+      const message = String(submitError?.message || "");
+      const lower = message.toLowerCase();
+
+      if (
+        status === 401 ||
+        status === 403 ||
+        lower.includes("permission denied") ||
+        lower.includes("row-level security") ||
+        lower.includes("not allowed")
+      ) {
+        setError("Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).");
+      } else if ((code || "") === "PGRST205") {
+        const missing = getMissingTableName(submitError);
+        setError(
+          `Supabase schema is not ready (missing table${missing ? `: ${missing}` : "s"}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`
+        );
+      } else if (lower.includes("bucket") && (lower.includes("not found") || lower.includes("does not exist"))) {
+        setError("Storage bucket-ը չի գտնվել. Ստուգեք Supabase Storage bucket-ը (partner-logos)");
+      } else if (lower.includes("storage") && lower.includes("unauthorized")) {
+        setError("Storage թույլտվություն չկա. ստուգեք Supabase Storage policies-ը");
       } else {
-        setError(`Սխալ տեղի ունեցավ (${code || "unknown"}), փորձեք կրկին`);
+        setError(`Սխալ տեղի ունեցավ (${code || status || "unknown"}), փորձեք կրկին`);
       }
     } finally {
       setSubmitting(false);
@@ -381,22 +307,18 @@ export default function AdminPage() {
   };
 
   const removePartner = async (id) => {
-    if (dataMode === "local") {
-      const next = partners.filter((item) => item.id !== id);
-      setPartners(next);
-      writeLocalPartners(next);
-      showSuccess("Գործընկերը ջնջվեց (local)");
-      return;
-    }
     try {
       await deletePartner(id);
       showSuccess("Գործընկերը ջնջվեց");
+      await loadSupabaseData();
     } catch (deleteError) {
       if (
-        String(deleteError?.code || "").includes("permission-denied") ||
-        String(deleteError?.message || "").includes("PERMISSION_DENIED")
+        deleteError?.status === 401 ||
+        deleteError?.status === 403 ||
+        String(deleteError?.message || "").toLowerCase().includes("row-level security") ||
+        String(deleteError?.message || "").toLowerCase().includes("permission denied")
       ) {
-        switchToLocalMode("Firebase access denied. Անցում տեղային ռեժիմի");
+        setError("Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).");
       }
       setError(`Գործընկերոջ ջնջումը չհաջողվեց (${deleteError?.code || "unknown"})`);
     }
@@ -405,24 +327,26 @@ export default function AdminPage() {
   const addTag = async () => {
     const nextName = newTagName.trim();
     if (!nextName) return;
-    if (dataMode === "local") {
-      const next = [...availableTags, { id: toLocalId("tag"), name: nextName, slug: slugify(nextName) }];
-      setAvailableTags(next);
-      writeLocalTags(next);
-      setNewTagName("");
-      showSuccess("Tag-ը ավելացվեց (local)");
-      return;
-    }
     try {
       await createTag(nextName);
       setNewTagName("");
       showSuccess("Tag-ը ավելացվեց");
+      await loadSupabaseData();
     } catch (tagError) {
+      if (tagError?.code === "PGRST205") {
+        const missing = getMissingTableName(tagError) || "tags";
+        setError(
+          `Supabase schema is not ready (missing table: ${missing}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`
+        );
+        return;
+      }
       if (
-        String(tagError?.code || "").includes("permission-denied") ||
-        String(tagError?.message || "").includes("PERMISSION_DENIED")
+        tagError?.status === 401 ||
+        tagError?.status === 403 ||
+        String(tagError?.message || "").toLowerCase().includes("row-level security") ||
+        String(tagError?.message || "").toLowerCase().includes("permission denied")
       ) {
-        switchToLocalMode("Firebase access denied. tag-երը տեղային ռեժիմում են");
+        setError("Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).");
       }
       setError(`Tag ավելացնելը չհաջողվեց (${tagError?.code || "unknown"})`);
     }
@@ -437,66 +361,33 @@ export default function AdminPage() {
   const saveTagEdit = async () => {
     if (!editingTagId || !editingTagName.trim()) return;
     setError("");
-    if (dataMode === "local") {
-      const next = availableTags.map((tag) =>
-        tag.id === editingTagId
-          ? { ...tag, name: editingTagName.trim(), slug: slugify(editingTagName.trim()) }
-          : tag
-      );
-      const oldTag = availableTags.find((tag) => tag.id === editingTagId);
-      const newTag = editingTagName.trim();
-      setAvailableTags(next);
-      writeLocalTags(next);
-      if (oldTag && oldTag.name !== newTag) {
-        const nextPartners = partners.map((partner) => ({
-          ...partner,
-          tags: (partner.tags || []).map((tag) => (tag === oldTag.name ? newTag : tag)),
-        }));
-        setPartners(nextPartners);
-        writeLocalPartners(nextPartners);
-      }
-      setEditingTagId("");
-      setEditingTagName("");
-      showSuccess("Tag-ը թարմացվեց (local)");
-      return;
-    }
     try {
       await updateTag(editingTagId, editingTagName.trim());
       setEditingTagId("");
       setEditingTagName("");
       showSuccess("Tag-ը թարմացվեց");
+      await loadSupabaseData();
     } catch (tagError) {
+      if (tagError?.code === "PGRST205") {
+        const missing = getMissingTableName(tagError) || "tags";
+        setError(
+          `Supabase schema is not ready (missing table: ${missing}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`
+        );
+        return;
+      }
       if (
-        String(tagError?.code || "").includes("permission-denied") ||
-        String(tagError?.message || "").includes("PERMISSION_DENIED")
+        tagError?.status === 401 ||
+        tagError?.status === 403 ||
+        String(tagError?.message || "").toLowerCase().includes("row-level security") ||
+        String(tagError?.message || "").toLowerCase().includes("permission denied")
       ) {
-        switchToLocalMode("Firebase access denied. tag edit-ը local mode է");
+        setError("Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).");
       }
       setError(`Tag թարմացնելը չհաջողվեց (${tagError?.code || "unknown"})`);
     }
   };
 
   const removeTag = async (tagId) => {
-    if (dataMode === "local") {
-      const found = availableTags.find((item) => item.id === tagId);
-      const nextTags = availableTags.filter((tag) => tag.id !== tagId);
-      setAvailableTags(nextTags);
-      writeLocalTags(nextTags);
-      if (found) {
-        const nextPartners = partners.map((partner) => ({
-          ...partner,
-          tags: (partner.tags || []).filter((tag) => tag !== found.name),
-        }));
-        setPartners(nextPartners);
-        writeLocalPartners(nextPartners);
-      }
-      setForm((prev) => ({
-        ...prev,
-        tags: (prev.tags || []).filter((tag) => (found ? tag !== found.name : true)),
-      }));
-      showSuccess("Tag-ը ջնջվեց (local)");
-      return;
-    }
     try {
       await deleteTag(tagId);
       setForm((prev) => ({
@@ -507,12 +398,22 @@ export default function AdminPage() {
         }),
       }));
       showSuccess("Tag-ը ջնջվեց");
+      await loadSupabaseData();
     } catch (tagError) {
+      if (tagError?.code === "PGRST205") {
+        const missing = getMissingTableName(tagError) || "tags";
+        setError(
+          `Supabase schema is not ready (missing table: ${missing}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`
+        );
+        return;
+      }
       if (
-        String(tagError?.code || "").includes("permission-denied") ||
-        String(tagError?.message || "").includes("PERMISSION_DENIED")
+        tagError?.status === 401 ||
+        tagError?.status === 403 ||
+        String(tagError?.message || "").toLowerCase().includes("row-level security") ||
+        String(tagError?.message || "").toLowerCase().includes("permission denied")
       ) {
-        switchToLocalMode("Firebase access denied. tag delete-ը local mode է");
+        setError("Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).");
       }
       setError(`Tag ջնջելը չհաջողվեց (${tagError?.code || "unknown"})`);
     }
@@ -530,15 +431,12 @@ export default function AdminPage() {
     return <main className="container-abc py-12">Loading...</main>;
   }
 
-  if (!user && !isLocalAdmin) {
+  if (!user) {
     return (
       <main className="container-abc py-12">
         <section className="mx-auto max-w-md rounded-2xl bg-white p-8 shadow-sm">
           <h1 className="text-3xl font-black text-brand.dark">Ադմին մուտք</h1>
           <p className="mt-2 text-sm text-slate-500">URL: abc1111.am/admin</p>
-          {ENABLE_LOCAL_ADMIN_FALLBACK ? (
-            <p className="mt-1 text-xs text-slate-500">Տեղային մուտքը միացված է (dev mode)</p>
-          ) : null}
 
           <form onSubmit={login} className="mt-6 space-y-4">
             <input
@@ -570,13 +468,9 @@ export default function AdminPage() {
         <h1 className="text-3xl font-black text-brand.dark">Գործընկերների կառավարում</h1>
         <div className="flex items-center gap-3">
           <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${
-              dataMode === "local"
-                ? "border border-amber-200 bg-amber-50 text-amber-700"
-                : "border border-emerald-200 bg-emerald-50 text-emerald-700"
-            }`}
+            className="rounded-full px-3 py-1 text-xs font-semibold border border-emerald-200 bg-emerald-50 text-emerald-700"
           >
-            {dataMode === "local" ? "LOCAL MODE" : "FIREBASE MODE"}
+            SUPABASE MODE
           </span>
           <button
             onClick={handleLogout}

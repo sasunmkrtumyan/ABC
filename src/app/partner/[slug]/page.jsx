@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { fetchPartnerBySlug } from "../../../lib/firebase/partners";
+import { fetchPartnerBySlug } from "../../../lib/supabase/partners";
 import { useLanguage } from "../../../lib/i18n/LanguageContext";
 import { pickTextByLanguage } from "../../../lib/localize";
 

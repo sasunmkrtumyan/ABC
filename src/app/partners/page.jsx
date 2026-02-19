@@ -3,13 +3,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { subscribePartners } from "../../lib/firebase/partners";
-import { subscribeTags } from "../../lib/firebase/tags";
+import { fetchPartners } from "../../lib/supabase/partners";
+import { fetchTags } from "../../lib/supabase/tags";
 import { useLanguage } from "../../lib/i18n/LanguageContext";
 import { pickTextByLanguage } from "../../lib/localize";
-import { readLocalPartners, readLocalTags } from "../../lib/localDb";
 
 const PAGE_SIZE = 8;
+
+function getMissingTableName(error) {
+  const msg = String(error?.message || "");
+  // PostgREST PGRST205 typically says: Could not find the 'partners' table in the schema cache
+  const match = msg.match(/'([^']+)'/);
+  return match?.[1] || "";
+}
 
 export default function PartnersPage() {
   const { t, language } = useLanguage();
@@ -21,24 +27,34 @@ export default function PartnersPage() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const unsubPartners = subscribePartners(
-      (data) => setPartners(data),
-      (error) => {
-        setLoadError(`Firebase unavailable (${error?.code || "unknown"}), using local data`);
-        setPartners(readLocalPartners());
-      }
-    );
-    const unsubTags = subscribeTags(
-      (tags) => setAvailableTags(tags.map((tag) => tag.name)),
-      (error) => {
-        setLoadError(`Firebase unavailable (${error?.code || "unknown"}), using local tags`);
-        setAvailableTags(readLocalTags().map((tag) => tag.name));
-      }
-    );
+    let cancelled = false;
 
+    const load = async () => {
+      setLoadError("");
+      try {
+        const [partnersData, tagsData] = await Promise.all([fetchPartners(), fetchTags()]);
+        if (cancelled) return;
+        setPartners(partnersData);
+        setAvailableTags((tagsData || []).map((tag) => tag.name));
+      } catch (error) {
+        if (cancelled) return;
+        const code = error?.code || error?.status || "unknown";
+        if (code === "PGRST205") {
+          const missing = getMissingTableName(error);
+          setLoadError(
+            `Supabase schema is not ready (missing table${missing ? `: ${missing}` : "s"}). Run supabase/schema.sql in Supabase SQL Editor, then run: notify pgrst, 'reload schema';`
+          );
+        } else {
+          setLoadError(`Supabase unavailable (${code}). ${String(error?.message || "")}`.trim());
+        }
+        setPartners([]);
+        setAvailableTags([]);
+      }
+    };
+
+    load();
     return () => {
-      unsubPartners();
-      unsubTags();
+      cancelled = true;
     };
   }, []);
 
@@ -91,7 +107,7 @@ export default function PartnersPage() {
         </select>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="mt-6 overflow-y-auto rounded-2xl border border-slate-200 bg-white">
         <table className="min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
