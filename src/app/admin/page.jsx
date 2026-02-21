@@ -50,6 +50,7 @@ const emptyForm = {
   location: "",
   phones: "",
   tags: [],
+  logoUrl: "",
 };
 
 function pickLocalizedValue(valueByLang = {}) {
@@ -172,7 +173,7 @@ export default function AdminPage() {
 
   const fillEditForm = async (id) => {
     let item = partners.find((p) => p.id === id);
-    if (!item && dataMode !== "local") {
+    if (!item) {
       item = await fetchPartnerById(id);
     }
     if (!item) return;
@@ -187,6 +188,7 @@ export default function AdminPage() {
       location: item.location || "",
       phones: (item.phones || []).join(", "),
       tags: item.tags || [],
+      logoUrl: item.logoUrl || "",
     });
     setLogoFile(null);
     setIsPartnerModalOpen(true);
@@ -262,7 +264,7 @@ export default function AdminPage() {
         location: form.location || "",
         phones,
         tags,
-        ...(logoUrl ? { logoUrl } : {}),
+        logoUrl: logoUrl || form.logoUrl || "",
       };
 
       if (isEdit) {

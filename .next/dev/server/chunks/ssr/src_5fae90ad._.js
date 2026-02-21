@@ -93,7 +93,9 @@ function toRow(payload = {}) {
         location: payload.location || "",
         phones: payload.phones || [],
         tags: payload.tags || [],
-        logo_url: payload.logoUrl || ""
+        ...payload.logoUrl !== undefined ? {
+            logo_url: payload.logoUrl
+        } : {}
     };
 }
 async function fetchPartners() {
@@ -284,7 +286,8 @@ const emptyForm = {
     email: "",
     location: "",
     phones: "",
-    tags: []
+    tags: [],
+    logoUrl: ""
 };
 function pickLocalizedValue(valueByLang = {}) {
     return valueByLang.am || valueByLang.en || valueByLang.ru || "";
@@ -395,7 +398,7 @@ function AdminPage() {
     };
     const fillEditForm = async (id)=>{
         let item = partners.find((p)=>p.id === id);
-        if (!item && dataMode !== "local") {
+        if (!item) {
             item = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$partners$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchPartnerById"])(id);
         }
         if (!item) return;
@@ -409,7 +412,8 @@ function AdminPage() {
             email: item.email || "",
             location: item.location || "",
             phones: (item.phones || []).join(", "),
-            tags: item.tags || []
+            tags: item.tags || [],
+            logoUrl: item.logoUrl || ""
         });
         setLogoFile(null);
         setIsPartnerModalOpen(true);
@@ -476,9 +480,7 @@ function AdminPage() {
                 location: form.location || "",
                 phones,
                 tags,
-                ...logoUrl ? {
-                    logoUrl
-                } : {}
+                logoUrl: logoUrl || form.logoUrl || ""
             };
             if (isEdit) {
                 await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$partners$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["updatePartner"])(editingId, payload);
@@ -605,7 +607,7 @@ function AdminPage() {
             children: "Loading..."
         }, void 0, false, {
             fileName: "[project]/src/app/admin/page.jsx",
-            lineNumber: 431,
+            lineNumber: 433,
             columnNumber: 12
         }, this);
     }
@@ -620,7 +622,7 @@ function AdminPage() {
                         children: "Ադմին մուտք"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 438,
+                        lineNumber: 440,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -628,7 +630,7 @@ function AdminPage() {
                         children: "URL: abc1111.am/admin"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 439,
+                        lineNumber: 441,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -642,7 +644,7 @@ function AdminPage() {
                                 className: "w-full rounded-xl border border-slate-300 px-4 py-3"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 442,
+                                lineNumber: 444,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -653,7 +655,7 @@ function AdminPage() {
                                 className: "w-full rounded-xl border border-slate-300 px-4 py-3"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 448,
+                                lineNumber: 450,
                                 columnNumber: 13
                             }, this),
                             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -661,7 +663,7 @@ function AdminPage() {
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 455,
+                                lineNumber: 457,
                                 columnNumber: 23
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -669,24 +671,24 @@ function AdminPage() {
                                 children: "Մուտք"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 456,
+                                lineNumber: 458,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 441,
+                        lineNumber: 443,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 437,
+                lineNumber: 439,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/admin/page.jsx",
-            lineNumber: 436,
+            lineNumber: 438,
             columnNumber: 7
         }, this);
     }
@@ -701,7 +703,7 @@ function AdminPage() {
                         children: "Գործընկերների կառավարում"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 468,
+                        lineNumber: 470,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -712,7 +714,7 @@ function AdminPage() {
                                 children: "SUPABASE MODE"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 470,
+                                lineNumber: 472,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -721,19 +723,19 @@ function AdminPage() {
                                 children: "Ելք"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 475,
+                                lineNumber: 477,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 469,
+                        lineNumber: 471,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 467,
+                lineNumber: 469,
                 columnNumber: 7
             }, this),
             error ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -741,7 +743,7 @@ function AdminPage() {
                 children: error
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 484,
+                lineNumber: 486,
                 columnNumber: 9
             }, this) : null,
             successMessage ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -749,7 +751,7 @@ function AdminPage() {
                 children: successMessage
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 490,
+                lineNumber: 492,
                 columnNumber: 9
             }, this) : null,
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -762,7 +764,7 @@ function AdminPage() {
                             children: "Գործընկերներ"
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 496,
+                            lineNumber: 498,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -772,18 +774,18 @@ function AdminPage() {
                             children: "Ավելացնել գործընկեր"
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 497,
+                            lineNumber: 499,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/admin/page.jsx",
-                    lineNumber: 495,
+                    lineNumber: 497,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 494,
+                lineNumber: 496,
                 columnNumber: 7
             }, this),
             isPartnerModalOpen ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -799,7 +801,7 @@ function AdminPage() {
                                     children: isEdit ? "Փոփոխել գործընկեր" : "Ավելացնել գործընկեր"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 511,
+                                    lineNumber: 513,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -809,13 +811,13 @@ function AdminPage() {
                                     children: "Փակել"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 512,
+                                    lineNumber: 514,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 510,
+                            lineNumber: 512,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -832,7 +834,7 @@ function AdminPage() {
                                     className: "rounded-xl border border-slate-300 px-4 py-3 md:col-span-2"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 522,
+                                    lineNumber: 524,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -845,7 +847,7 @@ function AdminPage() {
                                     className: "min-h-28 rounded-xl border border-slate-300 px-4 py-3"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 528,
+                                    lineNumber: 530,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -858,7 +860,7 @@ function AdminPage() {
                                     className: "min-h-28 rounded-xl border border-slate-300 px-4 py-3"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 534,
+                                    lineNumber: 536,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -871,7 +873,7 @@ function AdminPage() {
                                     className: "min-h-28 rounded-xl border border-slate-300 px-4 py-3 md:col-span-2"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 540,
+                                    lineNumber: 542,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -884,7 +886,7 @@ function AdminPage() {
                                     className: "rounded-xl border border-slate-300 px-4 py-3"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 546,
+                                    lineNumber: 548,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -897,7 +899,7 @@ function AdminPage() {
                                     className: "rounded-xl border border-slate-300 px-4 py-3"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 552,
+                                    lineNumber: 554,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -910,7 +912,7 @@ function AdminPage() {
                                     className: "rounded-xl border border-slate-300 px-4 py-3"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 558,
+                                    lineNumber: 560,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -921,7 +923,7 @@ function AdminPage() {
                                             children: "Tags*"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 565,
+                                            lineNumber: 567,
                                             columnNumber: 17
                                         }, this),
                                         availableTags.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -951,39 +953,39 @@ function AdminPage() {
                                                             }
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/page.jsx",
-                                                            lineNumber: 572,
+                                                            lineNumber: 574,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: tag.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/page.jsx",
-                                                            lineNumber: 585,
+                                                            lineNumber: 587,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, tag.id, true, {
                                                     fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 571,
+                                                    lineNumber: 573,
                                                     columnNumber: 25
                                                 }, this);
                                             })
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 567,
+                                            lineNumber: 569,
                                             columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "text-sm text-slate-500",
                                             children: "Tag չկան։ Ստորև ավելացրեք առաջին tag-ը։"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 591,
+                                            lineNumber: 593,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 564,
+                                    lineNumber: 566,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -993,7 +995,7 @@ function AdminPage() {
                                     className: "rounded-xl border border-slate-300 px-4 py-3 md:col-span-2"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 594,
+                                    lineNumber: 596,
                                     columnNumber: 15
                                 }, this),
                                 error ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1001,7 +1003,7 @@ function AdminPage() {
                                     children: error
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 601,
+                                    lineNumber: 603,
                                     columnNumber: 24
                                 }, this) : null,
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1013,7 +1015,7 @@ function AdminPage() {
                                             children: isEdit ? "Պահպանել" : "Ավելացնել"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 604,
+                                            lineNumber: 606,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1023,30 +1025,30 @@ function AdminPage() {
                                             children: "Չեղարկել"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 610,
+                                            lineNumber: 612,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 603,
+                                    lineNumber: 605,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 521,
+                            lineNumber: 523,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/admin/page.jsx",
-                    lineNumber: 509,
+                    lineNumber: 511,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 508,
+                lineNumber: 510,
                 columnNumber: 9
             }, this) : null,
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1057,7 +1059,7 @@ function AdminPage() {
                         children: "Tag-երի կառավարում"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 624,
+                        lineNumber: 626,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1070,7 +1072,7 @@ function AdminPage() {
                                 className: "w-full rounded-xl border border-slate-300 px-4 py-3"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 626,
+                                lineNumber: 628,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1080,13 +1082,13 @@ function AdminPage() {
                                 children: "Ավելացնել"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 632,
+                                lineNumber: 634,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 625,
+                        lineNumber: 627,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1107,7 +1109,7 @@ function AdminPage() {
                                             className: "w-full rounded-lg border border-slate-300 px-3 py-2"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 642,
+                                            lineNumber: 644,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1117,7 +1119,7 @@ function AdminPage() {
                                             children: "Պահպանել"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 653,
+                                            lineNumber: 655,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1127,7 +1129,7 @@ function AdminPage() {
                                             children: "Չեղարկել"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 656,
+                                            lineNumber: 658,
                                             columnNumber: 19
                                         }, this)
                                     ]
@@ -1138,7 +1140,7 @@ function AdminPage() {
                                             children: tag.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 662,
+                                            lineNumber: 664,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1148,7 +1150,7 @@ function AdminPage() {
                                             children: "Խմբագրել"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 663,
+                                            lineNumber: 665,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1158,25 +1160,25 @@ function AdminPage() {
                                             children: "Ջնջել"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 666,
+                                            lineNumber: 668,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true)
                             }, tag.id, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 639,
+                                lineNumber: 641,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 637,
+                        lineNumber: 639,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 623,
+                lineNumber: 625,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1187,7 +1189,7 @@ function AdminPage() {
                         children: "Գործընկերների ցանկ"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 677,
+                        lineNumber: 679,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1197,7 +1199,7 @@ function AdminPage() {
                         className: "mt-4 w-full rounded-xl border border-slate-300 px-4 py-3"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 678,
+                        lineNumber: 680,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1213,7 +1215,7 @@ function AdminPage() {
                                                     children: pickLocalizedValue(item.name)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 688,
+                                                    lineNumber: 690,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1221,13 +1223,13 @@ function AdminPage() {
                                                     children: item.email
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 689,
+                                                    lineNumber: 691,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 687,
+                                            lineNumber: 689,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1239,7 +1241,7 @@ function AdminPage() {
                                                     children: "Խմբագրել"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 692,
+                                                    lineNumber: 694,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1248,19 +1250,19 @@ function AdminPage() {
                                                     children: "Ջնջել"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 695,
+                                                    lineNumber: 697,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 691,
+                                            lineNumber: 693,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, item.id, true, {
                                     fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 686,
+                                    lineNumber: 688,
                                     columnNumber: 13
                                 }, this)),
                             !filteredPartners.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1268,25 +1270,25 @@ function AdminPage() {
                                 children: "Գործընկերներ չեն գտնվել։"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 702,
+                                lineNumber: 704,
                                 columnNumber: 13
                             }, this) : null
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 684,
+                        lineNumber: 686,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 676,
+                lineNumber: 678,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/page.jsx",
-        lineNumber: 466,
+        lineNumber: 468,
         columnNumber: 5
     }, this);
 }

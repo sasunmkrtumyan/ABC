@@ -59,7 +59,9 @@ function toRow(payload = {}) {
         location: payload.location || "",
         phones: payload.phones || [],
         tags: payload.tags || [],
-        logo_url: payload.logoUrl || ""
+        ...payload.logoUrl !== undefined ? {
+            logo_url: payload.logoUrl
+        } : {}
     };
 }
 async function fetchPartners() {

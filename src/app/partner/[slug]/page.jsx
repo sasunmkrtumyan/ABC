@@ -45,19 +45,18 @@ export default function PartnerDetailsPage() {
             <h1 className="text-4xl font-black text-brand.dark">{pickTextByLanguage(partner.name, language)}</h1>
             <p className="mt-3 text-slate-600">{(partner.tags || []).join(", ")}</p>
             <p className="mt-2 text-slate-600">{partner.email}</p>
+            {partner.location ? <p className="mt-1 text-slate-600">{partner.location}</p> : null}
+            {(partner.phones || []).map((phone) => (
+              <p key={phone} className="mt-1 text-slate-600">
+                {phone}
+              </p>
+            ))}
           </div>
         </div>
 
         <p className="mt-8 whitespace-pre-line text-slate-700">
           {pickTextByLanguage(partner.description, language)}
         </p>
-
-        <div className="mt-8 space-y-2 text-slate-600">
-          {partner.location && <p>{partner.location}</p>}
-          {(partner.phones || []).map((phone) => (
-            <p key={phone}>{phone}</p>
-          ))}
-        </div>
       </div>
     </main>
   );
