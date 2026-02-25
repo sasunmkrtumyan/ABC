@@ -33,8 +33,8 @@ export default function PartnerDetailsPage() {
             <Image
               src={partner.logoUrl}
               alt={pickTextByLanguage(partner.name, language) || "logo"}
-              width={110}
-              height={110}
+              width={300}
+              height={150}
               className="rounded-xl object-cover"
             />
           ) : (

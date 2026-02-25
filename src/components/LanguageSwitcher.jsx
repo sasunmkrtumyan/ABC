@@ -27,7 +27,7 @@ export default function LanguageSwitcher() {
   }
 
   return (
-    <div className="relative min-w-36">
+    <div className="relative">
       <select
         value={language}
         onChange={(event) => setLanguage(event.target.value)}

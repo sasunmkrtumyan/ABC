@@ -12,7 +12,7 @@ export const messages = {
       home: "Գլխավոր",
       about: "Մեր մասին",
       partners: "Գործընկերներ",
-      contact: "Կոնտակտ",
+      contact: "Հետադարձ կապ",
       admin: "Ադմին",
     },
     common: {

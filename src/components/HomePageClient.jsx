@@ -3,6 +3,8 @@
 import Image from "next/image";
 import RevealSection from "./RevealSection";
 import { useLanguage } from "../lib/i18n/LanguageContext";
+import { useRef, useState } from "react";
+import TestimonialCard from "./TestimonialCard";
 
 const testimonials = {
   am: [
@@ -18,6 +20,12 @@ const testimonials = {
       company: "Ararat Foods",
       text: "Այս համայնքը արագացրեց մեր բիզնես կապերը և միջազգային տեսանելիությունը։",
     },
+    {
+      name: "Դավիթ Հ.",
+      position: "Արտահանման մենեջեր",
+      company: "EcoFarm Armenia",
+      text: "ABC հարթակը մեզ օգնեց նոր շուկաներ մտնել և վստահելի համագործակցություններ կառուցել։",
+    },
   ],
   ru: [
     {
@@ -31,6 +39,12 @@ const testimonials = {
       position: "Руководитель развития бизнеса",
       company: "Ararat Foods",
       text: "Сообщество заметно ускорило наши деловые связи.",
+    },
+    {
+      name: "Давид А.",
+      position: "Менеджер по экспорту",
+      company: "EcoFarm Armenia",
+      text: "Платформа ABC помогла нам выйти на новые рынки и выстроить надежные партнерства.",
     },
   ],
   en: [
@@ -46,8 +60,15 @@ const testimonials = {
       company: "Ararat Foods",
       text: "The community helped us grow our business network faster.",
     },
+    {
+      name: "David A.",
+      position: "Export Manager",
+      company: "EcoFarm Armenia",
+      text: "ABC helped us enter new markets and build strong international partnerships.",
+    },
   ],
 };
+
 
 const partnerLogos = [
   "Grand Candy",
@@ -72,18 +93,35 @@ const sectionImages = {
 function SectionHeader({ icon, title, badge }) {
   return (
     <div className="mb-5 flex items-center gap-3">
-      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-blue text-xl text-white">
+      <span className="inline-flex h-10 min-w-10 items-center justify-center rounded-full bg-brand-blue text-xl text-white">
         {icon}
       </span>
       <div>
         {badge ? <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-blue/80">{badge}</p> : null}
-        <h2 className="text-3xl font-black text-brand-dark">{title}</h2>
+        <h2 className=" text-xl lg:text-3xl font-black text-brand-dark">{title}</h2>
       </div>
     </div>
   );
 }
 
 export default function HomePageClient() {
+
+  const scrollRef = useRef(null);
+const [activeIndex, setActiveIndex] = useState(0);
+
+const scrollToIndex = (index) => {
+  const container = scrollRef.current;
+  if (!container) return;
+
+  const card = container.children[index];
+  container.scrollTo({
+    left: card.offsetLeft - 16,
+    behavior: "smooth",
+  });
+
+  setActiveIndex(index);
+};
+
   const { t, language } = useLanguage();
 
   return (
@@ -104,7 +142,7 @@ export default function HomePageClient() {
         </div>
       </section>
 
-      <div className="container-abc space-y-14 py-14">
+      <div className="container-abc space-y-14 lg:space-y-24  py-14">
         <RevealSection className="grid gap-6 rounded-2xl bg-white p-8 shadow-sm md:grid-cols-2 md:items-center">
           <div>
             <SectionHeader icon="👥" title={t.landing.whoTitle}  />
@@ -127,43 +165,57 @@ export default function HomePageClient() {
           </div>
         </RevealSection>
 
-        <RevealSection className="grid gap-6 rounded-2xl bg-white p-8 shadow-sm md:grid-cols-2 md:items-start">
-          <div>
-            <SectionHeader icon="⭐" title={t.landing.whyTitle} />
-            <ul className="space-y-3">
-              {t.landing.whyItems.map((item) => (
-                <li key={item} className="rounded-lg border border-slate-200 px-4 py-3 text-slate-700">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="relative h-64 overflow-hidden rounded-2xl">
-            <Image src={sectionImages.why} alt="Business connection" fill className="object-cover" />
-          </div>
-        </RevealSection>
+       <RevealSection className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white to-slate-50 p-4 lg:p-10 shadow-xl shadow-slate-200/60 md:grid md:grid-cols-2 md:gap-12">
+  
+  <div className="relative z-10">
+    <SectionHeader icon="⭐" title={t.landing.whyTitle} />
 
-        <RevealSection className="grid gap-6 rounded-2xl bg-white p-8 shadow-sm md:grid-cols-2">
-          <div className="relative order-1 h-full min-h-72 overflow-hidden rounded-2xl">
-            <Image src={sectionImages.testimonials} alt="Client stories" fill className="object-cover" />
-          </div>
-          <div>
-            <SectionHeader icon="💬" title={t.landing.testimonialsTitle} />
-            <div className="grid gap-4">
-              {testimonials[language].map((item) => (
-                <article
-                  key={item.name}
-                  className="rounded-xl border border-slate-200 bg-slate-50 p-5 motion-safe:animate-fade-up"
-                >
-                  <p className="text-slate-600">{item.text}</p>
-                  <p className="mt-4 text-sm font-semibold text-brand-blue">{item.name}</p>
-                  <p className="text-xs text-slate-500">{item.position}</p>
-                  <p className="text-xs font-medium text-slate-600">{item.company}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </RevealSection>
+    <ul className="mt-6 space-y-4">
+      {t.landing.whyItems.map((item) => (
+        <li
+          key={item}
+          className="group flex items-start gap-3 rounded-xl border border-slate-200/70 bg-white/70 px-5 py-4 text-slate-700 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-indigo-400 hover:shadow-lg"
+        >
+          <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-600 transition group-hover:bg-indigo-600 group-hover:text-white">
+            ✓
+          </span>
+          <span className="leading-relaxed">{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div className="relative mt-10 h-72 overflow-hidden rounded-3xl shadow-2xl md:mt-0">
+    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600/20 via-transparent to-transparent"></div>
+    <Image
+      src={sectionImages.why}
+      alt="Business connection"
+      fill
+      className="object-cover transition-transform duration-700 hover:scale-105"
+    />
+  </div>
+</RevealSection>
+
+
+  <RevealSection className="rounded-3xl bg-gradient-to-br from-brand-light to-white p-10 shadow-sm">
+    <SectionHeader icon="💬" title={t.landing.testimonialsTitle} />
+
+    <div className="relative mt-10">
+      <div
+        ref={scrollRef}
+        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4"
+      >
+        {testimonials[language].map((item, index) => (
+          <TestimonialCard
+            key={item.name}
+            item={item}
+            active={index === activeIndex}
+          />
+        ))}
+      </div>
+
+    </div>
+</RevealSection>
 
         <RevealSection className="rounded-2xl bg-white p-8 shadow-sm">
           <SectionHeader icon="🤝" title={t.landing.partnersTitle}  />
