@@ -10,7 +10,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
-"use client";
+'use client';
 ;
 function RevealSection({ className, children }) {
     _s();
@@ -39,10 +39,10 @@ function RevealSection({ className, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         ref: ref,
         className: [
-            "transition-all duration-700",
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
-            className || ""
-        ].join(" ").trim(),
+            'transition-all duration-700',
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0',
+            className || ''
+        ].join(' ').trim(),
         children: children
     }, void 0, false, {
         fileName: "[project]/src/components/RevealSection.jsx",
@@ -66,39 +66,34 @@ __turbopack_context__.s([
     ()=>TestimonialCard
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
-"use client";
-;
-;
+'use client';
 ;
 function StarRating({ count = 5 }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex gap-1 text-amber-400",
+        className: "gap-1 text-amber-400 flex",
         children: Array.from({
             length: count
         }).map((_, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                 children: "★"
             }, i, false, {
                 fileName: "[project]/src/components/TestimonialCard.jsx",
-                lineNumber: 10,
+                lineNumber: 7,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
         fileName: "[project]/src/components/TestimonialCard.jsx",
-        lineNumber: 8,
+        lineNumber: 5,
         columnNumber: 5
     }, this);
 }
 _c = StarRating;
 function TestimonialCard({ item }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: `min-w-[320px] max-w-sm snap-center rounded-2xl bg-slate-50 shadow-md opacity-70 p-6 transition-all duration-300 
-      `,
+        className: `max-w-sm rounded-2xl bg-slate-50 shadow-md p-6 min-w-[320px] snap-center opacity-70 transition-all duration-300`,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StarRating, {}, void 0, false, {
                 fileName: "[project]/src/components/TestimonialCard.jsx",
-                lineNumber: 23,
+                lineNumber: 18,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -110,18 +105,18 @@ function TestimonialCard({ item }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/TestimonialCard.jsx",
-                lineNumber: 24,
+                lineNumber: 19,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mt-6 flex items-center gap-4",
+                className: "mt-6 gap-4 flex items-center",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "relative h-12 w-12 overflow-hidden rounded-full bg-gradient-to-br from-brand-blue to-blue-400 text-white flex items-center justify-center font-bold",
+                        className: "h-12 w-12 from-brand-blue to-blue-400 text-white font-bold relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br",
                         children: item.name.charAt(0)
                     }, void 0, false, {
                         fileName: "[project]/src/components/TestimonialCard.jsx",
-                        lineNumber: 29,
+                        lineNumber: 22,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -131,7 +126,7 @@ function TestimonialCard({ item }) {
                                 children: item.name
                             }, void 0, false, {
                                 fileName: "[project]/src/components/TestimonialCard.jsx",
-                                lineNumber: 33,
+                                lineNumber: 26,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -139,7 +134,7 @@ function TestimonialCard({ item }) {
                                 children: item.position
                             }, void 0, false, {
                                 fileName: "[project]/src/components/TestimonialCard.jsx",
-                                lineNumber: 34,
+                                lineNumber: 27,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -147,25 +142,25 @@ function TestimonialCard({ item }) {
                                 children: item.company
                             }, void 0, false, {
                                 fileName: "[project]/src/components/TestimonialCard.jsx",
-                                lineNumber: 37,
+                                lineNumber: 28,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/TestimonialCard.jsx",
-                        lineNumber: 32,
+                        lineNumber: 25,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/TestimonialCard.jsx",
-                lineNumber: 28,
+                lineNumber: 21,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/TestimonialCard.jsx",
-        lineNumber: 19,
+        lineNumber: 15,
         columnNumber: 5
     }, this);
 }
@@ -185,19 +180,19 @@ __turbopack_context__.s([
     ()=>HomePageClient
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealSection$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/RevealSection.jsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$i18n$2f$LanguageContext$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/i18n/LanguageContext.jsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$TestimonialCard$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/TestimonialCard.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$question$2d$mark$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleQuestionMark$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-question-mark.js [app-client] (ecmascript) <export default as CircleQuestionMark>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$handshake$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Handshake$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/handshake.js [app-client] (ecmascript) <export default as Handshake>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$info$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Info$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/info.js [app-client] (ecmascript) <export default as Info>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$notebook$2d$pen$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__NotebookPen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/notebook-pen.js [app-client] (ecmascript) <export default as NotebookPen>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$target$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Target$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/target.js [app-client] (ecmascript) <export default as Target>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$i18n$2f$LanguageContext$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/i18n/LanguageContext.jsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealSection$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/RevealSection.jsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$TestimonialCard$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/TestimonialCard.jsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
-"use client";
+'use client';
 ;
 ;
 ;
@@ -207,124 +202,124 @@ var _s = __turbopack_context__.k.signature();
 const testimonials = {
     am: [
         {
-            name: "Արման Մ.",
-            position: "Գլխավոր տնօրեն",
-            company: "Grand Candy",
-            text: "ABC-ի շնորհիվ գտանք վստահելի գործընկերներ Մոսկվայում և Փարիզում։"
+            name: 'Արման Մ.',
+            position: 'Գլխավոր տնօրեն',
+            company: 'Grand Candy',
+            text: 'ABC-ի շնորհիվ գտանք վստահելի գործընկերներ Մոսկվայում և Փարիզում։'
         },
         {
-            name: "Սոնա Գ.",
-            position: "Բիզնես զարգացման ղեկավար",
-            company: "Ararat Foods",
-            text: "Այս համայնքը արագացրեց մեր բիզնես կապերը և միջազգային տեսանելիությունը։"
+            name: 'Սոնա Գ.',
+            position: 'Բիզնես զարգացման ղեկավար',
+            company: 'Ararat Foods',
+            text: 'Այս համայնքը արագացրեց մեր բիզնես կապերը և միջազգային տեսանելիությունը։'
         },
         {
-            name: "Դավիթ Հ.",
-            position: "Արտահանման մենեջեր",
-            company: "EcoFarm Armenia",
-            text: "ABC հարթակը մեզ օգնեց նոր շուկաներ մտնել և վստահելի համագործակցություններ կառուցել։"
+            name: 'Դավիթ Հ.',
+            position: 'Արտահանման մենեջեր',
+            company: 'EcoFarm Armenia',
+            text: 'ABC հարթակը մեզ օգնեց նոր շուկաներ մտնել և վստահելի համագործակցություններ կառուցել։'
         }
     ],
     ru: [
         {
-            name: "Арман М.",
-            position: "Генеральный директор",
-            company: "Grand Candy",
-            text: "Через ABC мы нашли надежных партнеров в Москве и Париже."
+            name: 'Арман М.',
+            position: 'Генеральный директор',
+            company: 'Grand Candy',
+            text: 'Через ABC мы нашли надежных партнеров в Москве и Париже.'
         },
         {
-            name: "Сона Г.",
-            position: "Руководитель развития бизнеса",
-            company: "Ararat Foods",
-            text: "Сообщество заметно ускорило наши деловые связи."
+            name: 'Сона Г.',
+            position: 'Руководитель развития бизнеса',
+            company: 'Ararat Foods',
+            text: 'Сообщество заметно ускорило наши деловые связи.'
         },
         {
-            name: "Давид А.",
-            position: "Менеджер по экспорту",
-            company: "EcoFarm Armenia",
-            text: "Платформа ABC помогла нам выйти на новые рынки и выстроить надежные партнерства."
+            name: 'Давид А.',
+            position: 'Менеджер по экспорту',
+            company: 'EcoFarm Armenia',
+            text: 'Платформа ABC помогла нам выйти на новые рынки и выстроить надежные партнерства.'
         }
     ],
     en: [
         {
-            name: "Arman M.",
-            position: "Chief Executive Officer",
-            company: "Grand Candy",
-            text: "Through ABC we found trusted partners in multiple markets."
+            name: 'Arman M.',
+            position: 'Chief Executive Officer',
+            company: 'Grand Candy',
+            text: 'Through ABC we found trusted partners in multiple markets.'
         },
         {
-            name: "Sona G.",
-            position: "Head of Business Development",
-            company: "Ararat Foods",
-            text: "The community helped us grow our business network faster."
+            name: 'Sona G.',
+            position: 'Head of Business Development',
+            company: 'Ararat Foods',
+            text: 'The community helped us grow our business network faster.'
         },
         {
-            name: "David A.",
-            position: "Export Manager",
-            company: "EcoFarm Armenia",
-            text: "ABC helped us enter new markets and build strong international partnerships."
+            name: 'David A.',
+            position: 'Export Manager',
+            company: 'EcoFarm Armenia',
+            text: 'ABC helped us enter new markets and build strong international partnerships.'
         }
     ]
 };
 const partnerLogos = [
-    "Grand Candy",
-    "Ararat Foods",
-    "Yerevan Trade",
-    "Noyan Tech",
-    "Artsakh Agro",
-    "Hayk Logistics",
-    "Anahit Group"
+    'Grand Candy',
+    'Ararat Foods',
+    'Yerevan Trade',
+    'Noyan Tech',
+    'Artsakh Agro',
+    'Hayk Logistics',
+    'Anahit Group'
 ];
 const partnerTicker = [
     ...partnerLogos,
     ...partnerLogos
 ];
 const sectionImages = {
-    who: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80",
-    mission: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
-    why: "https://images.unsplash.com/photo-1521790797524-b2497295b8a0?auto=format&fit=crop&w=1200&q=80",
-    testimonials: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80"
+    who: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
+    mission: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+    why: 'https://images.unsplash.com/photo-1521790797524-b2497295b8a0?auto=format&fit=crop&w=1200&q=80',
+    testimonials: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80'
 };
 function SectionHeader({ icon, title, badge }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "mb-5 flex items-center gap-3",
+        className: "mb-5 gap-3 flex items-center",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                className: "inline-flex h-10 min-w-10 items-center justify-center rounded-full bg-brand-blue text-xl text-white",
+                className: "h-10 min-w-10 bg-brand-blue text-xl text-white inline-flex items-center justify-center rounded-full",
                 children: icon
             }, void 0, false, {
                 fileName: "[project]/src/components/HomePageClient.jsx",
-                lineNumber: 97,
+                lineNumber: 94,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: [
                     badge ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-xs font-bold uppercase tracking-[0.2em] text-brand-blue/80",
+                        className: "text-xs font-bold text-brand-blue/80 tracking-[0.2em] uppercase",
                         children: badge
                     }, void 0, false, {
                         fileName: "[project]/src/components/HomePageClient.jsx",
-                        lineNumber: 101,
+                        lineNumber: 98,
                         columnNumber: 18
                     }, this) : null,
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: " text-xl lg:text-3xl font-black text-brand-dark",
+                        className: "text-xl lg:text-3xl font-black text-brand-dark",
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/src/components/HomePageClient.jsx",
-                        lineNumber: 102,
+                        lineNumber: 99,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/HomePageClient.jsx",
-                lineNumber: 100,
+                lineNumber: 97,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/HomePageClient.jsx",
-        lineNumber: 96,
+        lineNumber: 93,
         columnNumber: 5
     }, this);
 }
@@ -339,7 +334,7 @@ function HomePageClient() {
         const card = container.children[index];
         container.scrollTo({
             left: card.offsetLeft - 16,
-            behavior: "smooth"
+            behavior: 'smooth'
         });
         setActiveIndex(index);
     };
@@ -347,7 +342,7 @@ function HomePageClient() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                className: "relative overflow-hidden bg-hero-gradient py-24 text-white",
+                className: "bg-hero-gradient py-24 text-white relative overflow-hidden",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "container-abc",
                     children: [
@@ -356,7 +351,7 @@ function HomePageClient() {
                             children: t.landing.heroTitle
                         }, void 0, false, {
                             fileName: "[project]/src/components/HomePageClient.jsx",
-                            lineNumber: 132,
+                            lineNumber: 128,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -364,7 +359,7 @@ function HomePageClient() {
                             children: t.common.slogan
                         }, void 0, false, {
                             fileName: "[project]/src/components/HomePageClient.jsx",
-                            lineNumber: 135,
+                            lineNumber: 131,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -372,34 +367,34 @@ function HomePageClient() {
                             children: t.landing.heroSubtitle
                         }, void 0, false, {
                             fileName: "[project]/src/components/HomePageClient.jsx",
-                            lineNumber: 136,
+                            lineNumber: 132,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                             href: "mailto:abc1111@gmail.com",
-                            className: "mt-8 inline-flex rounded-xl border border-white/70 bg-white px-6 py-3 font-semibold text-[#0B3D91] shadow-glow transition hover:scale-[1.02]",
+                            className: "mt-8 rounded-xl border-white/70 bg-white px-6 py-3 font-semibold shadow-glow inline-flex border text-[#0B3D91] transition hover:scale-[1.02]",
                             children: t.common.connectNow
                         }, void 0, false, {
                             fileName: "[project]/src/components/HomePageClient.jsx",
-                            lineNumber: 137,
+                            lineNumber: 133,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/HomePageClient.jsx",
-                    lineNumber: 131,
+                    lineNumber: 127,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/HomePageClient.jsx",
-                lineNumber: 130,
+                lineNumber: 126,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "container-abc space-y-14 lg:space-y-24  py-14",
+                className: "container-abc space-y-14 lg:space-y-24 py-14",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealSection$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        className: "grid gap-6 rounded-2xl bg-white p-8 shadow-sm md:grid-cols-2 md:items-center",
+                        className: "gap-6 rounded-2xl bg-white p-8 shadow-sm md:grid-cols-2 md:items-center grid",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
@@ -408,13 +403,13 @@ function HomePageClient() {
                                             className: "h-6 w-6"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/HomePageClient.jsx",
-                                            lineNumber: 149,
+                                            lineNumber: 145,
                                             columnNumber: 34
                                         }, void 0),
                                         title: t.landing.whoTitle
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 149,
+                                        lineNumber: 145,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -422,17 +417,17 @@ function HomePageClient() {
                                         children: t.landing.whoText
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 150,
+                                        lineNumber: 146,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 148,
+                                lineNumber: 144,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "relative h-56 overflow-hidden rounded-2xl",
+                                className: "h-56 rounded-2xl relative overflow-hidden",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     src: sectionImages.who,
                                     alt: "ABC community",
@@ -440,27 +435,27 @@ function HomePageClient() {
                                     className: "object-cover"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/HomePageClient.jsx",
-                                    lineNumber: 153,
+                                    lineNumber: 149,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 152,
+                                lineNumber: 148,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/HomePageClient.jsx",
-                        lineNumber: 147,
+                        lineNumber: 143,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealSection$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        className: "grid gap-6 rounded-2xl border border-brand-blue/20 bg-brand-light p-8 md:grid-cols-2 md:items-center",
+                        className: "gap-6 rounded-2xl border-brand-blue/20 bg-brand-light p-8 md:grid-cols-2 md:items-center grid border",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "order-2 md:order-1",
+                                className: "md:order-1 order-2",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "relative h-56 overflow-hidden rounded-2xl",
+                                    className: "h-56 rounded-2xl relative overflow-hidden",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                         src: sectionImages.mission,
                                         alt: "ABC mission",
@@ -468,34 +463,34 @@ function HomePageClient() {
                                         className: "object-cover"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 160,
+                                        lineNumber: 156,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/HomePageClient.jsx",
-                                    lineNumber: 159,
+                                    lineNumber: 155,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 158,
+                                lineNumber: 154,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "order-1 md:order-2",
+                                className: "md:order-2 order-1",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SectionHeader, {
                                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$target$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Target$3e$__["Target"], {
                                             className: "h-6 w-6"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/HomePageClient.jsx",
-                                            lineNumber: 164,
+                                            lineNumber: 160,
                                             columnNumber: 34
                                         }, void 0),
                                         title: t.landing.missionTitle
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 164,
+                                        lineNumber: 160,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -503,23 +498,23 @@ function HomePageClient() {
                                         children: t.landing.missionText
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 165,
+                                        lineNumber: 161,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 163,
+                                lineNumber: 159,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/HomePageClient.jsx",
-                        lineNumber: 157,
+                        lineNumber: 153,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealSection$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        className: "relative overflow-hidden rounded-3xl bg-gradient-to-br from-white to-slate-50 p-4 lg:p-10 shadow-xl shadow-slate-200/60 md:grid md:grid-cols-2 md:gap-12",
+                        className: "rounded-3xl from-white to-slate-50 p-4 lg:p-10 shadow-xl shadow-slate-200/60 md:grid md:grid-cols-2 md:gap-12 relative overflow-hidden bg-gradient-to-br",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "relative z-10",
@@ -529,62 +524,62 @@ function HomePageClient() {
                                             className: "h-6 w-6"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/HomePageClient.jsx",
-                                            lineNumber: 172,
-                                            columnNumber: 26
+                                            lineNumber: 167,
+                                            columnNumber: 34
                                         }, void 0),
                                         title: t.landing.whyTitle
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 172,
-                                        columnNumber: 5
+                                        lineNumber: 167,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                                         className: "mt-6 space-y-4",
                                         children: t.landing.whyItems.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                className: "group flex items-start gap-3 rounded-xl border border-slate-200/70 bg-white/70 px-5 py-4 text-slate-700 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-indigo-400 hover:shadow-lg",
+                                                className: "group gap-3 rounded-xl border-slate-200/70 bg-white/70 px-5 py-4 text-slate-700 backdrop-blur hover:-translate-y-1 hover:border-indigo-400 hover:shadow-lg flex items-start border transition-all duration-300",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-600 transition group-hover:bg-indigo-600 group-hover:text-white",
+                                                        className: "mt-1 h-6 w-6 bg-indigo-100 text-sm font-semibold text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white inline-flex items-center justify-center rounded-full transition",
                                                         children: "✓"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                                        lineNumber: 180,
-                                                        columnNumber: 11
+                                                        lineNumber: 175,
+                                                        columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                         className: "leading-relaxed",
                                                         children: item
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                                        lineNumber: 183,
-                                                        columnNumber: 11
+                                                        lineNumber: 178,
+                                                        columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, item, true, {
                                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                                lineNumber: 176,
-                                                columnNumber: 9
+                                                lineNumber: 171,
+                                                columnNumber: 17
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 174,
-                                        columnNumber: 5
+                                        lineNumber: 169,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 171,
-                                columnNumber: 3
+                                lineNumber: 166,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "relative mt-10 h-72 overflow-hidden rounded-3xl shadow-2xl md:mt-0",
+                                className: "mt-10 h-72 rounded-3xl shadow-2xl md:mt-0 relative overflow-hidden",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute inset-0 bg-gradient-to-tr from-indigo-600/20 via-transparent to-transparent"
+                                        className: "inset-0 from-indigo-600/20 absolute bg-gradient-to-tr via-transparent to-transparent"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 190,
-                                        columnNumber: 5
+                                        lineNumber: 185,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                         src: sectionImages.why,
@@ -593,66 +588,66 @@ function HomePageClient() {
                                         className: "object-cover transition-transform duration-700 hover:scale-105"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/HomePageClient.jsx",
-                                        lineNumber: 191,
-                                        columnNumber: 5
+                                        lineNumber: 186,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 189,
-                                columnNumber: 3
+                                lineNumber: 184,
+                                columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/HomePageClient.jsx",
-                        lineNumber: 169,
-                        columnNumber: 8
+                        lineNumber: 165,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealSection$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        className: "rounded-3xl bg-gradient-to-br from-brand-light to-white p-10 shadow-sm",
+                        className: "rounded-3xl from-brand-light to-white p-10 shadow-sm bg-gradient-to-br",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SectionHeader, {
                                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$notebook$2d$pen$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__NotebookPen$3e$__["NotebookPen"], {
                                     className: "h-6 w-6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/HomePageClient.jsx",
-                                    lineNumber: 202,
-                                    columnNumber: 26
+                                    lineNumber: 196,
+                                    columnNumber: 32
                                 }, void 0),
                                 title: t.landing.testimonialsTitle
                             }, void 0, false, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 202,
-                                columnNumber: 5
+                                lineNumber: 196,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "relative mt-10",
+                                className: "mt-10 relative",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     ref: scrollRef,
-                                    className: "flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4",
+                                    className: "gap-6 pb-4 flex snap-x snap-mandatory overflow-x-auto scroll-smooth",
                                     children: testimonials[language].map((item, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$TestimonialCard$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                             item: item,
                                             active: index === activeIndex
                                         }, item.name, false, {
                                             fileName: "[project]/src/components/HomePageClient.jsx",
-                                            lineNumber: 210,
-                                            columnNumber: 11
+                                            lineNumber: 201,
+                                            columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/HomePageClient.jsx",
-                                    lineNumber: 205,
-                                    columnNumber: 7
+                                    lineNumber: 199,
+                                    columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 204,
-                                columnNumber: 5
+                                lineNumber: 198,
+                                columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/HomePageClient.jsx",
-                        lineNumber: 201,
-                        columnNumber: 3
+                        lineNumber: 195,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealSection$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         className: "rounded-2xl bg-white p-8 shadow-sm",
@@ -662,13 +657,13 @@ function HomePageClient() {
                                     className: "h-6 w-6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/HomePageClient.jsx",
-                                    lineNumber: 222,
+                                    lineNumber: 208,
                                     columnNumber: 32
                                 }, void 0),
                                 title: t.landing.partnersTitle
                             }, void 0, false, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 222,
+                                lineNumber: 208,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -676,39 +671,39 @@ function HomePageClient() {
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "marquee-track",
                                     children: partnerTicker.map((logo, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex h-20 min-w-[220px] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 font-semibold text-slate-600",
+                                            className: "h-20 rounded-xl border-slate-200 bg-slate-50 px-4 font-semibold text-slate-600 flex min-w-[220px] items-center justify-center border",
                                             children: logo
                                         }, `${logo}-${index}`, false, {
                                             fileName: "[project]/src/components/HomePageClient.jsx",
-                                            lineNumber: 226,
+                                            lineNumber: 212,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/HomePageClient.jsx",
-                                    lineNumber: 224,
+                                    lineNumber: 210,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/HomePageClient.jsx",
-                                lineNumber: 223,
+                                lineNumber: 209,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/HomePageClient.jsx",
-                        lineNumber: 221,
+                        lineNumber: 207,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/HomePageClient.jsx",
-                lineNumber: 146,
+                lineNumber: 142,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/HomePageClient.jsx",
-        lineNumber: 129,
+        lineNumber: 125,
         columnNumber: 5
     }, this);
 }

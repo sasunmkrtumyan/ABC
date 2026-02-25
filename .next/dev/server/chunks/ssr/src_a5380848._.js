@@ -388,19 +388,19 @@ function PartnerDetailsPage() {
                                                             size: 14
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                                            lineNumber: 70,
+                                                            lineNumber: 69,
                                                             columnNumber: 11
                                                         }, this),
                                                         tag
                                                     ]
                                                 }, tag, true, {
                                                     fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                                    lineNumber: 66,
+                                                    lineNumber: 65,
                                                     columnNumber: 9
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                            lineNumber: 64,
+                                            lineNumber: 63,
                                             columnNumber: 5
                                         }, this) : "-";
                                     })()
@@ -416,7 +416,7 @@ function PartnerDetailsPage() {
                                             className: "inline size-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                            lineNumber: 80,
+                                            lineNumber: 79,
                                             columnNumber: 48
                                         }, this),
                                         " ",
@@ -424,7 +424,7 @@ function PartnerDetailsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                    lineNumber: 80,
+                                    lineNumber: 79,
                                     columnNumber: 13
                                 }, this),
                                 partner.location ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -434,7 +434,7 @@ function PartnerDetailsPage() {
                                             className: "inline size-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                            lineNumber: 81,
+                                            lineNumber: 80,
                                             columnNumber: 68
                                         }, this),
                                         " ",
@@ -442,7 +442,7 @@ function PartnerDetailsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                    lineNumber: 81,
+                                    lineNumber: 80,
                                     columnNumber: 33
                                 }, this) : null,
                                 (partner.phones || []).map((phone)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -452,7 +452,7 @@ function PartnerDetailsPage() {
                                                 className: "inline size-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                                lineNumber: 84,
+                                                lineNumber: 83,
                                                 columnNumber: 16
                                             }, this),
                                             " ",
@@ -460,7 +460,7 @@ function PartnerDetailsPage() {
                                         ]
                                     }, phone, true, {
                                         fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                                        lineNumber: 83,
+                                        lineNumber: 82,
                                         columnNumber: 15
                                     }, this))
                             ]
@@ -480,7 +480,7 @@ function PartnerDetailsPage() {
                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$localize$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["pickTextByLanguage"])(partner.description, language)
                 }, void 0, false, {
                     fileName: "[project]/src/app/partner/[slug]/page.jsx",
-                    lineNumber: 90,
+                    lineNumber: 89,
                     columnNumber: 9
                 }, this)
             ]

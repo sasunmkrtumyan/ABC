@@ -383,6 +383,10 @@ img, video {
   margin-bottom: 1.5rem;
 }
 
+.mr-2 {
+  margin-right: .5rem;
+}
+
 .mt-1 {
   margin-top: .25rem;
 }
@@ -413,10 +417,6 @@ img, video {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.mr-2 {
-  margin-right: .5rem;
 }
 
 .block {
@@ -886,6 +886,11 @@ img, video {
   background-color: rgb(237 244 255 / var(--tw-bg-opacity, 1));
 }
 
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+
 .bg-green-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(240 253 244 / var(--tw-bg-opacity, 1));
@@ -927,11 +932,6 @@ img, video {
 
 .bg-white\/90 {
   background-color: #ffffffe6;
-}
-
-.bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
 }
 
 .bg-\[url\(\'data\:image\/svg\+xml\;charset\=US-ASCII\,\%3Csvg\%20width\%3D\%2220\%22\%20height\%3D\%2220\%22\%20viewBox\%3D\%220\%200\%2020\%2020\%22\%20xmlns\%3D\%22http\%3A\%2F\%2Fwww\.w3\.org\%2F2000\%2Fsvg\%22\%3E\%3Cpath\%20d\%3D\%22M5\%207l5\%205\%205-5\%22\%20fill\%3D\%22none\%22\%20stroke\%3D\%22\%2364748b\%22\%20stroke-width\%3D\%221\.5\%22\%20stroke-linecap\%3D\%22round\%22\%20stroke-linejoin\%3D\%22round\%22\%2F\%3E\%3C\%2Fsvg\%3E\'\)\] {
@@ -1045,6 +1045,11 @@ img, video {
   padding: 2rem;
 }
 
+.px-2 {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
 .px-3 {
   padding-left: .75rem;
   padding-right: .75rem;
@@ -1063,6 +1068,11 @@ img, video {
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.py-1 {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
 }
 
 .py-1\.5 {
@@ -1103,16 +1113,6 @@ img, video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.px-2 {
-  padding-left: .5rem;
-  padding-right: .5rem;
-}
-
-.py-1 {
-  padding-top: .25rem;
-  padding-bottom: .25rem;
 }
 
 .pb-4 {
