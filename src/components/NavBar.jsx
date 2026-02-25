@@ -20,17 +20,7 @@ export default function NavBar() {
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md">
       <nav className="container-abc flex items-center justify-between py-4">
         <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-lg font-black text-white">
-            A
-          </div>
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-500">
-              ABC
-            </p>
-            <p className="text-xs text-slate-500">
-              Armenian Business Club
-            </p>
-          </div>
+         <img src="/img/logo.png" alt="ABC Logo" className="h-14 w-max object-contain" />
         </Link>
 
         {/* Desktop links */}

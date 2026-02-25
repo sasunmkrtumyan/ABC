@@ -22,6 +22,7 @@ export default function PartnersPage() {
   const [partners, setPartners] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
   const [loadError, setLoadError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [page, setPage] = useState(1);
@@ -31,6 +32,7 @@ export default function PartnersPage() {
 
     const load = async () => {
       setLoadError("");
+      setIsLoading(true);
       try {
         const [partnersData, tagsData] = await Promise.all([fetchPartners(), fetchTags()]);
         if (cancelled) return;
@@ -49,6 +51,10 @@ export default function PartnersPage() {
         }
         setPartners([]);
         setAvailableTags([]);
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -96,7 +102,7 @@ export default function PartnersPage() {
         <select
           value={category}
           onChange={(event) => setCategory(event.target.value)}
-          className="rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+          className="min-w-[240px] cursor-pointer appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-4 pr-10 outline-none focus:border-blue-500 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%207l5%205%205-5%22%20fill%3D%22none%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[length:20px_20px] bg-[right_12px_center] bg-no-repeat"
         >
           <option value="all">{t.partners.allCategories}</option>
           {categories.map((item) => (
@@ -117,8 +123,22 @@ export default function PartnersPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {paginated.map((item) => (
-              <tr key={item.id} className="hover:bg-slate-50">
+            {isLoading ? (
+              <tr>
+                <td colSpan="3" className="py-12 text-center text-slate-500">
+                  <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-r-transparent"></div>
+                  <p>Բեռնվում է...</p>
+                </td>
+              </tr>
+            ) : paginated.length === 0 ? (
+              <tr>
+                <td colSpan="3" className="py-8 text-center text-slate-500">
+                  Գործընկերներ չեն գտնվել:
+                </td>
+              </tr>
+            ) : (
+              paginated.map((item) => (
+                <tr key={item.id} className="hover:bg-slate-50">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <div className="h-12 w-12 shrink-0 overflow-hidden rounded-md border border-slate-200 bg-slate-100">
@@ -137,10 +157,15 @@ export default function PartnersPage() {
                     </Link>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-slate-600">{(item.tags || []).join(", ")}</td>
+                <td className="px-4 py-3 text-slate-600">
+                  {(() => {
+                    const validTags = (item.tags || []).filter((tag) => availableTags.includes(tag));
+                    return validTags.length > 0 ? validTags.join(", ") : "-";
+                  })()}
+                </td>
                 <td className="px-4 py-3 text-slate-600">{item.email}</td>
               </tr>
-            ))}
+            )))}
           </tbody>
         </table>
       </div>

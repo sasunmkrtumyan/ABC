@@ -115,7 +115,91 @@ __turbopack_context__.s([
     ()=>slugify
 ]);
 function slugify(input) {
-    return String(input).toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+    const amChars = {
+        'ա': 'a',
+        'բ': 'b',
+        'գ': 'g',
+        'դ': 'd',
+        'ե': 'e',
+        'զ': 'z',
+        'է': 'e',
+        'ը': 'y',
+        'թ': 't',
+        'ժ': 'zh',
+        'ի': 'i',
+        'լ': 'l',
+        'խ': 'kh',
+        'ծ': 'ts',
+        'կ': 'k',
+        'հ': 'h',
+        'ձ': 'dz',
+        'ղ': 'gh',
+        'ճ': 'ch',
+        'մ': 'm',
+        'յ': 'y',
+        'ն': 'n',
+        'շ': 'sh',
+        'ո': 'o',
+        'չ': 'ch',
+        'պ': 'p',
+        'ջ': 'j',
+        'ռ': 'r',
+        'ս': 's',
+        'վ': 'v',
+        'տ': 't',
+        'ր': 'r',
+        'ց': 'ts',
+        'ւ': 'v',
+        'փ': 'p',
+        'ք': 'k',
+        'օ': 'o',
+        'ֆ': 'f',
+        'և': 'ev'
+    };
+    const ruChars = {
+        'а': 'a',
+        'б': 'b',
+        'в': 'v',
+        'г': 'g',
+        'д': 'd',
+        'е': 'e',
+        'ё': 'yo',
+        'ж': 'zh',
+        'з': 'z',
+        'и': 'i',
+        'й': 'y',
+        'к': 'k',
+        'л': 'l',
+        'м': 'm',
+        'н': 'n',
+        'о': 'o',
+        'п': 'p',
+        'р': 'r',
+        'с': 's',
+        'т': 't',
+        'у': 'u',
+        'ф': 'f',
+        'х': 'kh',
+        'ц': 'ts',
+        'ч': 'ch',
+        'ш': 'sh',
+        'щ': 'shch',
+        'ъ': '',
+        'ы': 'y',
+        'ь': '',
+        'э': 'e',
+        'ю': 'yu',
+        'я': 'ya'
+    };
+    let str = String(input).toLowerCase().trim();
+    let result = '';
+    for(let i = 0; i < str.length; i++){
+        const char = str[i];
+        if (amChars[char] !== undefined) result += amChars[char];
+        else if (ruChars[char] !== undefined) result += ruChars[char];
+        else result += char;
+    }
+    return result.replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/^-+|-+$/g, "").replace(/-+/g, "-") || Date.now().toString(36);
 }
 }),
 "[project]/src/lib/supabase/tags.js [app-ssr] (ecmascript)", ((__turbopack_context__) => {
@@ -226,6 +310,7 @@ function PartnersPage() {
     const [partners, setPartners] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [availableTags, setAvailableTags] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loadError, setLoadError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
     const [query, setQuery] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [category, setCategory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("all");
     const [page, setPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(1);
@@ -233,6 +318,7 @@ function PartnersPage() {
         let cancelled = false;
         const load = async ()=>{
             setLoadError("");
+            setIsLoading(true);
             try {
                 const [partnersData, tagsData] = await Promise.all([
                     (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$partners$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchPartners"])(),
@@ -252,6 +338,10 @@ function PartnersPage() {
                 }
                 setPartners([]);
                 setAvailableTags([]);
+            } finally{
+                if (!cancelled) {
+                    setIsLoading(false);
+                }
             }
         };
         load();
@@ -297,7 +387,7 @@ function PartnersPage() {
                 children: t.partners.title
             }, void 0, false, {
                 fileName: "[project]/src/app/partners/page.jsx",
-                lineNumber: 86,
+                lineNumber: 92,
                 columnNumber: 7
             }, this),
             loadError ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -305,7 +395,7 @@ function PartnersPage() {
                 children: loadError
             }, void 0, false, {
                 fileName: "[project]/src/app/partners/page.jsx",
-                lineNumber: 87,
+                lineNumber: 93,
                 columnNumber: 20
             }, this) : null,
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -318,20 +408,20 @@ function PartnersPage() {
                         className: "w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
                     }, void 0, false, {
                         fileName: "[project]/src/app/partners/page.jsx",
-                        lineNumber: 90,
+                        lineNumber: 96,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                         value: category,
                         onChange: (event)=>setCategory(event.target.value),
-                        className: "rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500",
+                        className: "min-w-[240px] cursor-pointer appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-4 pr-10 outline-none focus:border-blue-500 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%207l5%205%205-5%22%20fill%3D%22none%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[length:20px_20px] bg-[right_12px_center] bg-no-repeat",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                 value: "all",
                                 children: t.partners.allCategories
                             }, void 0, false, {
                                 fileName: "[project]/src/app/partners/page.jsx",
-                                lineNumber: 101,
+                                lineNumber: 107,
                                 columnNumber: 11
                             }, this),
                             categories.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -339,19 +429,19 @@ function PartnersPage() {
                                     children: item
                                 }, item, false, {
                                     fileName: "[project]/src/app/partners/page.jsx",
-                                    lineNumber: 103,
+                                    lineNumber: 109,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/partners/page.jsx",
-                        lineNumber: 96,
+                        lineNumber: 102,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/partners/page.jsx",
-                lineNumber: 89,
+                lineNumber: 95,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -368,7 +458,7 @@ function PartnersPage() {
                                         children: t.partners.table.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/partners/page.jsx",
-                                        lineNumber: 114,
+                                        lineNumber: 120,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -376,7 +466,7 @@ function PartnersPage() {
                                         children: t.partners.table.categories
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/partners/page.jsx",
-                                        lineNumber: 115,
+                                        lineNumber: 121,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -384,23 +474,66 @@ function PartnersPage() {
                                         children: t.partners.table.email
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/partners/page.jsx",
-                                        lineNumber: 116,
+                                        lineNumber: 122,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/partners/page.jsx",
-                                lineNumber: 113,
+                                lineNumber: 119,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/partners/page.jsx",
-                            lineNumber: 112,
+                            lineNumber: 118,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
                             className: "divide-y divide-slate-100",
-                            children: paginated.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                            children: isLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                    colSpan: "3",
+                                    className: "py-12 text-center text-slate-500",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-r-transparent"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/partners/page.jsx",
+                                            lineNumber: 129,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            children: "Բեռնվում է..."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/partners/page.jsx",
+                                            lineNumber: 130,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/app/partners/page.jsx",
+                                    lineNumber: 128,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/partners/page.jsx",
+                                lineNumber: 127,
+                                columnNumber: 15
+                            }, this) : paginated.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                    colSpan: "3",
+                                    className: "py-8 text-center text-slate-500",
+                                    children: "Գործընկերներ չեն գտնվել:"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/partners/page.jsx",
+                                    lineNumber: 135,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/partners/page.jsx",
+                                lineNumber: 134,
+                                columnNumber: 15
+                            }, this) : paginated.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                     className: "hover:bg-slate-50",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -418,12 +551,12 @@ function PartnersPage() {
                                                             className: "h-full w-full object-cover"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/partners/page.jsx",
-                                                            lineNumber: 126,
+                                                            lineNumber: 146,
                                                             columnNumber: 25
                                                         }, this) : null
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/partners/page.jsx",
-                                                        lineNumber: 124,
+                                                        lineNumber: 144,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -432,26 +565,29 @@ function PartnersPage() {
                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$localize$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["pickTextByLanguage"])(item.name, language)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/partners/page.jsx",
-                                                        lineNumber: 135,
+                                                        lineNumber: 155,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/partners/page.jsx",
-                                                lineNumber: 123,
+                                                lineNumber: 143,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/partners/page.jsx",
-                                            lineNumber: 122,
+                                            lineNumber: 142,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                             className: "px-4 py-3 text-slate-600",
-                                            children: (item.tags || []).join(", ")
+                                            children: (()=>{
+                                                const validTags = (item.tags || []).filter((tag)=>availableTags.includes(tag));
+                                                return validTags.length > 0 ? validTags.join(", ") : "-";
+                                            })()
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/partners/page.jsx",
-                                            lineNumber: 140,
+                                            lineNumber: 160,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -459,29 +595,29 @@ function PartnersPage() {
                                             children: item.email
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/partners/page.jsx",
-                                            lineNumber: 141,
+                                            lineNumber: 166,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, item.id, true, {
                                     fileName: "[project]/src/app/partners/page.jsx",
-                                    lineNumber: 121,
-                                    columnNumber: 15
+                                    lineNumber: 141,
+                                    columnNumber: 17
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/partners/page.jsx",
-                            lineNumber: 119,
+                            lineNumber: 125,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/partners/page.jsx",
-                    lineNumber: 111,
+                    lineNumber: 117,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/partners/page.jsx",
-                lineNumber: 110,
+                lineNumber: 116,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -494,7 +630,7 @@ function PartnersPage() {
                         children: "Prev"
                     }, void 0, false, {
                         fileName: "[project]/src/app/partners/page.jsx",
-                        lineNumber: 149,
+                        lineNumber: 174,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -502,7 +638,7 @@ function PartnersPage() {
                         children: `${t.common.page} ${page} ${t.common.of} ${totalPages}`
                     }, void 0, false, {
                         fileName: "[project]/src/app/partners/page.jsx",
-                        lineNumber: 156,
+                        lineNumber: 181,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -512,19 +648,19 @@ function PartnersPage() {
                         children: "Next"
                     }, void 0, false, {
                         fileName: "[project]/src/app/partners/page.jsx",
-                        lineNumber: 157,
+                        lineNumber: 182,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/partners/page.jsx",
-                lineNumber: 148,
+                lineNumber: 173,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/partners/page.jsx",
-        lineNumber: 85,
+        lineNumber: 91,
         columnNumber: 5
     }, this);
 }

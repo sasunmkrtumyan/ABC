@@ -4,17 +4,28 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchPartnerBySlug } from "../../../lib/supabase/partners";
+import { fetchTags } from "../../../lib/supabase/tags";
 import { useLanguage } from "../../../lib/i18n/LanguageContext";
 import { pickTextByLanguage } from "../../../lib/localize";
+import { Mail, MapPin, Phone, Tag } from "lucide-react";
 
 export default function PartnerDetailsPage() {
   const { slug } = useParams();
   const { language, t } = useLanguage();
   const [partner, setPartner] = useState(null);
+  const [availableTags, setAvailableTags] = useState([]);
 
   useEffect(() => {
     if (!slug) return;
-    fetchPartnerBySlug(slug).then(setPartner).catch(() => setPartner(null));
+    Promise.all([fetchPartnerBySlug(slug), fetchTags()])
+      .then(([partnerData, tagsData]) => {
+        setPartner(partnerData);
+        setAvailableTags((tagsData || []).map((t) => t.name));
+      })
+      .catch(() => {
+        setPartner(null);
+        setAvailableTags([]);
+      });
   }, [slug]);
 
   if (!partner) {
@@ -43,12 +54,34 @@ export default function PartnerDetailsPage() {
 
           <div>
             <h1 className="text-4xl font-black text-brand.dark">{pickTextByLanguage(partner.name, language)}</h1>
-            <p className="mt-3 text-slate-600">{(partner.tags || []).join(", ")}</p>
-            <p className="mt-2 text-slate-600">{partner.email}</p>
-            {partner.location ? <p className="mt-1 text-slate-600">{partner.location}</p> : null}
+            <p className="mt-3 text-slate-600">
+            {(() => {
+  const validTags = (partner.tags || []).filter((tag) =>
+    availableTags.includes(tag)
+  );
+
+  return validTags.length > 0 ? (
+    <div className="flex flex-wrap items-center gap-2">
+      {validTags.map((tag) => (
+        <span
+          key={tag}
+          className="flex items-center gap-1 text-sm bg-gray-100 px-2 py-1 rounded-md"
+        >
+          <Tag size={14} />
+          {tag}
+        </span>
+      ))}
+    </div>
+  ) : (
+    "-"
+  );
+})()}
+            </p>
+            <p className="mt-2 text-slate-600"><Mail className="inline size-4 mr-2" /> {partner.email}</p>
+            {partner.location ? <p className="mt-1 text-slate-600"><MapPin className="inline size-4 mr-2" /> {partner.location}</p> : null}
             {(partner.phones || []).map((phone) => (
               <p key={phone} className="mt-1 text-slate-600">
-                {phone}
+               <Phone className="inline size-4 mr-2" /> {phone}
               </p>
             ))}
           </div>

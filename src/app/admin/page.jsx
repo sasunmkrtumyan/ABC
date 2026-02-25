@@ -469,11 +469,6 @@ export default function AdminPage() {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-3xl font-black text-brand.dark">Գործընկերների կառավարում</h1>
         <div className="flex items-center gap-3">
-          <span
-            className="rounded-full px-3 py-1 text-xs font-semibold border border-emerald-200 bg-emerald-50 text-emerald-700"
-          >
-            SUPABASE MODE
-          </span>
           <button
             onClick={handleLogout}
             className="rounded-xl border border-slate-300 px-4 py-2"

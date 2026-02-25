@@ -41,7 +41,7 @@ const messages = {
             admin: "Ադմին"
         },
         common: {
-            slogan: "Building Bridges, Creating Opportunities.",
+            slogan: "Կառուցելով կամուրջներ, ստեղծելով հնարավորություններ",
             connectNow: "Միացիր հիմա",
             noData: "Տվյալներ չկան",
             readMore: "Ավելին",
@@ -50,8 +50,8 @@ const messages = {
         },
         landing: {
             heroTitle: "Armenian Business Club",
-            heroSubtitle: "Միացիր հայկական բիզնեսի հզոր համայնքին և զարգացիր միասին ամբողջ աշխարհում։",
-            whoTitle: "Ով ենք մենք",
+            heroSubtitle: "Միացիր հայկական բիզնեսի հզոր համայնքին և ընդլայնիր քո հնարավորությունները ամբողջ աշխարհում",
+            whoTitle: "Ո՞վ ենք մենք",
             whoText: "ABC-ն հարթակ է, որտեղ հայկական բիզնեսները կապվում են, համագործակցում և ստեղծում են նոր գործընկերություններ։ Մենք միավորում ենք սփյուռքի և Հայաստանի ընկերություններին մեկ համայնքում։",
             missionTitle: "Մեր առաքելությունը",
             missionText: "Ստեղծել վստահելի և ակտիվ բիզնես միջավայր, որտեղ հայկական ընկերությունները գտնում են նոր շուկաներ, գիտելիք և աջակցություն՝ երկարաժամկետ աճի համար։",
@@ -106,7 +106,7 @@ const messages = {
             admin: "Админ"
         },
         common: {
-            slogan: "Building Bridges, Creating Opportunities.",
+            slogan: "Строим мосты, создаём возможности.",
             connectNow: "Присоединиться",
             noData: "Нет данных",
             readMore: "Подробнее",
@@ -115,7 +115,7 @@ const messages = {
         },
         landing: {
             heroTitle: "Armenian Business Club",
-            heroSubtitle: "Станьте частью большой армянской бизнес-сообщества и развивайтесь вместе по всему миру.",
+            heroSubtitle: "Присоединяйся к мощному сообществу армянского бизнеса и расширяй свои возможности по всему миру",
             whoTitle: "Кто мы",
             whoText: "ABC - это портал, где армянские компании общаются, сотрудничают и находят новые возможности для роста.",
             missionTitle: "Наша миссия",
@@ -171,7 +171,7 @@ const messages = {
             admin: "Admin"
         },
         common: {
-            slogan: "Building Bridges, Creating Opportunities.",
+            slogan: "Building Bridges, Creating Opportunities",
             connectNow: "Connect Now",
             noData: "No data found",
             readMore: "Read more",
@@ -180,7 +180,7 @@ const messages = {
         },
         landing: {
             heroTitle: "Armenian Business Club",
-            heroSubtitle: "Be part of a huge Armenian business community and grow together worldwide.",
+            heroSubtitle: "Join the strong Armenian business community and expand your opportunities worldwide",
             whoTitle: "Who We Are",
             whoText: "ABC is a platform where Armenian companies communicate, collaborate, and build long-term partnerships across the globe.",
             missionTitle: "Our Mission",
@@ -445,41 +445,16 @@ function NavBar() {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/",
                         className: "flex items-center gap-3",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-lg font-black text-white",
-                                children: "A"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/NavBar.jsx",
-                                lineNumber: 23,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm font-bold uppercase tracking-[0.18em] text-blue-500",
-                                        children: "ABC"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/NavBar.jsx",
-                                        lineNumber: 27,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs text-slate-500",
-                                        children: "Armenian Business Club"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/NavBar.jsx",
-                                        lineNumber: 30,
-                                        columnNumber: 13
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/components/NavBar.jsx",
-                                lineNumber: 26,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                            src: "/img/logo.png",
+                            alt: "ABC Logo",
+                            className: "h-14 w-max object-contain"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/NavBar.jsx",
+                            lineNumber: 23,
+                            columnNumber: 10
+                        }, this)
+                    }, void 0, false, {
                         fileName: "[project]/src/components/NavBar.jsx",
                         lineNumber: 22,
                         columnNumber: 9
@@ -493,18 +468,18 @@ function NavBar() {
                                     children: link.label
                                 }, link.href, false, {
                                     fileName: "[project]/src/components/NavBar.jsx",
-                                    lineNumber: 39,
+                                    lineNumber: 29,
                                     columnNumber: 13
                                 }, this)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$LanguageSwitcher$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/src/components/NavBar.jsx",
-                                lineNumber: 47,
+                                lineNumber: 37,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/NavBar.jsx",
-                        lineNumber: 37,
+                        lineNumber: 27,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -512,7 +487,7 @@ function NavBar() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$LanguageSwitcher$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/src/components/NavBar.jsx",
-                                lineNumber: 52,
+                                lineNumber: 42,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -524,33 +499,33 @@ function NavBar() {
                                         className: `h-0.5 w-6 bg-slate-800 transition-all duration-300 ${open ? "translate-y-2 rotate-45" : ""}`
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NavBar.jsx",
-                                        lineNumber: 60,
+                                        lineNumber: 50,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: `h-0.5 w-6 bg-slate-800 transition-all duration-300 ${open ? "opacity-0" : ""}`
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NavBar.jsx",
-                                        lineNumber: 65,
+                                        lineNumber: 55,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: `h-0.5 w-6 bg-slate-800 transition-all duration-300 ${open ? "-translate-y-2 -rotate-45" : ""}`
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NavBar.jsx",
-                                        lineNumber: 70,
+                                        lineNumber: 60,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/NavBar.jsx",
-                                lineNumber: 55,
+                                lineNumber: 45,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/NavBar.jsx",
-                        lineNumber: 51,
+                        lineNumber: 41,
                         columnNumber: 9
                     }, this)
                 ]
@@ -570,17 +545,17 @@ function NavBar() {
                             children: link.label
                         }, link.href, false, {
                             fileName: "[project]/src/components/NavBar.jsx",
-                            lineNumber: 87,
+                            lineNumber: 77,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/components/NavBar.jsx",
-                    lineNumber: 85,
+                    lineNumber: 75,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/NavBar.jsx",
-                lineNumber: 80,
+                lineNumber: 70,
                 columnNumber: 7
             }, this)
         ]

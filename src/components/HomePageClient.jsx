@@ -5,6 +5,7 @@ import RevealSection from "./RevealSection";
 import { useLanguage } from "../lib/i18n/LanguageContext";
 import { useRef, useState } from "react";
 import TestimonialCard from "./TestimonialCard";
+import { CircleQuestionMark, Goal, Handshake, Info, NotebookPen, Target } from "lucide-react";
 
 const testimonials = {
   am: [
@@ -145,7 +146,7 @@ const scrollToIndex = (index) => {
       <div className="container-abc space-y-14 lg:space-y-24  py-14">
         <RevealSection className="grid gap-6 rounded-2xl bg-white p-8 shadow-sm md:grid-cols-2 md:items-center">
           <div>
-            <SectionHeader icon="👥" title={t.landing.whoTitle}  />
+            <SectionHeader icon={<Info className="h-6 w-6" />} title={t.landing.whoTitle}  />
             <p className="text-slate-600">{t.landing.whoText}</p>
           </div>
           <div className="relative h-56 overflow-hidden rounded-2xl">
@@ -160,7 +161,7 @@ const scrollToIndex = (index) => {
             </div>
           </div>
           <div className="order-1 md:order-2">
-            <SectionHeader icon="🎯" title={t.landing.missionTitle}  />
+            <SectionHeader icon={<Target className="h-6 w-6" />} title={t.landing.missionTitle}  />
             <p className="text-slate-700">{t.landing.missionText}</p>
           </div>
         </RevealSection>
@@ -168,7 +169,7 @@ const scrollToIndex = (index) => {
        <RevealSection className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white to-slate-50 p-4 lg:p-10 shadow-xl shadow-slate-200/60 md:grid md:grid-cols-2 md:gap-12">
   
   <div className="relative z-10">
-    <SectionHeader icon="⭐" title={t.landing.whyTitle} />
+    <SectionHeader icon={<CircleQuestionMark className="h-6 w-6" />} title={t.landing.whyTitle} />
 
     <ul className="mt-6 space-y-4">
       {t.landing.whyItems.map((item) => (
@@ -198,7 +199,7 @@ const scrollToIndex = (index) => {
 
 
   <RevealSection className="rounded-3xl bg-gradient-to-br from-brand-light to-white p-10 shadow-sm">
-    <SectionHeader icon="💬" title={t.landing.testimonialsTitle} />
+    <SectionHeader icon={<NotebookPen className="h-6 w-6" />} title={t.landing.testimonialsTitle} />
 
     <div className="relative mt-10">
       <div
@@ -218,7 +219,7 @@ const scrollToIndex = (index) => {
 </RevealSection>
 
         <RevealSection className="rounded-2xl bg-white p-8 shadow-sm">
-          <SectionHeader icon="🤝" title={t.landing.partnersTitle}  />
+          <SectionHeader icon={<Handshake className="h-6 w-6" />} title={t.landing.partnersTitle}  />
           <div className="marquee-shell mt-6">
             <div className="marquee-track">
               {partnerTicker.map((logo, index) => (

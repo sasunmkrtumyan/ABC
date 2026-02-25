@@ -16,7 +16,7 @@ export const messages = {
       admin: "Ադմին",
     },
     common: {
-      slogan: "Building Bridges, Creating Opportunities.",
+      slogan: "Կառուցելով կամուրջներ, ստեղծելով հնարավորություններ",
       connectNow: "Միացիր հիմա",
       noData: "Տվյալներ չկան",
       readMore: "Ավելին",
@@ -26,8 +26,8 @@ export const messages = {
     landing: {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
-        "Միացիր հայկական բիզնեսի հզոր համայնքին և զարգացիր միասին ամբողջ աշխարհում։",
-      whoTitle: "Ով ենք մենք",
+        "Միացիր հայկական բիզնեսի հզոր համայնքին և ընդլայնիր քո հնարավորությունները ամբողջ աշխարհում",
+      whoTitle: "Ո՞վ ենք մենք",
       whoText:
         "ABC-ն հարթակ է, որտեղ հայկական բիզնեսները կապվում են, համագործակցում և ստեղծում են նոր գործընկերություններ։ Մենք միավորում ենք սփյուռքի և Հայաստանի ընկերություններին մեկ համայնքում։",
       missionTitle: "Մեր առաքելությունը",
@@ -85,7 +85,7 @@ export const messages = {
       admin: "Админ",
     },
     common: {
-      slogan: "Building Bridges, Creating Opportunities.",
+      slogan: "Строим мосты, создаём возможности.",
       connectNow: "Присоединиться",
       noData: "Нет данных",
       readMore: "Подробнее",
@@ -95,7 +95,7 @@ export const messages = {
     landing: {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
-        "Станьте частью большой армянской бизнес-сообщества и развивайтесь вместе по всему миру.",
+        "Присоединяйся к мощному сообществу армянского бизнеса и расширяй свои возможности по всему миру",
       whoTitle: "Кто мы",
       whoText:
         "ABC - это портал, где армянские компании общаются, сотрудничают и находят новые возможности для роста.",
@@ -154,7 +154,7 @@ export const messages = {
       admin: "Admin",
     },
     common: {
-      slogan: "Building Bridges, Creating Opportunities.",
+      slogan: "Building Bridges, Creating Opportunities",
       connectNow: "Connect Now",
       noData: "No data found",
       readMore: "Read more",
@@ -164,7 +164,7 @@ export const messages = {
     landing: {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
-        "Be part of a huge Armenian business community and grow together worldwide.",
+        "Join the strong Armenian business community and expand your opportunities worldwide",
       whoTitle: "Who We Are",
       whoText:
         "ABC is a platform where Armenian companies communicate, collaborate, and build long-term partnerships across the globe.",
