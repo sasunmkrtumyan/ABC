@@ -54,7 +54,7 @@ export default function PartnerDetailsPage() {
 
           <div>
             <h1 className="text-4xl font-black text-brand.dark">{pickTextByLanguage(partner.name, language)}</h1>
-            <p className="mt-3 text-slate-600">
+            <div className="mt-3 text-slate-600">
               {(() => {
                 const validTags = (partner.tags || []).filter((tag) => availableTags.includes(tag));
                 return validTags.length > 0 ? (
@@ -70,7 +70,7 @@ export default function PartnerDetailsPage() {
                   '-'
                 );
               })()}
-            </p>
+            </div>
             <p className="mt-2 text-slate-600">
               <Mail className="size-4 mr-2 inline" /> {partner.email}
             </p>

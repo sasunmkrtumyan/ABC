@@ -10,7 +10,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
-"use client";
+'use client';
 ;
 function RevealSection({ className, children }) {
     _s();
@@ -39,10 +39,10 @@ function RevealSection({ className, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         ref: ref,
         className: [
-            "transition-all duration-700",
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
-            className || ""
-        ].join(" ").trim(),
+            'transition-all duration-700',
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0',
+            className || ''
+        ].join(' ').trim(),
         children: children
     }, void 0, false, {
         fileName: "[project]/src/components/RevealSection.jsx",
@@ -70,7 +70,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealS
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$i18n$2f$LanguageContext$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/i18n/LanguageContext.jsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
-"use client";
+'use client';
 ;
 ;
 function AboutPage() {
@@ -105,9 +105,9 @@ function AboutPage() {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mt-8 grid gap-5 md:grid-cols-3",
+                className: "mt-8 gap-5 md:grid-cols-3 grid",
                 children: t.about.blocks.map((block)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RevealSection$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        className: "rounded-2xl border border-slate-200 bg-slate-50 p-6",
+                        className: "rounded-2xl border-slate-200 bg-slate-50 p-6 border",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-slate-700",
                             children: block

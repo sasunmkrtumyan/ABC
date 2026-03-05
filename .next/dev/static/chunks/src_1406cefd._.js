@@ -345,6 +345,7 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-client] (ecmascript)"); // Ավելացրել ենք Link հղման համար
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$slugify$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/slugify.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$auth$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/supabase/auth.js [app-client] (ecmascript)");
@@ -360,6 +361,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 const ADMIN_USERNAME = 'abc1111';
 const ADMIN_EMAIL = ("TURBOPACK compile-time value", "sasunmkrtumyan92@gmail.com") || 'sasunmkrtumyan92@gmail.com';
 function getMissingTableName(error) {
@@ -369,18 +371,10 @@ function getMissingTableName(error) {
 }
 function getLoginErrorMessage(error) {
     const message = String(error?.message || error || '').toLowerCase();
-    if (message.includes('invalid login credentials')) {
-        return 'Սխալ email կամ գաղտնաբառ';
-    }
-    if (message.includes('email not confirmed')) {
-        return 'Email-ը հաստատված չէ (Supabase Auth)';
-    }
-    if (message.includes('user not found')) {
-        return 'Ադմին օգտատեր չի գտնվել Supabase-ում';
-    }
-    if (message.includes('network') || message.includes('fetch')) {
-        return 'Ցանցային խնդիր կա, ստուգեք ինտերնետ կապը';
-    }
+    if (message.includes('invalid login credentials')) return 'Սխալ email կամ գաղտնաբառ';
+    if (message.includes('email not confirmed')) return 'Email-ը հաստատված չէ (Supabase Auth)';
+    if (message.includes('user not found')) return 'Ադմին օգտատեր չի գտնվել Supabase-ում';
+    if (message.includes('network') || message.includes('fetch')) return 'Ցանցային խնդիր կա, ստուգեք ինտերնետ կապը';
     return `Մուտքը չհաջողվեց (${error?.message || 'unknown'}). Ստուգեք կարգավորումները`;
 }
 const emptyForm = {
@@ -399,6 +393,7 @@ function pickLocalizedValue(valueByLang = {}) {
 }
 function AdminPage() {
     _s();
+    const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('add-partner'); // Լռելյայն tab
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [username, setUsername] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
@@ -415,7 +410,6 @@ function AdminPage() {
     const [newTagName, setNewTagName] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [editingTagId, setEditingTagId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [editingTagName, setEditingTagName] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
-    const [isPartnerModalOpen, setIsPartnerModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const isEdit = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "AdminPage.useMemo[isEdit]": ()=>Boolean(editingId)
     }["AdminPage.useMemo[isEdit]"], [
@@ -435,15 +429,7 @@ function AdminPage() {
             setPartners(partnersData);
             setAvailableTags(tagsData);
         } catch (loadError) {
-            const code = loadError?.code || loadError?.status || 'unknown';
-            if (code === 'PGRST205') {
-                const missing = getMissingTableName(loadError);
-                setError(`Supabase schema is not ready (missing table${missing ? `: ${missing}` : 's'}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`);
-            } else {
-                setError(`Supabase հասանելի չէ (${code}). ${String(loadError?.message || '')}`.trim());
-            }
-            setPartners([]);
-            setAvailableTags([]);
+            setError(`Supabase սխալ: ${loadError?.message}`);
         }
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
@@ -451,21 +437,15 @@ function AdminPage() {
             let cancelled = false;
             (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$auth$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getSession"])().then({
                 "AdminPage.useEffect": ({ data })=>{
-                    if (cancelled) return;
-                    setUser(data?.session?.user || null);
-                    setIsLoading(false);
-                }
-            }["AdminPage.useEffect"]).catch({
-                "AdminPage.useEffect": ()=>{
-                    if (cancelled) return;
-                    setIsLoading(false);
+                    if (!cancelled) {
+                        setUser(data?.session?.user || null);
+                        setIsLoading(false);
+                    }
                 }
             }["AdminPage.useEffect"]);
             const { data } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$auth$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["onAuthStateChange"])({
                 "AdminPage.useEffect": (session)=>{
-                    if (cancelled) return;
-                    setUser(session?.user || null);
-                    setIsLoading(false);
+                    if (!cancelled) setUser(session?.user || null);
                 }
             }["AdminPage.useEffect"]);
             return ({
@@ -478,9 +458,7 @@ function AdminPage() {
     }["AdminPage.useEffect"], []);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "AdminPage.useEffect": ()=>{
-            if (!isAuthenticated) return undefined;
-            loadSupabaseData();
-            return undefined;
+            if (isAuthenticated) loadSupabaseData();
         }
     }["AdminPage.useEffect"], [
         isAuthenticated
@@ -492,37 +470,16 @@ function AdminPage() {
             setError('Սխալ մուտքանուն');
             return;
         }
-        const emailCandidates = Array.from(new Set([
-            ADMIN_EMAIL,
-            'sasunmkrtumyan92@gmail.com',
-            'abc1111@gmail.com'
-        ].filter(Boolean)));
-        let lastError = null;
-        try {
-            for (const email of emailCandidates){
-                const { error } = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$auth$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["signInWithPassword"])(email, password);
-                if (!error) return;
-                lastError = error;
-                // Stop early for non-credential/config errors.
-                const msg = String(error?.message || '').toLowerCase();
-                if (!msg.includes('invalid login credentials') && !msg.includes('user not found')) break;
-            }
-            setError(getLoginErrorMessage(lastError));
-        } catch (loginError) {
-            setError(getLoginErrorMessage(loginError || lastError));
-        }
+        const { error } = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$auth$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["signInWithPassword"])(ADMIN_EMAIL, password);
+        if (error) setError(getLoginErrorMessage(error));
     };
     const handleLogout = async ()=>{
         if (user) await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$auth$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["signOut"])();
         setUser(null);
     };
-    const fillEditForm = async (id)=>{
-        let item = partners.find((p)=>p.id === id);
-        if (!item) {
-            item = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$partners$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchPartnerById"])(id);
-        }
+    const fillEditForm = (id)=>{
+        const item = partners.find((p)=>p.id === id);
         if (!item) return;
-        setError('');
         setEditingId(id);
         setForm({
             name: pickLocalizedValue(item.name),
@@ -535,50 +492,15 @@ function AdminPage() {
             tags: item.tags || [],
             logoUrl: item.logoUrl || ''
         });
-        setLogoFile(null);
-        setIsPartnerModalOpen(true);
+        setActiveTab('add-partner');
     };
     const clearForm = ()=>{
         setForm(emptyForm);
         setEditingId(null);
         setLogoFile(null);
     };
-    const openAddPartnerModal = ()=>{
-        setError('');
-        clearForm();
-        setIsPartnerModalOpen(true);
-    };
-    const closePartnerModal = ()=>{
-        setIsPartnerModalOpen(false);
-        setError('');
-        clearForm();
-    };
     const handleSubmit = async (event)=>{
         event.preventDefault();
-        setError('');
-        setSuccessMessage('');
-        const tags = (form.tags || []).map((item)=>item.trim()).filter(Boolean);
-        const phones = form.phones.split(',').map((item)=>item.trim()).filter(Boolean);
-        if (!form.name.trim()) {
-            setError('Անունը պարտադիր է');
-            return;
-        }
-        if (!form.descriptionAm && !form.descriptionEn && !form.descriptionRu) {
-            setError('Առնվազն մեկ նկարագրություն պարտադիր է');
-            return;
-        }
-        if (!form.email) {
-            setError('Email-ը պարտադիր է');
-            return;
-        }
-        if (!tags.length) {
-            setError('Առնվազն 1 tag պարտադիր է');
-            return;
-        }
-        if (!isEdit && !logoFile) {
-            setError('Լոգոն պարտադիր է');
-            return;
-        }
         setSubmitting(true);
         const slug = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$slugify$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["slugify"])(form.name);
         let logoUrl = null;
@@ -592,145 +514,53 @@ function AdminPage() {
                     ru: form.name
                 },
                 description: {
-                    am: form.descriptionAm || '',
-                    en: form.descriptionEn || '',
-                    ru: form.descriptionRu || ''
+                    am: form.descriptionAm,
+                    en: form.descriptionEn,
+                    ru: form.descriptionRu
                 },
                 email: form.email,
-                location: form.location || '',
-                phones,
-                tags,
-                logoUrl: logoUrl || form.logoUrl || ''
+                location: form.location,
+                phones: form.phones.split(',').map((p)=>p.trim()).filter(Boolean),
+                tags: form.tags,
+                logoUrl: logoUrl || form.logoUrl
             };
             if (isEdit) {
                 await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$partners$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["updatePartner"])(editingId, payload);
-                showSuccess('Գործընկերը հաջողությամբ թարմացվեց');
+                showSuccess('Թարմացվեց');
             } else {
                 await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$partners$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createPartner"])(payload);
-                showSuccess('Գործընկերը հաջողությամբ ավելացվեց');
+                showSuccess('Ավելացվեց');
             }
             await loadSupabaseData();
-            closePartnerModal();
-        } catch (submitError) {
-            const code = submitError?.code || '';
-            const status = submitError?.status;
-            const message = String(submitError?.message || '');
-            const lower = message.toLowerCase();
-            if (status === 401 || status === 403 || lower.includes('permission denied') || lower.includes('row-level security') || lower.includes('not allowed')) {
-                setError('Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).');
-            } else if ((code || '') === 'PGRST205') {
-                const missing = getMissingTableName(submitError);
-                setError(`Supabase schema is not ready (missing table${missing ? `: ${missing}` : 's'}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`);
-            } else if (lower.includes('bucket') && (lower.includes('not found') || lower.includes('does not exist'))) {
-                setError('Storage bucket-ը չի գտնվել. Ստուգեք Supabase Storage bucket-ը (partner-logos)');
-            } else if (lower.includes('storage') && lower.includes('unauthorized')) {
-                setError('Storage թույլտվություն չկա. ստուգեք Supabase Storage policies-ը');
-            } else {
-                setError(`Սխալ տեղի ունեցավ (${code || status || 'unknown'}), փորձեք կրկին`);
-            }
+            clearForm();
+            setActiveTab('partners');
+        } catch (e) {
+            setError('Գործողությունը ձախողվեց');
         } finally{
             setSubmitting(false);
         }
     };
-    const removePartner = async (id)=>{
-        try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$partners$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deletePartner"])(id);
-            showSuccess('Գործընկերը ջնջվեց');
-            await loadSupabaseData();
-        } catch (deleteError) {
-            if (deleteError?.status === 401 || deleteError?.status === 403 || String(deleteError?.message || '').toLowerCase().includes('row-level security') || String(deleteError?.message || '').toLowerCase().includes('permission denied')) {
-                setError('Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).');
-            }
-            setError(`Գործընկերոջ ջնջումը չհաջողվեց (${deleteError?.code || 'unknown'})`);
-        }
-    };
+    // Tag functions (same logic)
     const addTag = async ()=>{
-        const nextName = newTagName.trim();
-        if (!nextName) return;
-        try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$tags$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createTag"])(nextName);
-            setNewTagName('');
-            showSuccess('Tag-ը ավելացվեց');
-            await loadSupabaseData();
-        } catch (tagError) {
-            if (tagError?.code === 'PGRST205') {
-                const missing = getMissingTableName(tagError) || 'tags';
-                setError(`Supabase schema is not ready (missing table: ${missing}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`);
-                return;
-            }
-            if (tagError?.status === 401 || tagError?.status === 403 || String(tagError?.message || '').toLowerCase().includes('row-level security') || String(tagError?.message || '').toLowerCase().includes('permission denied')) {
-                setError('Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).');
-            }
-            setError(`Tag ավելացնելը չհաջողվեց (${tagError?.code || 'unknown'})`);
+        if (!newTagName.trim()) return;
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$tags$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createTag"])(newTagName.trim());
+        setNewTagName('');
+        loadSupabaseData();
+    };
+    const removePartner = async (id)=>{
+        if (confirm('Համոզվա՞ծ եք:')) {
+            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$partners$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deletePartner"])(id);
+            loadSupabaseData();
         }
     };
-    const startEditTag = (tag)=>{
-        setError('');
-        setEditingTagId(tag.id);
-        setEditingTagName(tag.name);
-    };
-    const saveTagEdit = async ()=>{
-        if (!editingTagId || !editingTagName.trim()) return;
-        setError('');
-        try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$tags$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["updateTag"])(editingTagId, editingTagName.trim());
-            setEditingTagId('');
-            setEditingTagName('');
-            showSuccess('Tag-ը թարմացվեց');
-            await loadSupabaseData();
-        } catch (tagError) {
-            if (tagError?.code === 'PGRST205') {
-                const missing = getMissingTableName(tagError) || 'tags';
-                setError(`Supabase schema is not ready (missing table: ${missing}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`);
-                return;
-            }
-            if (tagError?.status === 401 || tagError?.status === 403 || String(tagError?.message || '').toLowerCase().includes('row-level security') || String(tagError?.message || '').toLowerCase().includes('permission denied')) {
-                setError('Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).');
-            }
-            setError(`Tag թարմացնելը չհաջողվեց (${tagError?.code || 'unknown'})`);
-        }
-    };
-    const removeTag = async (tagId)=>{
-        try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2f$tags$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deleteTag"])(tagId);
-            setForm((prev)=>({
-                    ...prev,
-                    tags: (prev.tags || []).filter((tag)=>{
-                        const found = availableTags.find((item)=>item.id === tagId);
-                        return found ? tag !== found.name : true;
-                    })
-                }));
-            showSuccess('Tag-ը ջնջվեց');
-            await loadSupabaseData();
-        } catch (tagError) {
-            if (tagError?.code === 'PGRST205') {
-                const missing = getMissingTableName(tagError) || 'tags';
-                setError(`Supabase schema is not ready (missing table: ${missing}). Run supabase/schema.sql in Supabase SQL Editor, then: notify pgrst, 'reload schema';`);
-                return;
-            }
-            if (tagError?.status === 401 || tagError?.status === 403 || String(tagError?.message || '').toLowerCase().includes('row-level security') || String(tagError?.message || '').toLowerCase().includes('permission denied')) {
-                setError('Supabase access denied. Ստուգեք RLS policies-ը և admin allow-list-ը (public.admins).');
-            }
-            setError(`Tag ջնջելը չհաջողվեց (${tagError?.code || 'unknown'})`);
-        }
-    };
-    const filteredPartners = partners.filter((item)=>{
-        const q = partnerSearch.trim().toLowerCase();
-        if (!q) return true;
-        const partnerName = pickLocalizedValue(item.name).toLowerCase();
-        const partnerEmail = String(item.email || '').toLowerCase();
-        return partnerName.includes(q) || partnerEmail.includes(q);
-    });
-    if (isLoading) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-            className: "container-abc py-12",
-            children: "Loading..."
-        }, void 0, false, {
-            fileName: "[project]/src/app/admin/page.jsx",
-            lineNumber: 449,
-            columnNumber: 12
-        }, this);
-    }
+    if (isLoading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
+        className: "container-abc py-12",
+        children: "Բեռնվում է..."
+    }, void 0, false, {
+        fileName: "[project]/src/app/admin/page.jsx",
+        lineNumber: 197,
+        columnNumber: 25
+    }, this);
     if (!user) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
             className: "container-abc py-12",
@@ -738,19 +568,11 @@ function AdminPage() {
                 className: "max-w-md rounded-2xl bg-white p-8 shadow-sm mx-auto",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                        className: "text-3xl font-black text-brand.dark",
+                        className: "text-3xl font-black text-slate-800",
                         children: "Ադմին մուտք"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 456,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "mt-2 text-sm text-slate-500",
-                        children: "URL: abc1111.am/admin"
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 457,
+                        lineNumber: 203,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -759,23 +581,23 @@ function AdminPage() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                 value: username,
-                                onChange: (event)=>setUsername(event.target.value),
+                                onChange: (e)=>setUsername(e.target.value),
                                 placeholder: "Մուտքանուն",
                                 className: "rounded-xl border-slate-300 px-4 py-3 w-full border"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 460,
+                                lineNumber: 205,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                 type: "password",
                                 value: password,
-                                onChange: (event)=>setPassword(event.target.value),
+                                onChange: (e)=>setPassword(e.target.value),
                                 placeholder: "Գաղտնաբառ",
                                 className: "rounded-xl border-slate-300 px-4 py-3 w-full border"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 466,
+                                lineNumber: 211,
                                 columnNumber: 13
                             }, this),
                             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -783,32 +605,32 @@ function AdminPage() {
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 473,
+                                lineNumber: 218,
                                 columnNumber: 23
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                className: "bg-blue-500 rounded-xl px-4 py-3 font-semibold text-white w-full",
+                                className: "bg-blue-600 rounded-xl px-4 py-3 font-semibold text-white w-full",
                                 children: "Մուտք"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 474,
+                                lineNumber: 219,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 459,
+                        lineNumber: 204,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 455,
+                lineNumber: 202,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/admin/page.jsx",
-            lineNumber: 454,
+            lineNumber: 201,
             columnNumber: 7
         }, this);
     }
@@ -816,593 +638,532 @@ function AdminPage() {
         className: "container-abc py-12",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-6 flex items-center justify-between",
+                className: "mb-8 flex items-center justify-between",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                        className: "text-3xl font-black text-brand.dark",
-                        children: "Գործընկերների կառավարում"
+                        className: "text-3xl font-black text-slate-800",
+                        children: "Admin Panel"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 484,
+                        lineNumber: 230,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "gap-3 flex items-center",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                            onClick: handleLogout,
-                            className: "rounded-xl border-slate-300 px-4 py-2 border",
-                            children: "Ելք"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 486,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 485,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 483,
-                columnNumber: 7
-            }, this),
-            error ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "mb-4 rounded-lg border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 border",
-                children: error
-            }, void 0, false, {
-                fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 492,
-                columnNumber: 9
-            }, this) : null,
-            successMessage ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "mb-6 rounded-lg border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700 border",
-                children: successMessage
-            }, void 0, false, {
-                fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 496,
-                columnNumber: 9
-            }, this) : null,
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                className: "rounded-2xl bg-white p-6 shadow-sm",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex items-center justify-between",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                            className: "text-xl font-bold",
-                            children: "Գործընկերներ"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 502,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                            type: "button",
-                            onClick: openAddPartnerModal,
-                            className: "rounded-xl bg-blue-500 px-4 py-2 font-semibold text-white",
-                            children: "Ավելացնել գործընկեր"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 503,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/app/admin/page.jsx",
-                    lineNumber: 501,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 500,
-                columnNumber: 7
-            }, this),
-            isPartnerModalOpen ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "inset-0 bg-black/45 p-4 fixed z-50 flex items-center justify-center",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "max-w-4xl rounded-2xl bg-white p-6 shadow-2xl max-h-[92vh] w-full overflow-y-auto",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mb-4 flex items-center justify-between",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    className: "text-xl font-bold",
-                                    children: isEdit ? 'Փոփոխել գործընկեր' : 'Ավելացնել գործընկեր'
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 517,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    type: "button",
-                                    onClick: closePartnerModal,
-                                    className: "rounded-lg border-slate-300 px-3 py-1.5 text-sm border",
-                                    children: "Փակել"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 518,
-                                    columnNumber: 15
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 516,
-                            columnNumber: 13
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
-                            onSubmit: handleSubmit,
-                            className: "gap-4 md:grid-cols-2 grid",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    value: form.name,
-                                    onChange: (event)=>setForm((prev)=>({
-                                                ...prev,
-                                                name: event.target.value
-                                            })),
-                                    placeholder: "Անուն*",
-                                    className: "rounded-xl border-slate-300 px-4 py-3 md:col-span-2 border"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 528,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
-                                    value: form.descriptionAm,
-                                    onChange: (event)=>setForm((prev)=>({
-                                                ...prev,
-                                                descriptionAm: event.target.value
-                                            })),
-                                    placeholder: "Նկարագրություն (AM)",
-                                    className: "min-h-28 rounded-xl border-slate-300 px-4 py-3 border"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 534,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
-                                    value: form.descriptionRu,
-                                    onChange: (event)=>setForm((prev)=>({
-                                                ...prev,
-                                                descriptionRu: event.target.value
-                                            })),
-                                    placeholder: "Описание (RU)",
-                                    className: "min-h-28 rounded-xl border-slate-300 px-4 py-3 border"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 540,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
-                                    value: form.descriptionEn,
-                                    onChange: (event)=>setForm((prev)=>({
-                                                ...prev,
-                                                descriptionEn: event.target.value
-                                            })),
-                                    placeholder: "Description (EN)",
-                                    className: "min-h-28 rounded-xl border-slate-300 px-4 py-3 md:col-span-2 border"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 546,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    value: form.email,
-                                    onChange: (event)=>setForm((prev)=>({
-                                                ...prev,
-                                                email: event.target.value
-                                            })),
-                                    placeholder: "Email*",
-                                    className: "rounded-xl border-slate-300 px-4 py-3 border"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 552,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    value: form.location,
-                                    onChange: (event)=>setForm((prev)=>({
-                                                ...prev,
-                                                location: event.target.value
-                                            })),
-                                    placeholder: "Հասցե",
-                                    className: "rounded-xl border-slate-300 px-4 py-3 border"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 558,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    value: form.phones,
-                                    onChange: (event)=>setForm((prev)=>({
-                                                ...prev,
-                                                phones: event.target.value
-                                            })),
-                                    placeholder: "Հեռախոսներ (ստորակետով)",
-                                    className: "rounded-xl border-slate-300 px-4 py-3 border"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 564,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "rounded-xl border-slate-300 px-4 py-3 md:col-span-2 border",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "mb-2 text-sm font-semibold text-slate-700",
-                                            children: "Tags*"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 571,
-                                            columnNumber: 17
-                                        }, this),
-                                        availableTags.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "gap-2 flex flex-wrap",
-                                            children: availableTags.map((tag)=>{
-                                                const checked = (form.tags || []).includes(tag.name);
-                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                    className: "gap-2 rounded-lg border-slate-200 px-3 py-1.5 text-sm inline-flex items-center border",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                            type: "checkbox",
-                                                            checked: checked,
-                                                            onChange: (event)=>{
-                                                                setForm((prev)=>{
-                                                                    const current = prev.tags || [];
-                                                                    const nextTags = event.target.checked ? [
-                                                                        ...new Set([
-                                                                            ...current,
-                                                                            tag.name
-                                                                        ])
-                                                                    ] : current.filter((item)=>item !== tag.name);
-                                                                    return {
-                                                                        ...prev,
-                                                                        tags: nextTags
-                                                                    };
-                                                                });
-                                                            }
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/app/admin/page.jsx",
-                                                            lineNumber: 581,
-                                                            columnNumber: 27
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            children: tag.name
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/app/admin/page.jsx",
-                                                            lineNumber: 594,
-                                                            columnNumber: 27
-                                                        }, this)
-                                                    ]
-                                                }, tag.id, true, {
-                                                    fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 577,
-                                                    columnNumber: 25
-                                                }, this);
-                                            })
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 573,
-                                            columnNumber: 19
-                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-sm text-slate-500",
-                                            children: "Tag չկան։ Ստորև ավելացրեք առաջին tag-ը։"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 600,
-                                            columnNumber: 19
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 570,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    type: "file",
-                                    onChange: (event)=>setLogoFile(event.target.files?.[0] || null),
-                                    accept: "image/*",
-                                    className: "rounded-xl border-slate-300 px-4 py-3 md:col-span-2 border"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 603,
-                                    columnNumber: 15
-                                }, this),
-                                error ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-sm text-red-600 md:col-span-2",
-                                    children: error
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 610,
-                                    columnNumber: 24
-                                }, this) : null,
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "gap-3 md:col-span-2 flex",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            disabled: submitting,
-                                            className: "rounded-xl bg-blue-500 px-5 py-3 font-semibold text-white disabled:opacity-50",
-                                            children: isEdit ? 'Պահպանել' : 'Ավելացնել'
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 613,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: closePartnerModal,
-                                            className: "rounded-xl border-slate-300 px-5 py-3 font-semibold border",
-                                            children: "Չեղարկել"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 619,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 612,
-                                    columnNumber: 15
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/app/admin/page.jsx",
-                            lineNumber: 527,
-                            columnNumber: 13
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/app/admin/page.jsx",
-                    lineNumber: 515,
-                    columnNumber: 11
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 514,
-                columnNumber: 9
-            }, this) : null,
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                className: "mt-8 rounded-2xl bg-white p-6 shadow-sm",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: "text-xl font-bold",
-                        children: "Tag-երի կառավարում"
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 633,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "mt-4 gap-3 flex",
+                        className: "gap-3 flex",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                value: newTagName,
-                                onChange: (event)=>setNewTagName(event.target.value),
-                                placeholder: "Նոր tag անուն",
-                                className: "rounded-xl border-slate-300 px-4 py-3 w-full border"
-                            }, void 0, false, {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                href: "/",
+                                className: "rounded-xl bg-slate-100 flex items-center gap-2 px-4 py-2 font-medium hover:bg-slate-200 transition",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        width: "20",
+                                        height: "20",
+                                        viewBox: "0 0 24 24",
+                                        fill: "none",
+                                        stroke: "currentColor",
+                                        strokeWidth: "2",
+                                        strokeLinecap: "round",
+                                        strokeLinejoin: "round",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                d: "m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/admin/page.jsx",
+                                                lineNumber: 233,
+                                                columnNumber: 191
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("polyline", {
+                                                points: "9 22 9 12 15 12 15 22"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/admin/page.jsx",
+                                                lineNumber: 233,
+                                                columnNumber: 249
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 233,
+                                        columnNumber: 13
+                                    }, this),
+                                    "Home"
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 635,
+                                lineNumber: 232,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                type: "button",
-                                onClick: addTag,
-                                className: "rounded-xl bg-blue-500 px-4 py-3 font-semibold text-white",
-                                children: "Ավելացնել"
+                                onClick: handleLogout,
+                                className: "rounded-xl border-slate-300 px-4 py-2 hover:bg-red-50 hover:text-red-700 transition border",
+                                children: "Ելք"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 641,
+                                lineNumber: 236,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 634,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "mt-4 space-y-2",
-                        children: availableTags.map((tag)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "gap-2 rounded-lg border-slate-200 p-3 md:flex-row md:items-center flex flex-col border",
-                                children: editingTagId === tag.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                            value: editingTagName,
-                                            onChange: (event)=>setEditingTagName(event.target.value),
-                                            onKeyDown: (event)=>{
-                                                if (event.key === 'Enter') {
-                                                    event.preventDefault();
-                                                    saveTagEdit();
-                                                }
-                                            },
-                                            className: "rounded-lg border-slate-300 px-3 py-2 w-full border"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 654,
-                                            columnNumber: 19
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: saveTagEdit,
-                                            className: "rounded-lg border-slate-300 px-3 py-2 border",
-                                            children: "Պահպանել"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 665,
-                                            columnNumber: 19
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: ()=>setEditingTagId(''),
-                                            className: "rounded-lg border-slate-300 px-3 py-2 border",
-                                            children: "Չեղարկել"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 668,
-                                            columnNumber: 19
-                                        }, this)
-                                    ]
-                                }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "font-medium flex-1",
-                                            children: tag.name
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 678,
-                                            columnNumber: 19
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: ()=>startEditTag(tag),
-                                            className: "rounded-lg border-slate-300 px-3 py-2 border",
-                                            children: "Խմբագրել"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 679,
-                                            columnNumber: 19
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: ()=>removeTag(tag.id),
-                                            className: "rounded-lg border-red-200 px-3 py-2 text-red-600 border",
-                                            children: "Ջնջել"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 686,
-                                            columnNumber: 19
-                                        }, this)
-                                    ]
-                                }, void 0, true)
-                            }, tag.id, false, {
-                                fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 648,
-                                columnNumber: 13
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 646,
+                        lineNumber: 231,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 632,
+                lineNumber: 229,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                className: "mt-8 rounded-2xl bg-white p-6 shadow-sm",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "mb-6 gap-2 border-slate-200 flex border-b pb-px",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: "text-xl font-bold",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setActiveTab('add-partner'),
+                        className: `px-6 py-3 font-bold transition-all ${activeTab === 'add-partner' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`,
+                        children: isEdit ? 'Խմբագրել' : 'Ավելացնել գործընկեր'
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/admin/page.jsx",
+                        lineNumber: 244,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setActiveTab('tags'),
+                        className: `px-6 py-3 font-bold transition-all ${activeTab === 'tags' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`,
+                        children: "Tags"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/admin/page.jsx",
+                        lineNumber: 250,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>{
+                            setActiveTab('partners');
+                            clearForm();
+                        },
+                        className: `px-6 py-3 font-bold transition-all ${activeTab === 'partners' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`,
                         children: "Գործընկերների ցանկ"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 701,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        value: partnerSearch,
-                        onChange: (event)=>setPartnerSearch(event.target.value),
-                        placeholder: "Փնտրել գործընկեր անունով կամ email-ով",
-                        className: "mt-4 rounded-xl border-slate-300 px-4 py-3 w-full border"
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 702,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "mt-4 space-y-3",
-                        children: [
-                            filteredPartners.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
-                                    className: "gap-3 rounded-xl border-slate-200 p-4 md:flex-row md:items-center md:justify-between flex flex-col border",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "font-semibold text-blue-500",
-                                                    children: pickLocalizedValue(item.name)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 715,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-sm text-slate-500",
-                                                    children: item.email
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 716,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 714,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "gap-3 flex",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                    onClick: ()=>fillEditForm(item.id),
-                                                    className: "rounded-lg border-slate-300 px-4 py-2 border",
-                                                    children: "Խմբագրել"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 719,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                    onClick: ()=>removePartner(item.id),
-                                                    className: "rounded-lg border-red-200 px-4 py-2 text-red-600 border",
-                                                    children: "Ջնջել"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/admin/page.jsx",
-                                                    lineNumber: 722,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/admin/page.jsx",
-                                            lineNumber: 718,
-                                            columnNumber: 15
-                                        }, this)
-                                    ]
-                                }, item.id, true, {
-                                    fileName: "[project]/src/app/admin/page.jsx",
-                                    lineNumber: 710,
-                                    columnNumber: 13
-                                }, this)),
-                            !filteredPartners.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "rounded-lg border-slate-200 px-4 py-3 text-sm text-slate-500 border",
-                                children: "Գործընկերներ չեն գտնվել։"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/admin/page.jsx",
-                                lineNumber: 732,
-                                columnNumber: 13
-                            }, this) : null
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/app/admin/page.jsx",
-                        lineNumber: 708,
+                        lineNumber: 256,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/page.jsx",
-                lineNumber: 700,
+                lineNumber: 243,
                 columnNumber: 7
+            }, this),
+            error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "mb-4 text-red-600 bg-red-50 p-3 rounded-xl border-red-100 border",
+                children: error
+            }, void 0, false, {
+                fileName: "[project]/src/app/admin/page.jsx",
+                lineNumber: 267,
+                columnNumber: 17
+            }, this),
+            successMessage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "mb-4 text-green-600 bg-green-50 p-3 rounded-xl border-green-100 border",
+                children: successMessage
+            }, void 0, false, {
+                fileName: "[project]/src/app/admin/page.jsx",
+                lineNumber: 269,
+                columnNumber: 9
+            }, this),
+            activeTab === 'partners' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "rounded-2xl bg-white p-6 shadow-sm",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                        value: partnerSearch,
+                        onChange: (e)=>setPartnerSearch(e.target.value),
+                        placeholder: "Փնտրել գործընկեր...",
+                        className: "mb-6 rounded-xl border-slate-300 px-4 py-3 w-full border"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/admin/page.jsx",
+                        lineNumber: 275,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "space-y-3",
+                        children: partners.filter((p)=>pickLocalizedValue(p.name).toLowerCase().includes(partnerSearch.toLowerCase())).map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "p-4 border-slate-100 rounded-xl hover:bg-slate-50 flex items-center justify-between border transition",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "font-bold text-slate-800",
+                                                children: pickLocalizedValue(item.name)
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/admin/page.jsx",
+                                                lineNumber: 290,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm text-slate-500",
+                                                children: item.email
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/admin/page.jsx",
+                                                lineNumber: 291,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 289,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "gap-2 flex",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>fillEditForm(item.id),
+                                                className: "px-4 py-2 text-sm font-semibold bg-slate-100 rounded-lg",
+                                                children: "Խմբագրել"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/admin/page.jsx",
+                                                lineNumber: 294,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>removePartner(item.id),
+                                                className: "px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 rounded-lg",
+                                                children: "Ջնջել"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/admin/page.jsx",
+                                                lineNumber: 300,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 293,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, item.id, true, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 285,
+                                columnNumber: 17
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/admin/page.jsx",
+                        lineNumber: 281,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/app/admin/page.jsx",
+                lineNumber: 274,
+                columnNumber: 9
+            }, this),
+            activeTab === 'add-partner' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "rounded-2xl bg-white p-8 shadow-sm",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-xl font-bold mb-6",
+                        children: isEdit ? 'Խմբագրել' : 'Նոր գործընկեր'
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/admin/page.jsx",
+                        lineNumber: 316,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                        onSubmit: handleSubmit,
+                        className: "md:grid-cols-2 gap-6 grid grid-cols-1",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                value: form.name,
+                                onChange: (e)=>setForm({
+                                        ...form,
+                                        name: e.target.value
+                                    }),
+                                placeholder: "Անուն*",
+                                className: "md:col-span-2 rounded-xl border-slate-300 px-4 py-3 border",
+                                required: true
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 318,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                value: form.descriptionAm,
+                                onChange: (e)=>setForm({
+                                        ...form,
+                                        descriptionAm: e.target.value
+                                    }),
+                                placeholder: "Նկարագրություն (AM)",
+                                className: "rounded-xl border-slate-300 px-4 py-3 h-32 border"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 325,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                value: form.descriptionRu,
+                                onChange: (e)=>setForm({
+                                        ...form,
+                                        descriptionRu: e.target.value
+                                    }),
+                                placeholder: "Описание (RU)",
+                                className: "rounded-xl border-slate-300 px-4 py-3 h-32 border"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 331,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                value: form.descriptionEn,
+                                onChange: (e)=>setForm({
+                                        ...form,
+                                        descriptionEn: e.target.value
+                                    }),
+                                placeholder: "Description (EN)",
+                                className: "md:col-span-2 rounded-xl border-slate-300 px-4 py-3 h-32 border"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 337,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                value: form.email,
+                                onChange: (e)=>setForm({
+                                        ...form,
+                                        email: e.target.value
+                                    }),
+                                placeholder: "Email*",
+                                className: "rounded-xl border-slate-300 px-4 py-3 border",
+                                required: true
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 343,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                value: form.location,
+                                onChange: (e)=>setForm({
+                                        ...form,
+                                        location: e.target.value
+                                    }),
+                                placeholder: "Հասցե",
+                                className: "rounded-xl border-slate-300 px-4 py-3 border"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 350,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                value: form.phones,
+                                onChange: (e)=>setForm({
+                                        ...form,
+                                        phones: e.target.value
+                                    }),
+                                placeholder: "Հեռախոսներ (ստորակետով)",
+                                className: "md:col-span-2 rounded-xl border-slate-300 px-4 py-3 border"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 356,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "md:col-span-2 p-4 border-slate-200 rounded-xl border",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "mb-3 font-semibold text-slate-700",
+                                        children: "Tags*"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 364,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "gap-2 flex flex-wrap",
+                                        children: availableTags.map((tag)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                className: `px-3 py-1.5 rounded-lg cursor-pointer border transition ${form.tags.includes(tag.name) ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-200'}`,
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                        type: "checkbox",
+                                                        className: "hidden",
+                                                        checked: form.tags.includes(tag.name),
+                                                        onChange: (e)=>{
+                                                            const next = e.target.checked ? [
+                                                                ...form.tags,
+                                                                tag.name
+                                                            ] : form.tags.filter((t)=>t !== tag.name);
+                                                            setForm({
+                                                                ...form,
+                                                                tags: next
+                                                            });
+                                                        }
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/admin/page.jsx",
+                                                        lineNumber: 371,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    tag.name
+                                                ]
+                                            }, tag.id, true, {
+                                                fileName: "[project]/src/app/admin/page.jsx",
+                                                lineNumber: 367,
+                                                columnNumber: 19
+                                            }, this))
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 365,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 363,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "md:col-span-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "mb-2 text-sm font-medium text-slate-500",
+                                        children: "Լոգո (պարտադիր նորի համար)"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 389,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                        type: "file",
+                                        onChange: (e)=>setLogoFile(e.target.files?.[0]),
+                                        className: "w-full",
+                                        accept: "image/*"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 390,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 388,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "gap-4 md:col-span-2 pt-4 flex",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        disabled: submitting,
+                                        className: "bg-blue-600 text-white px-8 py-3 rounded-xl font-bold disabled:opacity-50",
+                                        children: submitting ? 'Պահպանվում է...' : isEdit ? 'Թարմացնել' : 'Ստեղծել'
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 399,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        type: "button",
+                                        onClick: ()=>{
+                                            clearForm();
+                                            setActiveTab('partners');
+                                        },
+                                        className: "bg-slate-100 px-8 py-3 rounded-xl font-bold",
+                                        children: "Չեղարկել"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 405,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 398,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/admin/page.jsx",
+                        lineNumber: 317,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/app/admin/page.jsx",
+                lineNumber: 315,
+                columnNumber: 9
+            }, this),
+            activeTab === 'tags' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "rounded-2xl bg-white p-8 shadow-sm max-w-2xl",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "gap-3 mb-8 flex",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                value: newTagName,
+                                onChange: (e)=>setNewTagName(e.target.value),
+                                placeholder: "Նոր tag",
+                                className: "rounded-xl border-slate-300 px-4 py-3 w-full border"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 424,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: addTag,
+                                className: "bg-blue-600 text-white px-6 py-3 rounded-xl font-bold whitespace-nowrap",
+                                children: "Ավելացնել"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 430,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/admin/page.jsx",
+                        lineNumber: 423,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "space-y-3",
+                        children: availableTags.map((tag)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "p-3 border-slate-100 rounded-xl flex items-center justify-between border",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "font-medium",
+                                        children: tag.name
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 440,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: ()=>removeTag(tag.id),
+                                        className: "text-red-500 text-sm font-bold",
+                                        children: "Ջնջել"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/page.jsx",
+                                        lineNumber: 441,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, tag.id, true, {
+                                fileName: "[project]/src/app/admin/page.jsx",
+                                lineNumber: 439,
+                                columnNumber: 15
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/admin/page.jsx",
+                        lineNumber: 437,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/app/admin/page.jsx",
+                lineNumber: 422,
+                columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/page.jsx",
-        lineNumber: 482,
+        lineNumber: 227,
         columnNumber: 5
     }, this);
 }
-_s(AdminPage, "kOzwzBsnW8hCSJcKIjtcb2rrilY=");
+_s(AdminPage, "+RY3eShkTVMnPhMqW9f6LYQ/VQ4=");
 _c = AdminPage;
 var _c;
 __turbopack_context__.k.register(_c, "AdminPage");
