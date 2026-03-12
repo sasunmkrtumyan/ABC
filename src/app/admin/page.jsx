@@ -7,6 +7,8 @@ import { uploadPartnerLogo } from '@/lib/supabase/storage.js';
 import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
 import Link from 'next/link'; // Ավելացրել ենք Link հղման համար
 import { useEffect, useMemo, useState } from 'react';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const ADMIN_USERNAME = 'abc1111';
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'sasunmkrtumyan92@gmail.com';
@@ -70,11 +72,13 @@ export default function AdminPage() {
   const [successMessage, setSuccessMessage] = useState('');
   const [partnerSearch, setPartnerSearch] = useState('');
   const [newTagName, setNewTagName] = useState('');
-  const [editingTagId, setEditingTagId] = useState('');
-  const [editingTagName, setEditingTagName] = useState('');
 
   const isEdit = useMemo(() => Boolean(editingId), [editingId]);
   const isAuthenticated = Boolean(user);
+  const filteredPartners = useMemo(
+    () => partners.filter((p) => pickLocalizedValue(p.name).toLowerCase().includes(partnerSearch.toLowerCase())),
+    [partners, partnerSearch],
+  );
 
   const showSuccess = (message) => {
     setSuccessMessage(message);
@@ -218,7 +222,7 @@ export default function AdminPage() {
 
     const csvRows = [
       headers.join(','),
-      ...partners.map((p) => {
+      ...filteredPartners.map((p) => {
         const name = escapeCsv(pickLocalizedValue(p.name));
         const categories = escapeCsv((p.tags || []).join(', '));
         const email = escapeCsv(p.email || '');
@@ -235,6 +239,24 @@ export default function AdminPage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const exportPartnersPDF = () => {
+    const doc = new jsPDF({ orientation: 'landscape' });
+    const rows = filteredPartners.map((p) => [
+        pickLocalizedValue(p.name) || '-',
+        (p.tags || []).join(', ') || '-',
+        p.email || '-',
+        (p.phones || []).join(', ') || '-',
+      ]);
+
+    autoTable(doc, {
+      head: [['Name', 'Category', 'Email', 'Phone']],
+      body: rows,
+      styles: { fontSize: 10 },
+    });
+    doc.save('partners.pdf');
   };
   if (isLoading) return <main className="container-abc py-12">Բեռնվում է...</main>;
 
@@ -326,11 +348,15 @@ export default function AdminPage() {
             >
               Export CSV
             </button>
+            <button
+              onClick={exportPartnersPDF}
+              className="px-6 py-3 font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition"
+            >
+              Export PDF
+            </button>
           </div>
           <div className="space-y-3">
-            {partners
-              .filter((p) => pickLocalizedValue(p.name).toLowerCase().includes(partnerSearch.toLowerCase()))
-              .map((item) => (
+            {filteredPartners.map((item) => (
                 <div
                   key={item.id}
                   className="p-4 border-slate-100 rounded-xl hover:bg-slate-50 flex items-center justify-between border transition"
