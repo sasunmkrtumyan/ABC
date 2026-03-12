@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 import { pickTextByLanguage } from '../../lib/localize';
+import { getSession } from '../../lib/supabase/auth';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -85,6 +86,15 @@ function getMissingTableName(error) {
   return match?.[1] || '';
 }
 
+async function getAuthHeaders() {
+  const { data } = await getSession();
+  const token = String(data?.session?.access_token || '').trim();
+  if (!token) return {};
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+}
+
 export default function PartnersPage() {
   const { t, language } = useLanguage();
   const [partners, setPartners] = useState([]);
@@ -118,7 +128,12 @@ export default function PartnersPage() {
         });
         if (query.trim()) params.set('search', query.trim());
 
-        const response = await fetch(`/api/partners?${params.toString()}`, { signal: controller.signal });
+        const authHeaders = await getAuthHeaders();
+        const response = await fetch(`/api/partners?${params.toString()}`, {
+          signal: controller.signal,
+          cache: 'no-store',
+          headers: authHeaders,
+        });
         const payload = await response.json();
         if (!response.ok) {
           throw new Error(payload?.message || 'Failed to fetch partners.');
@@ -191,7 +206,11 @@ export default function PartnersPage() {
       });
       if (query.trim()) params.set('search', query.trim());
 
-      const response = await fetch(`/api/partners?${params.toString()}`);
+      const authHeaders = await getAuthHeaders();
+      const response = await fetch(`/api/partners?${params.toString()}`, {
+        cache: 'no-store',
+        headers: authHeaders,
+      });
       const payload = await response.json();
       if (!response.ok) {
         throw new Error(payload?.message || 'Failed to export data.');

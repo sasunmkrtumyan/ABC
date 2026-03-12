@@ -1,20 +1,29 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useLanguage } from '../lib/i18n/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function NavBar() {
   const { t } = useLanguage();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   const links = [
     { href: '/', label: t.nav.home },
     { href: '/about', label: t.nav.about },
+    { href: '/events', label: t.nav.events },
     { href: '/partners', label: t.nav.partners },
     { href: '/contact', label: t.nav.contact },
   ];
+
+  const isActiveLink = (href) => {
+    if (href === '/') return pathname === '/';
+    if (href === '/partners') return pathname === '/partners' || pathname?.startsWith('/partner/');
+    return pathname === href || pathname?.startsWith(`${href}/`);
+  };
 
   return (
     <header className="top-0 border-slate-200 bg-white/90 backdrop-blur-md sticky z-50 border-b">
@@ -29,7 +38,11 @@ export default function NavBar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-semibold text-slate-700 hover:text-blue-500 transition-colors"
+              className={`border-b-2 pb-1 text-sm font-semibold transition-colors ${
+                isActiveLink(link.href)
+                  ? 'border-blue-600 text-blue-600'
+                  : 'border-transparent text-slate-700 hover:text-blue-500'
+              }`}
             >
               {link.label}
             </Link>
@@ -72,7 +85,11 @@ export default function NavBar() {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="text-base font-semibold text-slate-700 hover:text-blue-500 transition-colors"
+              className={`border-b-2 pb-1 text-base font-semibold transition-colors ${
+                isActiveLink(link.href)
+                  ? 'border-blue-600 text-blue-600'
+                  : 'border-transparent text-slate-700 hover:text-blue-500'
+              }`}
             >
               {link.label}
             </Link>

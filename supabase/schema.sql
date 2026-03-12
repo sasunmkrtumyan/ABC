@@ -26,6 +26,20 @@ create table if not exists public.tags (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.events (
+  id uuid primary key default gen_random_uuid(),
+  title jsonb not null,
+  description jsonb not null,
+  event_at timestamptz not null,
+  mode text not null check (mode in ('online', 'offline')),
+  place text not null default '',
+  image_url text not null default '',
+  contact_email text not null default '',
+  contact_phone text not null default '',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 -- Admin allow-list for write access.
 create table if not exists public.admins (
   user_id uuid primary key references auth.users(id) on delete cascade
@@ -48,9 +62,16 @@ before update on public.partners
 for each row
 execute function public.set_updated_at();
 
+drop trigger if exists set_events_updated_at on public.events;
+create trigger set_events_updated_at
+before update on public.events
+for each row
+execute function public.set_updated_at();
+
 -- RLS
 alter table public.partners enable row level security;
 alter table public.tags enable row level security;
+alter table public.events enable row level security;
 alter table public.admins enable row level security;
 
 -- Public read
@@ -63,6 +84,12 @@ using (true);
 drop policy if exists "Public read tags" on public.tags;
 create policy "Public read tags"
 on public.tags
+for select
+using (true);
+
+drop policy if exists "Public read events" on public.events;
+create policy "Public read events"
+on public.events
 for select
 using (true);
 
@@ -102,6 +129,25 @@ with check (exists (select 1 from public.admins where user_id = auth.uid()));
 drop policy if exists "Admins delete tags" on public.tags;
 create policy "Admins delete tags"
 on public.tags
+for delete
+using (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins insert events" on public.events;
+create policy "Admins insert events"
+on public.events
+for insert
+with check (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins update events" on public.events;
+create policy "Admins update events"
+on public.events
+for update
+using (exists (select 1 from public.admins where user_id = auth.uid()))
+with check (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins delete events" on public.events;
+create policy "Admins delete events"
+on public.events
 for delete
 using (exists (select 1 from public.admins where user_id = auth.uid()));
 

@@ -2,8 +2,9 @@
 
 import { slugify } from '@/lib/slugify.js';
 import { getSession, onAuthStateChange, signInWithPassword, signOut as supabaseSignOut } from '@/lib/supabase/auth.js';
+import { createEvent, deleteEvent, fetchEvents, updateEvent } from '@/lib/supabase/events.js';
 import { createPartner, deletePartner, fetchPartners, updatePartner } from '@/lib/supabase/partners.js';
-import { uploadPartnerLogo } from '@/lib/supabase/storage.js';
+import { uploadEventImage, uploadPartnerLogo } from '@/lib/supabase/storage.js';
 import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
 import Link from 'next/link'; // Ավելացրել ենք Link հղման համար
 import { useEffect, useMemo, useState } from 'react';
@@ -26,6 +27,28 @@ function getLoginErrorMessage(error) {
   return `Մուտքը չհաջողվեց (${error?.message || 'unknown'}). Ստուգեք կարգավորումները`;
 }
 
+function getPartnerSubmitErrorMessage(error, userId = '') {
+  const rawMessage = String(error?.message || error || '');
+  const message = rawMessage.toLowerCase();
+
+  if (message.includes('row-level security') || message.includes('permission denied')) {
+    const sqlHint = userId
+      ? `insert into public.admins (user_id) values ('${userId}') on conflict (user_id) do nothing;`
+      : "insert into public.admins (user_id) values ('<YOUR_USER_UUID>') on conflict (user_id) do nothing;";
+    return `Գործողությունը ձախողվեց: Դուք չունեք admin write permission Supabase-ում։ SQL Editor-ում կատարեք՝ ${sqlHint}`;
+  }
+
+  if (message.includes('duplicate key') && message.includes('partners_slug_key')) {
+    return 'Գործողությունը ձախողվեց: Այս անվան slug-ը արդեն գոյություն ունի, փորձեք այլ անուն։';
+  }
+
+  if (message.includes('relation') && message.includes('partners')) {
+    return "Գործողությունը ձախողվեց: partners աղյուսակը Supabase-ում չկա։ Գործարկեք supabase/schema.sql և հետո notify pgrst, 'reload schema';";
+  }
+
+  return `Գործողությունը ձախողվեց: ${rawMessage || 'անհայտ սխալ'}`;
+}
+
 const emptyForm = {
   name: '',
   descriptionAm: '',
@@ -36,6 +59,21 @@ const emptyForm = {
   phones: '',
   tags: [],
   logoUrl: '',
+};
+
+const emptyEventForm = {
+  titleAm: '',
+  titleRu: '',
+  titleEn: '',
+  descriptionAm: '',
+  descriptionRu: '',
+  descriptionEn: '',
+  eventAt: '',
+  mode: 'offline',
+  place: '',
+  contactEmail: '',
+  contactPhone: '',
+  imageUrl: '',
 };
 
 function pickLocalizedValue(valueByLang = {}) {
@@ -62,6 +100,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [partners, setPartners] = useState([]);
+  const [events, setEvents] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [logoFile, setLogoFile] = useState(null);
@@ -69,13 +108,27 @@ export default function AdminPage() {
   const [submitting, setSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [partnerSearch, setPartnerSearch] = useState('');
+  const [eventSearch, setEventSearch] = useState('');
   const [newTagName, setNewTagName] = useState('');
+  const [eventForm, setEventForm] = useState(emptyEventForm);
+  const [eventImageFile, setEventImageFile] = useState(null);
+  const [eventEditingId, setEventEditingId] = useState(null);
+  const [eventSubmitting, setEventSubmitting] = useState(false);
 
   const isEdit = useMemo(() => Boolean(editingId), [editingId]);
+  const isEventEdit = useMemo(() => Boolean(eventEditingId), [eventEditingId]);
   const isAuthenticated = Boolean(user);
   const filteredPartners = useMemo(
     () => partners.filter((p) => pickLocalizedValue(p.name).toLowerCase().includes(partnerSearch.toLowerCase())),
     [partners, partnerSearch],
+  );
+  const filteredEvents = useMemo(
+    () =>
+      events.filter((item) => {
+        const title = pickLocalizedValue(item.title).toLowerCase();
+        return title.includes(eventSearch.toLowerCase());
+      }),
+    [events, eventSearch],
   );
 
   const showSuccess = (message) => {
@@ -85,9 +138,10 @@ export default function AdminPage() {
 
   const loadSupabaseData = async () => {
     try {
-      const [partnersData, tagsData] = await Promise.all([fetchPartners(), fetchTags()]);
+      const [partnersData, tagsData, eventsData] = await Promise.all([fetchPartners(), fetchTags(), fetchEvents()]);
       setPartners(partnersData);
       setAvailableTags(tagsData);
+      setEvents(eventsData);
     } catch (loadError) {
       setError(`Supabase սխալ: ${loadError?.message}`);
     }
@@ -154,8 +208,36 @@ export default function AdminPage() {
     setLogoFile(null);
   };
 
+  const clearEventForm = () => {
+    setEventForm(emptyEventForm);
+    setEventEditingId(null);
+    setEventImageFile(null);
+  };
+
+  const fillEventEditForm = (id) => {
+    const item = events.find((eventItem) => eventItem.id === id);
+    if (!item) return;
+    setEventEditingId(id);
+    setEventForm({
+      titleAm: item.title?.am || '',
+      titleRu: item.title?.ru || '',
+      titleEn: item.title?.en || '',
+      descriptionAm: item.description?.am || '',
+      descriptionRu: item.description?.ru || '',
+      descriptionEn: item.description?.en || '',
+      eventAt: item.eventAt ? new Date(item.eventAt).toISOString().slice(0, 16) : '',
+      mode: item.mode || 'offline',
+      place: item.place || '',
+      contactEmail: item.contactEmail || '',
+      contactPhone: item.contactPhone || '',
+      imageUrl: item.imageUrl || '',
+    });
+    setActiveTab('add-event');
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
     setSubmitting(true);
     const slug = slugify(form.name);
     let logoUrl = null;
@@ -187,9 +269,68 @@ export default function AdminPage() {
       clearForm();
       setActiveTab('partners');
     } catch (e) {
-      setError('Գործողությունը ձախողվեց');
+      setError(getPartnerSubmitErrorMessage(e, user?.id));
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleEventSubmit = async (event) => {
+    event.preventDefault();
+    setEventSubmitting(true);
+    setError('');
+    try {
+      if (!eventForm.eventAt) throw new Error('Նշեք ամսաթիվ և ժամ');
+      if (eventForm.mode === 'offline' && !eventForm.place.trim()) {
+        throw new Error('Օֆլայն միջոցառման համար նշեք վայրը');
+      }
+      if (!isEventEdit && !eventImageFile) throw new Error('Նոր միջոցառման համար ընտրեք նկար');
+
+      let imageUrl = eventForm.imageUrl || '';
+      if (eventImageFile) {
+        imageUrl = await uploadEventImage(eventImageFile, slugify(eventForm.titleEn || eventForm.titleAm || 'event'));
+      }
+
+      const payload = {
+        title: {
+          am: eventForm.titleAm.trim(),
+          ru: eventForm.titleRu.trim(),
+          en: eventForm.titleEn.trim(),
+        },
+        description: {
+          am: eventForm.descriptionAm.trim(),
+          ru: eventForm.descriptionRu.trim(),
+          en: eventForm.descriptionEn.trim(),
+        },
+        eventAt: new Date(eventForm.eventAt).toISOString(),
+        mode: eventForm.mode,
+        place: eventForm.mode === 'offline' ? eventForm.place.trim() : '',
+        imageUrl,
+        contactEmail: eventForm.contactEmail.trim(),
+        contactPhone: eventForm.contactPhone.trim(),
+      };
+
+      if (isEventEdit) {
+        await updateEvent(eventEditingId, payload);
+        showSuccess('Միջոցառումը թարմացվեց');
+      } else {
+        await createEvent(payload);
+        showSuccess('Միջոցառումը ավելացվեց');
+      }
+      await loadSupabaseData();
+      clearEventForm();
+      setActiveTab('events');
+    } catch (submitError) {
+      const message = String(submitError?.message || '');
+      if (message.toLowerCase().includes('events table is missing')) {
+        setError(
+          "Գործողությունը ձախողվեց: Events աղյուսակը Supabase-ում չկա։ Գործարկեք supabase/schema.sql և հետո SQL Editor-ում կատարեք՝ notify pgrst, 'reload schema';"
+        );
+      } else {
+        setError(`Գործողությունը ձախողվեց: ${message}`);
+      }
+    } finally {
+      setEventSubmitting(false);
     }
   };
 
@@ -210,6 +351,13 @@ export default function AdminPage() {
   const removePartner = async (id) => {
     if (confirm('Համոզվա՞ծ եք:')) {
       await deletePartner(id);
+      loadSupabaseData();
+    }
+  };
+
+  const removeEvent = async (id) => {
+    if (confirm('Համոզվա՞ծ եք:')) {
+      await deleteEvent(id);
       loadSupabaseData();
     }
   };
@@ -300,6 +448,24 @@ export default function AdminPage() {
           className={`px-6 py-3 font-bold transition-all ${activeTab === 'add-partner' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`}
         >
           {isEdit ? 'Խմբագրել' : 'Ավելացնել գործընկեր'}
+        </button>
+        <button
+          onClick={() => {
+            setActiveTab('events');
+            clearEventForm();
+          }}
+          className={`px-6 py-3 font-bold transition-all ${activeTab === 'events' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`}
+        >
+          Միջոցառումների ցանկ
+        </button>
+        <button
+          onClick={() => {
+            if (!isEventEdit) clearEventForm();
+            setActiveTab('add-event');
+          }}
+          className={`px-6 py-3 font-bold transition-all ${activeTab === 'add-event' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`}
+        >
+          {isEventEdit ? 'Խմբագրել միջոցառում' : 'Ավելացնել միջոցառում'}
         </button>
         <button
           onClick={() => setActiveTab('tags')}
@@ -459,6 +625,172 @@ export default function AdminPage() {
                 onClick={() => {
                   clearForm();
                   setActiveTab('partners');
+                }}
+                className="bg-slate-100 px-8 py-3 rounded-xl font-bold"
+              >
+                Չեղարկել
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
+
+      {activeTab === 'events' && (
+        <section className="rounded-2xl bg-white p-6 shadow-sm">
+          <div className="mb-6">
+            <input
+              value={eventSearch}
+              onChange={(e) => setEventSearch(e.target.value)}
+              placeholder="Փնտրել միջոցառում..."
+              className="rounded-xl border-slate-300 px-4 py-3 w-full border"
+            />
+          </div>
+          <div className="space-y-3">
+            {filteredEvents.length === 0 ? (
+              <p className="rounded-xl border border-slate-200 p-4 text-slate-500">Միջոցառումներ չեն գտնվել</p>
+            ) : (
+              filteredEvents.map((item) => (
+                <div
+                  key={item.id}
+                  className="p-4 border-slate-100 rounded-xl hover:bg-slate-50 flex items-center justify-between border transition"
+                >
+                  <div>
+                    <p className="font-bold text-slate-800">{pickLocalizedValue(item.title)}</p>
+                    <p className="text-sm text-slate-500">
+                      {item.eventAt ? new Date(item.eventAt).toLocaleString() : '-'} |{' '}
+                      {item.mode === 'online' ? 'Առցանց' : 'Օֆլայն'}
+                    </p>
+                  </div>
+                  <div className="gap-2 flex">
+                    <button
+                      onClick={() => fillEventEditForm(item.id)}
+                      className="px-4 py-2 text-sm font-semibold bg-slate-100 rounded-lg"
+                    >
+                      Խմբագրել
+                    </button>
+                    <button
+                      onClick={() => removeEvent(item.id)}
+                      className="px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 rounded-lg"
+                    >
+                      Ջնջել
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'add-event' && (
+        <section className="rounded-2xl bg-white p-8 shadow-sm">
+          <h2 className="text-xl font-bold mb-6">{isEventEdit ? 'Խմբագրել միջոցառում' : 'Նոր միջոցառում'}</h2>
+          <form onSubmit={handleEventSubmit} className="md:grid-cols-2 gap-6 grid grid-cols-1">
+            <input
+              value={eventForm.titleAm}
+              onChange={(e) => setEventForm({ ...eventForm, titleAm: e.target.value })}
+              placeholder="Վերնագիր (AM)*"
+              className="rounded-xl border-slate-300 px-4 py-3 border"
+              required
+            />
+            <input
+              value={eventForm.titleRu}
+              onChange={(e) => setEventForm({ ...eventForm, titleRu: e.target.value })}
+              placeholder="Заголовок (RU)*"
+              className="rounded-xl border-slate-300 px-4 py-3 border"
+              required
+            />
+            <input
+              value={eventForm.titleEn}
+              onChange={(e) => setEventForm({ ...eventForm, titleEn: e.target.value })}
+              placeholder="Title (EN)*"
+              className="md:col-span-2 rounded-xl border-slate-300 px-4 py-3 border"
+              required
+            />
+            <textarea
+              value={eventForm.descriptionAm}
+              onChange={(e) => setEventForm({ ...eventForm, descriptionAm: e.target.value })}
+              placeholder="Նկարագրություն (AM)*"
+              className="rounded-xl border-slate-300 px-4 py-3 h-32 border"
+              required
+            />
+            <textarea
+              value={eventForm.descriptionRu}
+              onChange={(e) => setEventForm({ ...eventForm, descriptionRu: e.target.value })}
+              placeholder="Описание (RU)*"
+              className="rounded-xl border-slate-300 px-4 py-3 h-32 border"
+              required
+            />
+            <textarea
+              value={eventForm.descriptionEn}
+              onChange={(e) => setEventForm({ ...eventForm, descriptionEn: e.target.value })}
+              placeholder="Description (EN)*"
+              className="md:col-span-2 rounded-xl border-slate-300 px-4 py-3 h-32 border"
+              required
+            />
+
+            <input
+              type="datetime-local"
+              value={eventForm.eventAt}
+              onChange={(e) => setEventForm({ ...eventForm, eventAt: e.target.value })}
+              className="rounded-xl border-slate-300 px-4 py-3 border"
+              required
+            />
+
+            <select
+              value={eventForm.mode}
+              onChange={(e) => setEventForm({ ...eventForm, mode: e.target.value })}
+              className="rounded-xl border-slate-300 px-4 py-3 border"
+              required
+            >
+              <option value="offline">Օֆլայն</option>
+              <option value="online">Առցանց</option>
+            </select>
+
+            <input
+              value={eventForm.place}
+              onChange={(e) => setEventForm({ ...eventForm, place: e.target.value })}
+              placeholder="Միջոցառման վայր (պարտադիր օֆլայնի համար)"
+              className="md:col-span-2 rounded-xl border-slate-300 px-4 py-3 border"
+              required={eventForm.mode === 'offline'}
+            />
+
+            <input
+              type="email"
+              value={eventForm.contactEmail}
+              onChange={(e) => setEventForm({ ...eventForm, contactEmail: e.target.value })}
+              placeholder="Contact email (ոչ պարտադիր)"
+              className="rounded-xl border-slate-300 px-4 py-3 border"
+            />
+            <input
+              value={eventForm.contactPhone}
+              onChange={(e) => setEventForm({ ...eventForm, contactPhone: e.target.value })}
+              placeholder="Contact phone (ոչ պարտադիր)"
+              className="rounded-xl border-slate-300 px-4 py-3 border"
+            />
+
+            <div className="md:col-span-2">
+              <p className="mb-2 text-sm font-medium text-slate-500">Նկար (պարտադիր նոր միջոցառման համար)</p>
+              <input
+                type="file"
+                onChange={(e) => setEventImageFile(e.target.files?.[0])}
+                className="w-full"
+                accept="image/*"
+              />
+            </div>
+
+            <div className="gap-4 md:col-span-2 pt-4 flex">
+              <button
+                disabled={eventSubmitting}
+                className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold disabled:opacity-50"
+              >
+                {eventSubmitting ? 'Պահպանվում է...' : isEventEdit ? 'Թարմացնել' : 'Ստեղծել'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  clearEventForm();
+                  setActiveTab('events');
                 }}
                 className="bg-slate-100 px-8 py-3 rounded-xl font-bold"
               >

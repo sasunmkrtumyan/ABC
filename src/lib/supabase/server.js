@@ -9,6 +9,23 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-export function createSupabaseServerClient() {
-  return createClient(supabaseUrl, supabaseAnonKey);
+export function createSupabaseServerClient(options = {}) {
+  const rawAccessToken = String(options.accessToken || "").trim();
+  const accessToken = rawAccessToken.toLowerCase().startsWith("bearer ")
+    ? rawAccessToken.slice(7).trim()
+    : rawAccessToken;
+
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+    global: accessToken
+      ? {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      : undefined,
+  });
 }

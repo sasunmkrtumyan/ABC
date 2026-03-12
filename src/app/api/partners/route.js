@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 function parseTagName(nameValue) {
   if (nameValue && typeof nameValue === "object") {
     const en = String(nameValue.en || "").trim();
@@ -47,6 +50,11 @@ function parsePositiveInt(value, fallback) {
 
 export async function GET(request) {
   try {
+    const authHeader = String(request.headers.get("authorization") || "").trim();
+    const bearerToken = authHeader.toLowerCase().startsWith("bearer ")
+      ? authHeader.slice(7).trim()
+      : "";
+
     const { searchParams } = new URL(request.url);
     const search = String(searchParams.get("search") || "").trim();
     const category = String(searchParams.get("category") || "all").trim();
@@ -55,7 +63,7 @@ export async function GET(request) {
     const exportAll = searchParams.get("export") === "1";
 
     const safePageSize = Math.min(Math.max(pageSize, 1), 500);
-    const supabase = createSupabaseServerClient();
+    const supabase = createSupabaseServerClient({ accessToken: bearerToken });
 
     let baseQuery = supabase.from("partners").select("*", { count: "exact" }).order("created_at", { ascending: false });
 
@@ -107,19 +115,52 @@ export async function GET(request) {
       })
       .filter((tag) => tag.key);
 
-    return NextResponse.json({
-      items: items.map(normalizePartner),
-      categories,
-      page: normalizedPage,
-      pageSize: safePageSize,
-      total,
-      totalPages,
-    });
+    return NextResponse.json(
+      {
+        items: items.map(normalizePartner),
+        categories,
+        page: normalizedPage,
+        pageSize: safePageSize,
+        total,
+        totalPages,
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, max-age=0",
+        },
+      }
+    );
   } catch (error) {
     const code = error?.code || error?.status || "unknown";
+    const message = String(error?.message || "");
+    // If Supabase is temporarily unreachable, keep the UI usable.
+    if (message.toLowerCase().includes("fetch failed")) {
+      return NextResponse.json(
+        {
+          items: [],
+          categories: [],
+          page: 1,
+          pageSize: 10,
+          total: 0,
+          totalPages: 1,
+          degraded: true,
+          message: "Supabase is temporarily unreachable.",
+        },
+        {
+          headers: {
+            "Cache-Control": "no-store, max-age=0",
+          },
+        }
+      );
+    }
     return NextResponse.json(
-      { message: `Failed to fetch partners (${code}). ${String(error?.message || "")}`.trim() },
-      { status: 500 }
+      { message: `Failed to fetch partners (${code}). ${message}`.trim() },
+      {
+        status: 500,
+        headers: {
+          "Cache-Control": "no-store, max-age=0",
+        },
+      }
     );
   }
 }
