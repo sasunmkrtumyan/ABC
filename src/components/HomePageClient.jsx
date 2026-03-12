@@ -2,73 +2,8 @@
 
 import { BookText, HeartHandshake, Info, MessageCircleQuestion, Target } from 'lucide-react';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
 import { useLanguage } from '../lib/i18n/LanguageContext';
 import RevealSection from './RevealSection';
-import TestimonialCard from './TestimonialCard';
-
-const testimonials = {
-  am: [
-    {
-      name: 'Արման Մ.',
-      position: 'Գլխավոր տնօրեն',
-      company: 'Grand Candy',
-      text: 'ABC-ի շնորհիվ գտանք վստահելի գործընկերներ Մոսկվայում և Փարիզում։',
-    },
-    {
-      name: 'Սոնա Գ.',
-      position: 'Բիզնես զարգացման ղեկավար',
-      company: 'Ararat Foods',
-      text: 'Այս համայնքը արագացրեց մեր բիզնես կապերը և միջազգային տեսանելիությունը։',
-    },
-    {
-      name: 'Դավիթ Հ.',
-      position: 'Արտահանման մենեջեր',
-      company: 'EcoFarm Armenia',
-      text: 'ABC հարթակը մեզ օգնեց նոր շուկաներ մտնել և վստահելի համագործակցություններ կառուցել։',
-    },
-  ],
-  ru: [
-    {
-      name: 'Арман М.',
-      position: 'Генеральный директор',
-      company: 'Grand Candy',
-      text: 'Через ABC мы нашли надежных партнеров в Москве и Париже.',
-    },
-    {
-      name: 'Сона Г.',
-      position: 'Руководитель развития бизнеса',
-      company: 'Ararat Foods',
-      text: 'Сообщество заметно ускорило наши деловые связи.',
-    },
-    {
-      name: 'Давид А.',
-      position: 'Менеджер по экспорту',
-      company: 'EcoFarm Armenia',
-      text: 'Платформа ABC помогла нам выйти на новые рынки и выстроить надежные партнерства.',
-    },
-  ],
-  en: [
-    {
-      name: 'Arman M.',
-      position: 'Chief Executive Officer',
-      company: 'Grand Candy',
-      text: 'Through ABC we found trusted partners in multiple markets.',
-    },
-    {
-      name: 'Sona G.',
-      position: 'Head of Business Development',
-      company: 'Ararat Foods',
-      text: 'The community helped us grow our business network faster.',
-    },
-    {
-      name: 'David A.',
-      position: 'Export Manager',
-      company: 'EcoFarm Armenia',
-      text: 'ABC helped us enter new markets and build strong international partnerships.',
-    },
-  ],
-};
 
 const partnerLogos = [
   'Grand Candy',
@@ -85,7 +20,6 @@ const sectionImages = {
   who: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
   mission: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
   why: 'https://images.unsplash.com/photo-1521790797524-b2497295b8a0?auto=format&fit=crop&w=1200&q=80',
-  testimonials: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80',
 };
 
 function SectionHeader({ icon, title, badge }) {
@@ -103,27 +37,13 @@ function SectionHeader({ icon, title, badge }) {
 }
 
 export default function HomePageClient() {
-  const scrollRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const scrollToIndex = (index) => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    const card = container.children[index];
-    container.scrollTo({
-      left: card.offsetLeft - 16,
-      behavior: 'smooth',
-    });
-
-    setActiveIndex(index);
-  };
-
   const { t, language } = useLanguage();
 
   return (
     <main>
-      <section className="bg-hero-gradient py-24 text-white relative overflow-hidden">
+      <section
+        className="bg-gradient-to-b from-[#D90012] via-[#0033A0] to-[#F2A800] py-24 text-white relative overflow-hidden"
+      >
         <div className="container-abc">
           <h1 className="max-w-3xl text-4xl font-black leading-tight md:text-6xl motion-safe:animate-fade-up">
             {t.landing.heroTitle}
@@ -189,18 +109,6 @@ export default function HomePageClient() {
               fill
               className="object-cover transition-transform duration-700 hover:scale-105"
             />
-          </div>
-        </RevealSection>
-
-        <RevealSection className="rounded-3xl from-brand-light to-white p-10 shadow-sm bg-gradient-to-br">
-          <SectionHeader icon={<BookText className="h-6 w-6" />} title={t.landing.testimonialsTitle} />
-
-          <div className="mt-10 relative">
-            <div ref={scrollRef} className="gap-6 pb-4 flex snap-x snap-mandatory overflow-x-auto scroll-smooth">
-              {testimonials[language].map((item, index) => (
-                <TestimonialCard key={item.name} item={item} active={index === activeIndex} />
-              ))}
-            </div>
           </div>
         </RevealSection>
 
