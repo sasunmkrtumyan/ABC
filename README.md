@@ -1,16 +1,64 @@
-# React + Vite
+# ABC - Armenian Business Club
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Next.js + Tailwind + Firebase portal for Armenian Business Club.
 
-Currently, two official plugins are available:
+## Pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `/` landing page with animated sections and partner logo slider
+- `/about` about Armenian business community
+- `/partners` searchable/filterable/paginated partners table
+- `/partner/[slug]` dynamic partner details page
+- `/contact` contact information page
+- `/admin` Armenian-only admin panel (login + CRUD)
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Next.js (App Router)
+- Tailwind CSS
+- Firebase Auth + Firestore + Storage
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Copy env values:
+
+```bash
+cp .env.example .env.local
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run dev server:
+
+```bash
+npm run dev
+```
+
+## Firebase console steps (required)
+
+Before using admin CRUD or seeding partners, complete these once:
+
+1. In Firebase Console, enable **Authentication** and add a user with:
+   - Email: same as `NEXT_PUBLIC_ADMIN_EMAIL`
+   - Password: `Ernestabc1111`
+2. Enable **Cloud Firestore** for project `abc1111-30d44`.
+3. Enable **Firebase Storage** for project `abc1111-30d44`.
+
+## Admin login
+
+- Username: `abc1111`
+- Password: `Ernestabc1111`
+
+Important: Firebase Auth uses email/password internally.  
+Set `NEXT_PUBLIC_ADMIN_EMAIL` to the email of your Firebase admin user and create that user in Firebase Authentication.
+
+## Seed mock partners
+
+This project includes ~20 mock partners.
+
+```bash
+npm run seed:partners
+```

@@ -1,23 +1,25 @@
-"use client";
+'use client';
 
-import { usePathname } from "next/navigation";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
-import { LanguageProvider } from "../lib/i18n/LanguageContext";
+import { usePathname } from 'next/navigation';
+import { LanguageProvider } from '../lib/i18n/LanguageContext';
+import Footer from './Footer';
+import NavBar from './NavBar';
 
 export default function AppShell({ children }) {
   const pathname = usePathname();
-  const isAdminRoute = pathname?.startsWith("/admin");
+  const isAdminRoute = pathname?.startsWith('/admin');
 
   if (isAdminRoute) {
-    return <>{children}</>;
+    return <div className="min-h-screen">{children}</div>;
   }
 
   return (
     <LanguageProvider>
-      <NavBar />
-      {children}
-      <Footer />
+      <div className="flex min-h-screen flex-col">
+        <NavBar />
+        <div className="flex-1">{children}</div>
+        <Footer />
+      </div>
     </LanguageProvider>
   );
 }

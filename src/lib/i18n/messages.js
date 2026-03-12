@@ -1,7 +1,7 @@
 export const LANGUAGES = [
-  { code: "am", short: "AM", flag: "🇦🇲", label: "Հայերեն" },
-  { code: "ru", short: "RU", flag: "🇷🇺", label: "Русский" },
-  { code: "en", short: "EN", flag: "🇬🇧", label: "English" },
+  { code: "am", short: "AM", flag: "🇦🇲", label: "Հայ" },
+  { code: "ru", short: "RU", flag: "🇷🇺", label: "Ру" },
+  { code: "en", short: "EN", flag: "🇬🇧", label: "Eng" },
 ];
 
 export const DEFAULT_LANGUAGE = "am";
@@ -11,12 +11,13 @@ export const messages = {
     nav: {
       home: "Գլխավոր",
       about: "Մեր մասին",
+      events: "Միջոցառումներ",
       partners: "Գործընկերներ",
-      contact: "Կոնտակտ",
+      contact: "Հետադարձ կապ",
       admin: "Ադմին",
     },
     common: {
-      slogan: "Building Bridges, Creating Opportunities.",
+      slogan: "Կառուցելով կամուրջներ, ստեղծելով հնարավորություններ",
       connectNow: "Միացիր հիմա",
       noData: "Տվյալներ չկան",
       readMore: "Ավելին",
@@ -26,8 +27,8 @@ export const messages = {
     landing: {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
-        "Միացիր հայկական բիզնեսի հզոր համայնքին և զարգացիր միասին ամբողջ աշխարհում։",
-      whoTitle: "Ով ենք մենք",
+        "Միացիր հայկական բիզնեսի հզոր համայնքին և ընդլայնիր քո հնարավորությունները ամբողջ աշխարհում",
+      whoTitle: "Ո՞վ ենք մենք",
       whoText:
         "ABC-ն հարթակ է, որտեղ հայկական բիզնեսները կապվում են, համագործակցում և ստեղծում են նոր գործընկերություններ։ Մենք միավորում ենք սփյուռքի և Հայաստանի ընկերություններին մեկ համայնքում։",
       missionTitle: "Մեր առաքելությունը",
@@ -53,8 +54,8 @@ export const messages = {
       ],
     },
     contact: {
-      title: "Կոնտակտ",
-      subtitle: "Ստորև ներկայացված են մեր հիմնական կապի տվյալները։",
+      title: "Հետադարձ կապ",
+      subtitle: "Ստորև ներկայացված են մեր հիմնական կապի միջոցները։",
       office: "Գլխավոր գրասենյակ",
       phone: "Հեռախոս",
       email: "Էլ․ հասցե",
@@ -72,6 +73,28 @@ export const messages = {
         email: "Էլ․ հասցե",
       },
     },
+    events: {
+      title: "Միջոցառումներ",
+      intro:
+        "Այստեղ ներկայացված են ABC-ի բոլոր միջոցառումները։",
+      loading: "Բեռնվում է...",
+      noEvents: "Միջոցառումներ դեռ չկան",
+      noImage: "Նկար չկա",
+      upcoming: "Առաջիկա",
+      past: "Ավարտված",
+      online: "Առցանց",
+      offline: "Օֆլայն",
+      onlineEvent: "Առցանց միջոցառում",
+      dateTime: "Ամսաթիվ և ժամ",
+      place: "Վայր",
+      contactEmail: "Կապի email",
+      contactPhone: "Կապի հեռախոս",
+      countdownTitle: "Մնացել է",
+      days: "օր",
+      hours: "ժամ",
+      upcomingSection: "Առաջիկա միջոցառումներ",
+      pastSection: "Ավարտված միջոցառումներ",
+    },
     footer: {
       text: "ABC - Armenian Business Club. Միասին կառուցում ենք հնարավորություններ։",
     },
@@ -80,12 +103,13 @@ export const messages = {
     nav: {
       home: "Главная",
       about: "О нас",
+      events: "Мероприятия",
       partners: "Партнеры",
       contact: "Контакты",
       admin: "Админ",
     },
     common: {
-      slogan: "Building Bridges, Creating Opportunities.",
+      slogan: "Строим мосты, создаём возможности.",
       connectNow: "Присоединиться",
       noData: "Нет данных",
       readMore: "Подробнее",
@@ -95,7 +119,7 @@ export const messages = {
     landing: {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
-        "Станьте частью большой армянской бизнес-сообщества и развивайтесь вместе по всему миру.",
+        "Присоединяйся к мощному сообществу армянского бизнеса и расширяй свои возможности по всему миру",
       whoTitle: "Кто мы",
       whoText:
         "ABC - это портал, где армянские компании общаются, сотрудничают и находят новые возможности для роста.",
@@ -141,6 +165,28 @@ export const messages = {
         email: "Эл. почта",
       },
     },
+    events: {
+      title: "Мероприятия",
+      intro:
+        "Здесь показаны все мероприятия ABC.",
+      loading: "Загрузка...",
+      noEvents: "Мероприятий пока нет",
+      noImage: "Нет изображения",
+      upcoming: "Предстоящее",
+      past: "Прошедшее",
+      online: "Онлайн",
+      offline: "Офлайн",
+      onlineEvent: "Онлайн мероприятие",
+      dateTime: "Дата и время",
+      place: "Место",
+      contactEmail: "Контактный email",
+      contactPhone: "Контактный телефон",
+      countdownTitle: "Осталось",
+      days: "дней",
+      hours: "часов",
+      upcomingSection: "Предстоящие мероприятия",
+      pastSection: "Прошедшие мероприятия",
+    },
     footer: {
       text: "ABC - Armenian Business Club. Строим возможности вместе.",
     },
@@ -149,12 +195,13 @@ export const messages = {
     nav: {
       home: "Home",
       about: "About Us",
+      events: "Events",
       partners: "Partners",
       contact: "Contact",
       admin: "Admin",
     },
     common: {
-      slogan: "Building Bridges, Creating Opportunities.",
+      slogan: "Building Bridges, Creating Opportunities",
       connectNow: "Connect Now",
       noData: "No data found",
       readMore: "Read more",
@@ -164,7 +211,7 @@ export const messages = {
     landing: {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
-        "Be part of a huge Armenian business community and grow together worldwide.",
+        "Join the strong Armenian business community and expand your opportunities worldwide",
       whoTitle: "Who We Are",
       whoText:
         "ABC is a platform where Armenian companies communicate, collaborate, and build long-term partnerships across the globe.",
@@ -209,6 +256,28 @@ export const messages = {
         categories: "Categories",
         email: "Email",
       },
+    },
+    events: {
+      title: "Events",
+      intro:
+        "This page includes all ABC events.",
+      loading: "Loading...",
+      noEvents: "No events yet",
+      noImage: "No image",
+      upcoming: "Upcoming",
+      past: "Past",
+      online: "Online",
+      offline: "Offline",
+      onlineEvent: "Online event",
+      dateTime: "Date and time",
+      place: "Place",
+      contactEmail: "Contact email",
+      contactPhone: "Contact phone",
+      countdownTitle: "Time left",
+      days: "days",
+      hours: "hours",
+      upcomingSection: "Upcoming events",
+      pastSection: "Past events",
     },
     footer: {
       text: "ABC - Armenian Business Club. Building opportunities together.",

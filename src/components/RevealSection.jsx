@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export default function RevealSection({ className, children }) {
   const ref = useRef(null);
@@ -17,7 +17,7 @@ export default function RevealSection({ className, children }) {
           observer.unobserve(target);
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
 
     observer.observe(target);
@@ -28,11 +28,11 @@ export default function RevealSection({ className, children }) {
     <section
       ref={ref}
       className={[
-        "transition-all duration-700",
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
-        className || "",
+        'transition-all duration-700',
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0',
+        className || '',
       ]
-        .join(" ")
+        .join(' ')
         .trim()}
     >
       {children}

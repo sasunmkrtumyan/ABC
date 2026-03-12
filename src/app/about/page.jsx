@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import RevealSection from "../../components/RevealSection";
-import { useLanguage } from "../../lib/i18n/LanguageContext";
+import RevealSection from '../../components/RevealSection';
+import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 export default function AboutPage() {
   const { t } = useLanguage();
@@ -13,9 +13,9 @@ export default function AboutPage() {
         <p className="mt-4 text-slate-600">{t.about.intro}</p>
       </RevealSection>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
+      <div className="mt-8 gap-5 md:grid-cols-3 grid">
         {t.about.blocks.map((block) => (
-          <RevealSection key={block} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+          <RevealSection key={block} className="rounded-2xl border-slate-200 bg-slate-50 p-6 border">
             <p className="text-slate-700">{block}</p>
           </RevealSection>
         ))}
