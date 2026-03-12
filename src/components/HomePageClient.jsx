@@ -1,6 +1,6 @@
 'use client';
 
-import { CircleQuestionMark, Handshake, Info, NotebookPen, Target } from 'lucide-react';
+import { BookText, HeartHandshake, Info, MessageCircleQuestion, Target } from 'lucide-react';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useLanguage } from '../lib/i18n/LanguageContext';
@@ -164,7 +164,7 @@ export default function HomePageClient() {
 
         <RevealSection className="rounded-3xl from-white to-slate-50 p-4 lg:p-10 shadow-xl shadow-slate-200/60 md:grid md:grid-cols-2 md:gap-12 relative overflow-hidden bg-gradient-to-br">
           <div className="relative z-10">
-            <SectionHeader icon={<CircleQuestionMark className="h-6 w-6" />} title={t.landing.whyTitle} />
+            <SectionHeader icon={<MessageCircleQuestion className="h-6 w-6" />} title={t.landing.whyTitle} />
 
             <ul className="mt-6 space-y-4">
               {t.landing.whyItems.map((item) => (
@@ -193,7 +193,7 @@ export default function HomePageClient() {
         </RevealSection>
 
         <RevealSection className="rounded-3xl from-brand-light to-white p-10 shadow-sm bg-gradient-to-br">
-          <SectionHeader icon={<NotebookPen className="h-6 w-6" />} title={t.landing.testimonialsTitle} />
+          <SectionHeader icon={<BookText className="h-6 w-6" />} title={t.landing.testimonialsTitle} />
 
           <div className="mt-10 relative">
             <div ref={scrollRef} className="gap-6 pb-4 flex snap-x snap-mandatory overflow-x-auto scroll-smooth">
@@ -205,7 +205,7 @@ export default function HomePageClient() {
         </RevealSection>
 
         <RevealSection className="rounded-2xl bg-white p-8 shadow-sm">
-          <SectionHeader icon={<Handshake className="h-6 w-6" />} title={t.landing.partnersTitle} />
+          <SectionHeader icon={<HeartHandshake className="h-6 w-6" />} title={t.landing.partnersTitle} />
           <div className="marquee-shell mt-6">
             <div className="marquee-track">
               {partnerTicker.map((logo, index) => (

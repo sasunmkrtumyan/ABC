@@ -4,7 +4,7 @@ import { slugify } from '@/lib/slugify.js';
 import { getSession, onAuthStateChange, signInWithPassword, signOut as supabaseSignOut } from '@/lib/supabase/auth.js';
 import { createPartner, deletePartner, fetchPartners, updatePartner } from '@/lib/supabase/partners.js';
 import { uploadPartnerLogo } from '@/lib/supabase/storage.js';
-import { createTag, fetchTags } from '@/lib/supabase/tags.js';
+import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
 import Link from 'next/link'; // Ավելացրել ենք Link հղման համար
 import { useEffect, useMemo, useState } from 'react';
 
@@ -40,6 +40,18 @@ const emptyForm = {
 
 function pickLocalizedValue(valueByLang = {}) {
   return valueByLang.am || valueByLang.en || valueByLang.ru || '';
+}
+
+function getTagKey(tag) {
+  if (!tag) return '';
+  if (typeof tag.name === 'string') return tag.name;
+  return tag.name?.en || tag.slug || '';
+}
+
+function getTagLabel(tag) {
+  if (!tag) return '';
+  if (typeof tag.name === 'string') return tag.name;
+  return tag.name?.am || tag.name?.en || tag.name?.ru || tag.slug || '';
 }
 
 export default function AdminPage() {
@@ -187,6 +199,12 @@ export default function AdminPage() {
     loadSupabaseData();
   };
 
+  const removeTag = async (id) => {
+    if (!confirm('Համոզվա՞ծ եք:')) return;
+    await deleteTag(id);
+    loadSupabaseData();
+  };
+
   const removePartner = async (id) => {
     if (confirm('Համոզվա՞ծ եք:')) {
       await deletePartner(id);
@@ -218,7 +236,6 @@ export default function AdminPage() {
     link.click();
     document.body.removeChild(link);
   };
-
   if (isLoading) return <main className="container-abc py-12">Բեռնվում է...</main>;
 
   if (!user) {
@@ -398,20 +415,21 @@ export default function AdminPage() {
                 {availableTags.map((tag) => (
                   <label
                     key={tag.id}
-                    className={`px-3 py-1.5 rounded-lg cursor-pointer border transition ${form.tags.includes(tag.name) ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-200'}`}
+                    className={`px-3 py-1.5 rounded-lg cursor-pointer border transition ${form.tags.includes(getTagKey(tag)) ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-200'}`}
                   >
                     <input
                       type="checkbox"
                       className="hidden"
-                      checked={form.tags.includes(tag.name)}
+                      checked={form.tags.includes(getTagKey(tag))}
                       onChange={(e) => {
+                        const tagKey = getTagKey(tag);
                         const next = e.target.checked
-                          ? [...form.tags, tag.name]
-                          : form.tags.filter((t) => t !== tag.name);
+                          ? [...form.tags, tagKey]
+                          : form.tags.filter((t) => t !== tagKey);
                         setForm({ ...form, tags: next });
                       }}
                     />
-                    {tag.name}
+                    {getTagLabel(tag)}
                   </label>
                 ))}
               </div>
@@ -469,7 +487,7 @@ export default function AdminPage() {
           <div className="space-y-3">
             {availableTags.map((tag) => (
               <div key={tag.id} className="p-3 border-slate-100 rounded-xl flex items-center justify-between border">
-                <span className="font-medium">{tag.name}</span>
+                <span className="font-medium">{getTagLabel(tag)}</span>
                 <button onClick={() => removeTag(tag.id)} className="text-red-500 text-sm font-bold">
                   Ջնջել
                 </button>

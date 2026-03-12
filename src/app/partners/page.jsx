@@ -1,14 +1,82 @@
 'use client';
 
-import { fetchTags } from '@/lib/supabase/tags';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 import { pickTextByLanguage } from '../../lib/localize';
-import { fetchPartners } from '../../lib/supabase/partners';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 10;
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 500];
+
+function normalizeLookupKey(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function safePdfFileName(value) {
+  return String(value || 'export').replace(/[\\/:*?"<>|]/g, '_').trim() || 'export';
+}
+
+function arrayBufferToBase64(buffer) {
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.byteLength; i += 1) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+async function applyPdfFont(doc) {
+  const loaded = { default: 'helvetica', armenian: 'helvetica' };
+  const candidates = [
+    { file: '/fonts/NotoSans-Regular.ttf', vfs: 'NotoSans-Regular.ttf', family: 'NotoSans', key: 'default' },
+    {
+      file: '/fonts/NotoSansArmenian-Regular.ttf',
+      vfs: 'NotoSansArmenian-Regular.ttf',
+      family: 'NotoSansArmenian',
+      key: 'armenian',
+    },
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      const response = await fetch(candidate.file);
+      if (!response.ok) continue;
+      const fontBuffer = await response.arrayBuffer();
+      const fontBase64 = arrayBufferToBase64(fontBuffer);
+      doc.addFileToVFS(candidate.vfs, fontBase64);
+      doc.addFont(candidate.vfs, candidate.family, 'normal');
+      loaded[candidate.key] = candidate.family;
+    } catch (_) {
+      // skip font candidate
+    }
+  }
+
+  if (loaded.default === 'helvetica' && loaded.armenian !== 'helvetica') {
+    loaded.default = loaded.armenian;
+  }
+
+  doc.setFont(loaded.default, 'normal');
+  return loaded;
+}
+
+function getLanguageValue(valueByLang = {}, langCode) {
+  return String(valueByLang?.[langCode] || '').trim();
+}
+
+function getExportPartnerName(item) {
+  // Keep export name language-independent and always populated.
+  return (
+    getLanguageValue(item?.name, 'en') ||
+    getLanguageValue(item?.name, 'ru') ||
+    getLanguageValue(item?.name, 'am') ||
+    String(item?.slug || '').trim() ||
+    String(item?.email || '').trim() ||
+    '-'
+  );
+}
 
 function getMissingTableName(error) {
   const msg = String(error?.message || '');
@@ -23,22 +91,49 @@ export default function PartnersPage() {
   const [availableTags, setAvailableTags] = useState([]);
   const [loadError, setLoadError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const getCategoryLabel = (categoryItem, lang) => {
+    const name = categoryItem?.name || {};
+    return name[lang] || name.en || name.am || name.ru || categoryItem?.key || '';
+  };
 
   useEffect(() => {
     let cancelled = false;
-
-    const load = async () => {
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
       setLoadError('');
       setIsLoading(true);
       try {
-        const [partnersData, tagsData] = await Promise.all([fetchPartners(), fetchTags()]);
+        const params = new URLSearchParams({
+          page: String(page),
+          pageSize: String(pageSize),
+          category,
+        });
+        if (query.trim()) params.set('search', query.trim());
+
+        const response = await fetch(`/api/partners?${params.toString()}`, { signal: controller.signal });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload?.message || 'Failed to fetch partners.');
+        }
+
         if (cancelled) return;
-        setPartners(partnersData);
-        setAvailableTags((tagsData || []).map((tag) => tag.name));
+        setPartners(payload.items || []);
+        setAvailableTags(payload.categories || []);
+        setTotal(payload.total || 0);
+        setTotalPages(payload.totalPages || 1);
+        if (typeof payload.page === 'number') {
+          setPage(payload.page);
+        }
       } catch (error) {
+        if (error?.name === 'AbortError') return;
         if (cancelled) return;
         const code = error?.code || error?.status || 'unknown';
         if (code === 'PGRST205') {
@@ -51,41 +146,92 @@ export default function PartnersPage() {
         }
         setPartners([]);
         setAvailableTags([]);
+        setTotal(0);
+        setTotalPages(1);
       } finally {
         if (!cancelled) {
           setIsLoading(false);
         }
       }
-    };
+    }, 250);
 
-    load();
     return () => {
       cancelled = true;
+      controller.abort();
+      clearTimeout(timer);
     };
-  }, []);
+  }, [category, page, pageSize, query]);
 
-  const categories = useMemo(() => {
-    if (availableTags.length) return availableTags;
-    const unique = new Set();
-    partners.forEach((item) => (item.tags || []).forEach((tag) => unique.add(tag)));
-    return Array.from(unique);
-  }, [partners, availableTags]);
-
-  const filtered = useMemo(() => {
-    return partners.filter((item) => {
-      const localizedName = pickTextByLanguage(item.name, language);
-      const byName = localizedName.toLowerCase().includes(query.toLowerCase());
-      const byCategory = category === 'all' ? true : (item.tags || []).includes(category);
-      return byName && byCategory;
+  const categories = useMemo(() => availableTags, [availableTags]);
+  const categoryMap = useMemo(() => {
+    const map = new Map();
+    (categories || []).forEach((item) => {
+      const aliases = [item.key, item.slug, item?.name?.en, item?.name?.am, item?.name?.ru];
+      aliases.forEach((alias) => {
+        const key = normalizeLookupKey(alias);
+        if (key) map.set(key, item);
+      });
     });
-  }, [partners, query, category, language]);
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    return map;
+  }, [categories]);
 
   useEffect(() => {
     setPage(1);
-  }, [query, category]);
+  }, [query, category, pageSize]);
+
+  const exportPdf = async () => {
+    if (category === 'all') return;
+    setIsExporting(true);
+    try {
+      const params = new URLSearchParams({
+        page: '1',
+        pageSize: '100',
+        category,
+        export: '1',
+      });
+      if (query.trim()) params.set('search', query.trim());
+
+      const response = await fetch(`/api/partners?${params.toString()}`);
+      const payload = await response.json();
+      if (!response.ok) {
+        throw new Error(payload?.message || 'Failed to export data.');
+      }
+
+      const selectedActiveCategory =
+        (payload.categories || []).find((item) => normalizeLookupKey(item.key) === normalizeLookupKey(category)) ||
+        categoryMap.get(normalizeLookupKey(category));
+      const selectedCategoryLabel =
+        getCategoryLabel(selectedActiveCategory, language) || getCategoryLabel(selectedActiveCategory, 'en') || '-';
+      const rows = (payload.items || []).map((item) => [
+        getExportPartnerName(item),
+        selectedCategoryLabel,
+        String(item?.email || '-'),
+        (item?.phones || []).join(', ') || '-',
+      ]);
+
+      const doc = new jsPDF({ orientation: 'landscape' });
+      const fonts = await applyPdfFont(doc);
+      autoTable(doc, {
+        head: [['Name', 'Category', 'Email', 'Phone']],
+        body: rows,
+        styles: { fontSize: 10, font: fonts.default },
+        didParseCell: (hookData) => {
+          // Keep partner name in default font; translate only category column.
+          if (language === 'am' && hookData.column.index === 1) {
+            hookData.cell.styles.font = fonts.armenian;
+          } else {
+            hookData.cell.styles.font = fonts.default;
+          }
+        },
+      });
+      const exportName = getCategoryLabel(selectedActiveCategory, language) || category;
+      doc.save(`${safePdfFileName(exportName)}.pdf`);
+    } catch (error) {
+      setLoadError(String(error?.message || 'Failed to export PDF.'));
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <main className="container-abc py-12">
@@ -106,11 +252,20 @@ export default function PartnersPage() {
         >
           <option value="all">{t.partners.allCategories}</option>
           {categories.map((item) => (
-            <option key={item} value={item}>
-              {item}
+            <option key={item.key} value={item.key}>
+              {getCategoryLabel(item, language)}
             </option>
           ))}
         </select>
+        {category !== 'all' ? (
+          <button
+            onClick={exportPdf}
+            disabled={isExporting || isLoading}
+            className="rounded-xl whitespace-nowrap bg-blue-500 px-4 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isExporting ? 'Exporting...' : 'Export PDF'}
+          </button>
+        ) : null}
       </div>
 
       <div className="mt-6 rounded-2xl border-slate-200 bg-white overflow-y-auto border">
@@ -126,24 +281,25 @@ export default function PartnersPage() {
               <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">
                 {t.partners.table.email}
               </th>
+              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">Phone</th>
             </tr>
           </thead>
           <tbody className="divide-slate-100 divide-y">
             {isLoading ? (
               <tr>
-                <td colSpan="3" className="py-12 text-slate-500 text-center">
+                <td colSpan="4" className="py-12 text-slate-500 text-center">
                   <div className="mb-3 h-8 w-8 animate-spin border-blue-500 mx-auto rounded-full border-4 border-r-transparent"></div>
                   <p>Բեռնվում է...</p>
                 </td>
               </tr>
-            ) : paginated.length === 0 ? (
+            ) : partners.length === 0 ? (
               <tr>
-                <td colSpan="3" className="py-8 text-slate-500 text-center">
+                <td colSpan="4" className="py-8 text-slate-500 text-center">
                   Գործընկերներ չեն գտնվել:
                 </td>
               </tr>
             ) : (
-              paginated.map((item) => (
+              partners.map((item) => (
                 <tr key={item.id} className="hover:bg-slate-50">
                   <td className="px-4 py-3">
                     <div className="gap-3 flex items-center">
@@ -165,11 +321,15 @@ export default function PartnersPage() {
                   </td>
                   <td className="px-4 py-3 text-slate-600">
                     {(() => {
-                      const validTags = (item.tags || []).filter((tag) => availableTags.includes(tag));
-                      return validTags.length > 0 ? validTags.join(', ') : '-';
+                      const translatedTags = (item.tags || [])
+                        .map((tagKey) => categoryMap.get(normalizeLookupKey(tagKey)))
+                        .filter(Boolean)
+                        .map((tag) => getCategoryLabel(tag, language));
+                      return translatedTags.length > 0 ? translatedTags.join(', ') : '-';
                     })()}
                   </td>
                   <td className="px-4 py-3 text-slate-600">{item.email}</td>
+                  <td className="px-4 py-3 text-slate-600">{item?.phones?.[0] || '-'}</td>
                 </tr>
               ))
             )}
@@ -177,22 +337,43 @@ export default function PartnersPage() {
         </table>
       </div>
 
-      <div className="mt-5 gap-3 flex items-center justify-end">
-        <button
-          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-          disabled={page === 1}
-          className="rounded-lg border-slate-300 px-4 py-2 border disabled:opacity-40"
-        >
-          Prev
-        </button>
-        <p className="text-sm text-slate-600">{`${t.common.page} ${page} ${t.common.of} ${totalPages}`}</p>
-        <button
-          onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
-          disabled={page >= totalPages}
-          className="rounded-lg border-slate-300 px-4 py-2 border disabled:opacity-40"
-        >
-          Next
-        </button>
+      <div className="mt-5 gap-3 flex flex-wrap items-center justify-between">
+        <div className="gap-2 flex items-center">
+          <label htmlFor="pageSize" className="text-sm text-slate-600">
+            Per page:
+          </label>
+          <select
+            id="pageSize"
+            value={pageSize}
+            onChange={(event) => setPageSize(Number(event.target.value))}
+            className="rounded-lg border-slate-300 bg-white px-3 py-2 text-sm border"
+          >
+            {PAGE_SIZE_OPTIONS.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
+        </div>
+        {total > pageSize ? (
+          <div className="gap-3 flex items-center">
+            <button
+              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+              disabled={page === 1}
+              className="rounded-lg border-slate-300 px-4 py-2 border disabled:opacity-40"
+            >
+              Prev
+            </button>
+            <p className="text-sm text-slate-600">{`${t.common.page} ${page} ${t.common.of} ${totalPages}`}</p>
+            <button
+              onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+              disabled={page >= totalPages}
+              className="rounded-lg border-slate-300 px-4 py-2 border disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
+        ) : null}
       </div>
     </main>
   );
