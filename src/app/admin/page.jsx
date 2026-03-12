@@ -7,8 +7,6 @@ import { uploadPartnerLogo } from '@/lib/supabase/storage.js';
 import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
 import Link from 'next/link'; // Ավելացրել ենք Link հղման համար
 import { useEffect, useMemo, useState } from 'react';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 const ADMIN_USERNAME = 'abc1111';
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'sasunmkrtumyan92@gmail.com';
@@ -242,22 +240,6 @@ export default function AdminPage() {
     URL.revokeObjectURL(url);
   };
 
-  const exportPartnersPDF = () => {
-    const doc = new jsPDF({ orientation: 'landscape' });
-    const rows = filteredPartners.map((p) => [
-        pickLocalizedValue(p.name) || '-',
-        (p.tags || []).join(', ') || '-',
-        p.email || '-',
-        (p.phones || []).join(', ') || '-',
-      ]);
-
-    autoTable(doc, {
-      head: [['Name', 'Category', 'Email', 'Phone']],
-      body: rows,
-      styles: { fontSize: 10 },
-    });
-    doc.save('partners.pdf');
-  };
   if (isLoading) return <main className="container-abc py-12">Բեռնվում է...</main>;
 
   if (!user) {
@@ -347,12 +329,6 @@ export default function AdminPage() {
               className="px-6 py-3 font-bold text-white bg-green-600 rounded-xl hover:bg-green-700 transition"
             >
               Export CSV
-            </button>
-            <button
-              onClick={exportPartnersPDF}
-              className="px-6 py-3 font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition"
-            >
-              Export PDF
             </button>
           </div>
           <div className="space-y-3">
