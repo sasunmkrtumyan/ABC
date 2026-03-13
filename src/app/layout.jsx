@@ -1,4 +1,4 @@
-import AppShell from '../components/AppShell';
+// import AppShell from '../components/AppShell';
 import './globals.css';
 
 export const metadata = {
@@ -10,7 +10,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <AppShell>{children}</AppShell>
+        {/* <AppShell>{children}</AppShell> */}
+        {children}
       </body>
     </html>
   );
