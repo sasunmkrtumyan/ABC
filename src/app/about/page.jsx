@@ -25,7 +25,7 @@ export default function AboutPage() {
               <p className="text-sm text-slate-700">{t.about.highlights?.[1]}</p>
             </div>
             <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3">
-              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-violet-700" />
+              <CheckCheck className="mt-0.5 h-5 w-5 shrink-0 text-violet-700" />
               <p className="text-sm text-slate-700">{t.about.highlights?.[2]}</p>
             </div>
           </div>
