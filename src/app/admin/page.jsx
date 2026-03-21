@@ -4,7 +4,6 @@ import { slugify } from '@/lib/slugify.js';
 import { getSession, onAuthStateChange, signInWithPassword, signOut as supabaseSignOut } from '@/lib/supabase/auth.js';
 import { createEvent, deleteEvent, fetchEvents, updateEvent } from '@/lib/supabase/events.js';
 import { createPartner, deletePartner, fetchPartners, updatePartner } from '@/lib/supabase/partners.js';
-import { uploadEventImage, uploadPartnerLogo } from '@/lib/supabase/storage.js';
 import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
 import Link from 'next/link'; // Ավելացրել ենք Link հղման համար
 import { useEffect, useMemo, useState } from 'react';
@@ -47,6 +46,25 @@ function getPartnerSubmitErrorMessage(error, userId = '') {
   }
 
   return `Գործողությունը ձախողվեց: ${rawMessage || 'անհայտ սխալ'}`;
+}
+
+async function uploadLocalImage(file, type, key) {
+  if (!file) throw new Error('Missing file');
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('type', type);
+  formData.append('key', key || 'item');
+
+  const response = await fetch('/api/uploads', {
+    method: 'POST',
+    body: formData,
+  });
+  const payload = await response.json();
+  if (!response.ok) {
+    throw new Error(payload?.message || 'Image upload failed');
+  }
+
+  return String(payload?.path || '').trim();
 }
 
 const emptyForm = {
@@ -243,7 +261,8 @@ export default function AdminPage() {
     let logoUrl = null;
 
     try {
-      if (logoFile) logoUrl = await uploadPartnerLogo(logoFile, slug);
+      if (!isEdit && !logoFile) throw new Error('Նոր գործընկերի համար ընտրեք լոգո');
+      if (logoFile) logoUrl = await uploadLocalImage(logoFile, 'partner', slug);
       const payload = {
         slug,
         name: { am: form.name, en: form.name, ru: form.name },
@@ -288,7 +307,11 @@ export default function AdminPage() {
 
       let imageUrl = eventForm.imageUrl || '';
       if (eventImageFile) {
-        imageUrl = await uploadEventImage(eventImageFile, slugify(eventForm.titleEn || eventForm.titleAm || 'event'));
+        imageUrl = await uploadLocalImage(
+          eventImageFile,
+          'event',
+          slugify(eventForm.titleEn || eventForm.titleAm || 'event')
+        );
       }
 
       const payload = {
@@ -610,6 +633,7 @@ export default function AdminPage() {
                 onChange={(e) => setLogoFile(e.target.files?.[0])}
                 className="w-full"
                 accept="image/*"
+                required={!isEdit}
               />
             </div>
 

@@ -4,6 +4,11 @@ import './globals.css';
 export const metadata = {
   title: 'ABC - Armenian Business Club',
   description: 'Building Bridges, Creating Opportunities.',
+  icons: {
+    icon: '/img/logo.png',
+    shortcut: '/img/logo.png',
+    apple: '/img/logo.png',
+  },
 };
 
 export default function RootLayout({ children }) {

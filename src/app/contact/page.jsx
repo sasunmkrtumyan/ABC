@@ -4,9 +4,9 @@ import RevealSection from '../../components/RevealSection';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 const contactMock = {
-  office: '8 Tumanyan Street, Yerevan, Armenia',
-  phone: '+374 10 555500, +374 91 222233',
-  email: 'abc1111@gmail.com',
+  office: '48/1 Nalbandyan St, Yerevan, Armenia',
+  phone: `+374 99060834`,
+  email: 'info@abc1111.com',
   hours: 'Mon - Fri, 10:00 - 19:00',
 };
 
@@ -41,15 +41,7 @@ export default function ContactPage() {
 
       {/* Google Map Embed */}
       <div className="rounded-2xl shadow-sm h-[450px] w-full overflow-hidden">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d938.2586008299202!2d44.512912410425784!3d40.17767072940077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sam!4v1772012507926!5m2!1sen!2sam"
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3048.3435005489227!2d44.514504476786655!3d40.17916837147885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x406abcfa94b65b8f%3A0x69fb75bd975b7c20!2s48%2F1%20Nalbandyan%20St%2C%20Yerevan%200010!5e0!3m2!1sen!2sam!4v1773657230092!5m2!1sen!2sam" width="600" height="450" style={{width: '100%', height: '70%'}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </main>
   );
