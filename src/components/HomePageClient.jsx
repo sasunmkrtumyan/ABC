@@ -1,7 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { HeartHandshake, Info, Link, Target } from 'lucide-react';
+import {
+  BadgeCheck,
+  CheckCheck,
+  HeartHandshake,
+  Link,
+  Target,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useLanguage } from '../lib/i18n/LanguageContext';
 import RevealSection from './RevealSection';
@@ -61,7 +67,9 @@ export default function HomePageClient() {
                           : 'border-white/15 bg-white/5 hover:border-white/40 hover:bg-white/15'
                       }`}
                     >
-                      <span className="font-semibold text-white/90">0{index + 1}</span>
+                      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/15 text-white">
+                        <BadgeCheck className="h-4 w-4" />
+                      </span>
                       <span className="ml-3 text-white/90">{item}</span>
                     </button>
                   ))}
@@ -127,8 +135,8 @@ export default function HomePageClient() {
                   className="rounded-2xl border border-indigo-100 bg-white/90 p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:p-5"
                 >
                   <div className="flex gap-3">
-                    <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-bold text-indigo-700">
-                      {index + 1}
+                    <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-indigo-700">
+                      <CheckCheck className="h-4 w-4" />
                     </span>
                     <p className="leading-relaxed text-slate-700">{item}</p>
                   </div>
@@ -148,7 +156,7 @@ export default function HomePageClient() {
                 ))}
               </div>
               <a
-                href="mailto:info@abc1111.com"
+                href="mailto:info@abc1111.am"
                 className="mt-6 inline-flex rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
               >
                 {t.common.connectNow}

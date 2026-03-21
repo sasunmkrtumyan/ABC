@@ -1,6 +1,6 @@
 'use client';
 
-import { Building2, CheckCircle2, Globe2, ShieldCheck } from 'lucide-react';
+import { CheckCheck, Globe2, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import RevealSection from '../../components/RevealSection';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 
@@ -25,7 +25,7 @@ export default function AboutPage() {
               <p className="text-sm text-slate-700">{t.about.highlights?.[1]}</p>
             </div>
             <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3">
-              <CheckCheck className="mt-0.5 h-5 w-5 shrink-0 text-violet-700" />
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-violet-700" />
               <p className="text-sm text-slate-700">{t.about.highlights?.[2]}</p>
             </div>
           </div>
@@ -39,8 +39,8 @@ export default function AboutPage() {
             className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:p-6"
           >
             <div className="flex gap-4">
-              <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
-                {index + 1}
+              <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                <CheckCheck className="h-4 w-4" />
               </span>
               <p className="leading-relaxed text-slate-700">{block}</p>
             </div>
