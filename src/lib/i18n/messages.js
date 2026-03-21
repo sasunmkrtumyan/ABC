@@ -120,7 +120,7 @@ export const messages = {
       pastSection: "Ավարտված միջոցառումներ",
     },
     footer: {
-      text: "ABC - Միասին կառուցում ենք հնարավորություններ։",
+      text: "ABC - Armenians together, powerful than ever ✊",
     },
   },
   ru: {
@@ -236,7 +236,7 @@ export const messages = {
       pastSection: "Прошедшие мероприятия",
     },
     footer: {
-      text: "ABC - Строим возможности вместе.",
+      text: "ABC - Armenians together, powerful than ever ✊",
     },
   },
   en: {
@@ -352,7 +352,7 @@ export const messages = {
       pastSection: "Past events",
     },
     footer: {
-      text: "ABC - Building opportunities together.",
+      text: "ABC - Armenians together, powerful than ever ✊",
     },
   },
 };
