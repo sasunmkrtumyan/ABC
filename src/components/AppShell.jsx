@@ -16,9 +16,9 @@ export default function AppShell({ children }) {
   return (
     <LanguageProvider>
       <div className="flex min-h-screen flex-col">
-        {/* <NavBar /> */}
+        <NavBar />
         <div className="flex-1">{children}</div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </LanguageProvider>
   );

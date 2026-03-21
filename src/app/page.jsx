@@ -1,5 +1,5 @@
-import ComingSoon from './coming-soon';
+import HomePageClient from '../components/HomePageClient';
 
 export default function HomePage() {
-  return <ComingSoon />;
+  return <HomePageClient />;
 }
