@@ -24,7 +24,7 @@ export const messages = {
       of: "ից",
     },
     landing: {
-      heroTitle: "Armenian Business Club",
+      heroTitle: "Pan - Armenian Business Union",
       heroSubtitle:
         "Միացիր հայկական բիզնեսի հզոր համայնքին և ընդլայնիր քո հնարավորությունները ամբողջ աշխարհում",
       welcomeTitle: "Բարի Գալուստ",
@@ -120,7 +120,7 @@ export const messages = {
       pastSection: "Ավարտված միջոցառումներ",
     },
     footer: {
-      text: "ABC - Armenians together, powerful than ever ✊",
+      text: "ABC - Armenians together, powerful than ever",
     },
   },
   ru: {
@@ -140,7 +140,7 @@ export const messages = {
       of: "из",
     },
     landing: {
-      heroTitle: "Armenian Business Club",
+      heroTitle: "Pan - Armenian Business Union",
       heroSubtitle:
         "Присоединяйся к мощному сообществу армянского бизнеса и расширяй свои возможности по всему миру",
       welcomeTitle: "Добро пожаловать",
@@ -236,7 +236,7 @@ export const messages = {
       pastSection: "Прошедшие мероприятия",
     },
     footer: {
-      text: "ABC - Armenians together, powerful than ever ✊",
+      text: "ABC - Armenians together, powerful than ever",
     },
   },
   en: {
@@ -256,7 +256,7 @@ export const messages = {
       of: "of",
     },
     landing: {
-      heroTitle: "Armenian Business Club",
+      heroTitle: "Pan - Armenian Business Union",
       heroSubtitle:
         "Join the strong Armenian business community and expand your opportunities worldwide",
       welcomeTitle: "Welcome",
@@ -352,7 +352,7 @@ export const messages = {
       pastSection: "Past events",
     },
     footer: {
-      text: "ABC - Armenians together, powerful than ever ✊",
+      text: "ABC - Armenians together, powerful than ever",
     },
   },
 };

@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <footer className="border-slate-200 bg-white border-t">
       <div className="container-abc gap-2 py-8 text-sm text-slate-600 md:flex-row md:items-center md:justify-between flex flex-col">
-        <p>{t.footer.text}</p>
+        <p className='text-lg font-bold'>{t.footer.text} <span className='text-2xl'>✊</span></p>
         <a href="mailto:info@abc1111.am" className="font-semibold text-brand-blue">
           info@abc1111.am
         </a>

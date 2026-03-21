@@ -2,7 +2,7 @@ import AppShell from '../components/AppShell';
 import './globals.css';
 
 export const metadata = {
-  title: 'ABC - Armenian Business Club',
+  title: 'Pan-Armenian Business Union',
   description: 'Building Bridges, Creating Opportunities.',
   icons: {
     icon: '/img/logo.png',
