@@ -29,7 +29,7 @@ export default function NavBar() {
     <header className="top-0 border-slate-200 bg-white/90 backdrop-blur-md sticky z-50 border-b">
       <nav className="container-abc py-4 flex items-center justify-between">
         <Link href="/" className="gap-3 flex items-center">
-          <img src="/img/logo.png" alt="ABC Logo" className="h-14 w-max object-contain" />
+          <img src="/img/logoNew.jpeg" alt="ABC Logo" className="h-14 w-max object-contain" />
         </Link>
 
         {/* Desktop links */}

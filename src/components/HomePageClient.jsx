@@ -1,25 +1,18 @@
 'use client';
 
-import { HeartHandshake, Info, MessageCircleQuestion, Target } from 'lucide-react';
+import { useState } from 'react';
+import { HeartHandshake, Info, Link, Target } from 'lucide-react';
 import Image from 'next/image';
 import { useLanguage } from '../lib/i18n/LanguageContext';
 import RevealSection from './RevealSection';
 
-const partnerLogos = [
-  'Grand Candy',
-  'Ararat Foods',
-  'Yerevan Trade',
-  'Noyan Tech',
-  'Artsakh Agro',
-  'Hayk Logistics',
-  'Anahit Group',
-];
-const partnerTicker = [...partnerLogos, ...partnerLogos];
-
 const sectionImages = {
-  who: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
-  mission: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
-  why: 'https://images.unsplash.com/photo-1521790797524-b2497295b8a0?auto=format&fit=crop&w=1200&q=80',
+  welcome: '/img/aboutUs.avif',
+  who: '/img/aboutUs.avif',
+  mission: '/img/mission.avif',
+  why: '/img/mission.avif',
+  partners: '/img/logos.avif',
+  connect: '/img/connect.png',
 };
 
 function SectionHeader({ icon, title, badge }) {
@@ -39,35 +32,64 @@ function SectionHeader({ icon, title, badge }) {
 
 export default function HomePageClient() {
   const { t } = useLanguage();
+  const [activeWelcomeIndex, setActiveWelcomeIndex] = useState(0);
 
   return (
     <main>
-      <section
-        className="bg-gradient-to-b from-[#D90012] via-[#0033A0] to-[#F2A800] py-24 text-white relative overflow-hidden"
-      >
-        <div className="container-abc">
-          <h1 className="max-w-3xl text-4xl font-black leading-tight md:text-6xl motion-safe:animate-fade-up">
-            {t.landing.heroTitle}
-          </h1>
-          <p className="mt-4 text-lg font-semibold text-orange-200">{t.common.slogan}</p>
-          <p className="mt-6 max-w-2xl text-base text-blue-100 md:text-xl">{t.landing.heroSubtitle}</p>
-          <a
-            href="mailto:abc1111@gmail.com"
-            className="mt-8 rounded-xl border-white/70 bg-white px-6 py-3 font-semibold shadow-glow inline-flex border text-[#0B3D91] transition hover:scale-[1.02]"
-          >
-            {t.common.connectNow}
-          </a>
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#D90012] via-[#0033A0] to-[#0B1F5B] py-16 text-white md:py-20">
+        <div className="absolute -left-16 -top-14 h-48 w-48 rounded-full bg-white/10 blur-2xl"></div>
+        <div className="absolute -bottom-20 right-0 h-64 w-64 rounded-full bg-[#F2A800]/30 blur-3xl"></div>
+        <div className="container-abc relative">
+          <RevealSection className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-sm md:p-8 lg:p-10">
+            <div className="mb-8 text-center">
+              <h1 className="text-3xl font-black leading-tight md:text-5xl">{t.landing.welcomeTitle}</h1>
+              <p className="mx-auto mt-4 max-w-2xl text-sm text-blue-100 md:text-base">{t.common.slogan}</p>
+            </div>
+            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+              <div>
+                <div className="grid gap-3">
+                  {t.landing.welcomeItems.map((item, index) => (
+                    <button
+                      key={item}
+                      type="button"
+                      onMouseEnter={() => setActiveWelcomeIndex(index)}
+                      onFocus={() => setActiveWelcomeIndex(index)}
+                      onClick={() => setActiveWelcomeIndex(index)}
+                      className={`w-full rounded-2xl border px-4 py-3 text-left text-sm transition md:text-base ${
+                        activeWelcomeIndex === index
+                          ? 'border-white/50 bg-white/20 shadow-lg'
+                          : 'border-white/15 bg-white/5 hover:border-white/40 hover:bg-white/15'
+                      }`}
+                    >
+                      <span className="font-semibold text-white/90">0{index + 1}</span>
+                      <span className="ml-3 text-white/90">{item}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative min-h-[280px] overflow-hidden rounded-3xl border border-white/20 bg-white/15 shadow-xl backdrop-blur-sm md:min-h-[360px]">
+                <Image
+                  src={sectionImages.welcome}
+                  alt="Welcome"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>
+          </RevealSection>
         </div>
       </section>
 
       <div className="container-abc space-y-14 lg:space-y-24 py-14">
-        <RevealSection className="rounded-3xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-10">
+        {/* <RevealSection className="rounded-3xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-10">
           <SectionHeader icon={<Info className="h-6 w-6" />} title={t.landing.whoTitle} />
           <div className="grid gap-8 md:grid-cols-2 md:items-center">
             <p className="rounded-2xl border border-slate-100 bg-slate-50/70 p-6 leading-relaxed text-slate-600">
               {t.landing.whoText}
             </p>
-            <div className="relative h-60 overflow-hidden rounded-2xl">
+            <div className="relative h-80 overflow-hidden rounded-2xl">
               <Image
                 src={sectionImages.who}
                 alt="ABC community"
@@ -76,12 +98,12 @@ export default function HomePageClient() {
               />
             </div>
           </div>
-        </RevealSection>
+        </RevealSection> */}
 
         <RevealSection className="rounded-3xl border border-brand-blue/20 bg-brand-light p-6 shadow-lg shadow-brand-blue/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-10">
           <SectionHeader icon={<Target className="h-6 w-6" />} title={t.landing.missionTitle} />
           <div className="grid gap-8 md:grid-cols-2 md:items-center">
-            <div className="relative h-60 overflow-hidden rounded-2xl">
+            <div className="relative h-80 overflow-hidden rounded-2xl">
               <Image
                 src={sectionImages.mission}
                 alt="ABC mission"
@@ -89,53 +111,70 @@ export default function HomePageClient() {
                 className="object-cover transition-transform duration-700 hover:scale-105"
               />
             </div>
-            <p className="rounded-2xl border border-brand-blue/15 bg-white/90 p-6 leading-relaxed text-slate-700">
+            <p className="rounded-2xl h-max border border-brand-blue/15 bg-white/90 p-6 leading-relaxed text-slate-700">
               {t.landing.missionText}
             </p>
           </div>
         </RevealSection>
 
-        <RevealSection className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-xl shadow-slate-200/60 lg:p-10">
-          <SectionHeader icon={<MessageCircleQuestion className="h-6 w-6" />} title={t.landing.whyTitle} />
-          <div className="grid gap-8 md:grid-cols-2 md:items-start">
-            <ul className="space-y-4">
-              {t.landing.whyItems.map((item) => (
-                <li
+        <RevealSection className="relative overflow-hidden rounded-3xl border border-indigo-100 bg-gradient-to-br from-indigo-50 via-white to-blue-50 p-6 shadow-xl shadow-indigo-100/50 lg:p-10">
+          <SectionHeader icon={<Link className="h-6 w-6" />} title={t.landing.whyTitle} />
+          <div className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
+            <div className="space-y-3">
+              {t.landing.whyItems.map((item, index) => (
+                <article
                   key={item}
-                  className="group flex items-start gap-3 rounded-xl border border-slate-200/70 bg-white/80 px-5 py-4 text-slate-700 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-indigo-400 hover:shadow-lg"
+                  className="rounded-2xl border border-indigo-100 bg-white/90 p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:p-5"
                 >
-                  <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-600 transition group-hover:bg-indigo-600 group-hover:text-white">
-                    ✓
-                  </span>
-                  <span className="leading-relaxed">{item}</span>
-                </li>
+                  <div className="flex gap-3">
+                    <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-bold text-indigo-700">
+                      {index + 1}
+                    </span>
+                    <p className="leading-relaxed text-slate-700">{item}</p>
+                  </div>
+                </article>
               ))}
-            </ul>
-            <div className="relative h-72 overflow-hidden rounded-3xl shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600/20 via-transparent to-transparent"></div>
-              <Image
-                src={sectionImages.why}
-                alt="Business connection"
-                fill
-                className="object-cover transition-transform duration-700 hover:scale-105"
-              />
+            </div>
+            <div className="rounded-2xl border border-indigo-100 bg-white p-5 shadow-sm md:p-6">
+              <p className="text-sm font-bold uppercase tracking-wide text-indigo-700">{t.landing.whyFocusTitle}</p>
+              <div className="mt-4 space-y-3">
+                {t.landing.whyFocusItems?.map((item) => (
+                  <div key={item} className="flex items-start gap-3 rounded-xl bg-indigo-50/60 px-3 py-3">
+                    <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-[11px] font-bold text-white">
+                      ✓
+                    </span>
+                    <p className="text-sm leading-relaxed text-slate-700">{item}</p>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="mailto:info@abc1111.com"
+                className="mt-6 inline-flex rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
+              >
+                {t.common.connectNow}
+              </a>
+              <div className="mt-10 overflow-hidden rounded-xl border border-indigo-100 bg-indigo-50/50 p-2">
+                <Image
+                  src={sectionImages.connect}
+                  alt="Connect"
+                  width={800}
+                  height={400}
+                  className="h-auto w-full object-contain"
+                />
+              </div>
             </div>
           </div>
         </RevealSection>
 
         <RevealSection className="rounded-3xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-10">
           <SectionHeader icon={<HeartHandshake className="h-6 w-6" />} title={t.landing.partnersTitle} />
-          <div className="marquee-shell mt-2">
-            <div className="marquee-track">
-              {partnerTicker.map((logo, index) => (
-                <div
-                  key={`${logo}-${index}`}
-                  className="flex h-20 min-w-[220px] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 font-semibold text-slate-600 transition duration-300 hover:-translate-y-1 hover:border-brand-blue/40 hover:bg-white hover:text-brand-blue hover:shadow-md"
-                >
-                  {logo}
-                </div>
-              ))}
-            </div>
+          <div className="relative mt-2 min-h-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 md:h-[280px] lg:h-[580px]">
+            <Image
+              src={sectionImages.partners}
+              alt={t.landing.partnersTitle}
+              fill
+              className="object-fill p-4 md:p-6"
+            />
           </div>
         </RevealSection>
       </div>

@@ -46,7 +46,7 @@ flowchart TD
   - Partner details (`/partner/[slug]`)
 - Landing sections:
   - Navbar (logo, nav links, language dropdown with flag + short code)
-  - Hero with requested text and mailto CTA (`mailto:abc1111@gmail.com`)
+  - Hero with requested text and mailto CTA (`mailto:info@abc1111.com`)
   - Who we are
   - Our mission
   - Why connect to ABC

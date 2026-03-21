@@ -5,8 +5,8 @@ import { useLanguage } from '../../lib/i18n/LanguageContext';
 
 const contactMock = {
   office: '48/1 Nalbandyan St, Yerevan, Armenia',
-  phone: '+374 10 555500, +374 91 222233',
-  email: 'abc1111@gmail.com',
+  phone: `+374 99060834`,
+  email: 'info@abc1111.com',
   hours: 'Mon - Fri, 10:00 - 19:00',
 };
 

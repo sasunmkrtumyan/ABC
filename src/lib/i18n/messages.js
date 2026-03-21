@@ -17,7 +17,6 @@ export const messages = {
       admin: "Ադմին",
     },
     common: {
-      slogan: "Կառուցելով կամուրջներ, ստեղծելով հնարավորություններ",
       connectNow: "Միացիր հիմա",
       noData: "Տվյալներ չկան",
       readMore: "Ավելին",
@@ -28,29 +27,54 @@ export const messages = {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
         "Միացիր հայկական բիզնեսի հզոր համայնքին և ընդլայնիր քո հնարավորությունները ամբողջ աշխարհում",
+      welcomeTitle: "Բարի Գալուստ",
+      welcomeItems: [
+        "Եթե ցանկանում եք Հայաստանի Հանրապետությունում եւ աշխարհասփյուռ հայերի կողմից ստեղծված ընկերությունների շրջանում գտնել հուսալի, ստուգված եւ բարձրակարգ մատակարարներ, գնորդներ, ներդրողներ եւ այլ տարաբնույթ գործընկերներ, ապա Բարի Գալուստ այս Հարթակ...",
+        "Եթե ցանկանում եք Հայաստանի Հանրապետությունում եւ աշխարհասփյուռ հայերի կողմից ստեղծված ընկերությունների շրջանում գտնել բարձրակարգ եւ կայացած տնտեսավարող սուբյեկտներին ըստ գործունեության ոլորտների՝ իրենց մասին կարեւորագույն տեղեկատվությամբ, ապա Բարի Գալուստ այս Հարթակ...",
+        "Եթե ցանկանում եք դառնալ Համահայկական Բիզնես Միության անդամ կամ գործընկեր՝ համարելով, որ համապատասխանում եք Միության առաքելությանն ու արժեքներին, ապա Բարի Գալուստ այս Հարթակ...",
+      ],
       whoTitle: "Ո՞վ ենք մենք",
       whoText:
         "ABC-ն հարթակ է, որտեղ հայկական բիզնեսները կապվում են, համագործակցում և ստեղծում են նոր գործընկերություններ։ Մենք միավորում ենք սփյուռքի և Հայաստանի ընկերություններին մեկ համայնքում։",
       missionTitle: "Մեր առաքելությունը",
       missionText:
-        "Ստեղծել վստահելի և ակտիվ բիզնես միջավայր, որտեղ հայկական ընկերությունները գտնում են նոր շուկաներ, գիտելիք և աջակցություն՝ երկարաժամկետ աճի համար։",
-      whyTitle: "Ինչու միանալ ABC-ին",
+        "Համահայկական Բիզնես Միության առաքելությունը հայկական բիզնես ներուժի միավորումն է մեկ միասնական հարթակում, որի արդյունքում կստեղծվեն նախադրյալներ անդամ ընկերությունների համար մրցակցային պայքարում առավելություն ստանալու եւ տարաբնույթ մարտահրավերները ավելի սահուն հաղթահարելու տեսանկյունից։ Առաքելության հիմքում դրվում է << Հայերը՝ միասին, հզոր քան երբեւէ՚>> գաղափարական մոտեցումը։",
+      whyTitle: "Միացիր ABC-ին",
       whyItems: [
-        "Մուտք գլոբալ հայկական բիզնես ցանց",
-        "Գործընկերների և հաճախորդների նոր կապեր",
-        "Համատեղ նախագծեր և փորձի փոխանակում",
+        "Համահայկական Բիզնես Միությունը (ABC) պատկանում է իր անդամներին:",
+        "Համահայկական Բիզնես Միության (ABC) անդամներ են հանդիսանում կազմակերպությունները, այլ ոչ թե անհատները:",
+        "Համահայկական Բիզնես Միության (ABC) նոր անդամ է դառնում այն կազմակերպությունը, որի դիմումը հաստատվել է անդամ կազմակերպությունների պարզ մեծամասնության կողմից:",
+        "Համահայկական Բիզնես Միությանը (ABC) անդամակցության հետ կապված անդամավճարներ կամ մուտքավճարներ բացառված են:",
+        "Համահայկական Բիզնես Միությանը (ABC) անդամակցության հիմքում գաղափարական եւ արժեքային համապատասխանությունն է, այլ ոչ թե նյութական բաղադրիչը:",
+        "Համահայկական Բիզնես Միությունում (ABC) խրախուսվում են Միության գործունեության բովանդակային կողմը, քաջալերվում են անդամների նախաձեռնողականությունը, փոխօգնությանն ու աջակցությանն ուղղված գործողությունները, եւ նրանք չպետք է ծանրաբեռնվեն ձեւական պահանջներով կամ ընթացակարգերով:",
+        "Համահայկական Բիզնես Միության (ABC) գործունեության հիմնական նպատակային ուղղություններն են:",
       ],
+      whyFocusItems: [
+        "Փորձի (գիտելիքի) փոխանակում",
+        "Ներդրումային (ֆոնդահայթայթման) արդյունավետ միջավայրի եւ գործընթացների կազմակերպում",
+        "Անհատական կամ համակարգային խնդիրների, մարտահրավերների հաղթահարում",
+      ],
+      whyFocusTitle: "ABC-ի հիմնական ուղղությունները",
       testimonialsTitle: "Կարծիքներ",
       partnersTitle: "Մեր գործընկերները",
     },
     about: {
       title: "Մեր մասին",
       intro:
-        "Հայկական բիզնես համայնքը կարիք ունի մեկ միասնական թվային տան։ ABC-ն հենց այդ նպատակի համար է՝ հավաքել հայկական ընկերություններին մեկ վայրում, հեշտացնել հաղորդակցությունը և արագացնել համատեղ աճը։",
+        "Սա Համահայկական Բիզնես Միության միասնական հարթակն է, որը միավորում է հայկական բիզնեսի ներուժը անկախ աշխարհագրությունից՝ ընդգրկելով Հայաստանի Հանրապետությունում գործող ռեզիդենտ եւ ոչ ռեզիդենտ ընկերություններին, աշխարհասփյուռ հայերի կողմից ստեղծված ընկերություններին ու կորպորացիաներին:",
       blocks: [
-        "Մենք հավատում ենք, որ երբ հայկական բիզնեսները համագործակցում են, հաղթում է ամբողջ էկոհամակարգը։",
-        "ABC-ում մենք կապում ենք գաղափարներ, փորձ և շուկաներ, որպեսզի կառուցենք ավելի մրցունակ ապագա։",
-        "Մեր երկարաժամկետ նպատակը նաև Հայաստանի տնտեսական հզորացումն է և երկրի գեղեցիկ ներուժի զարգացումը։",
+        "Այստեղ կարող եք գտնել տեղեկատվություն Համահայկական Բիզնես Միության գործունեության, կազմակերպվող միջոցառումների եւ հանդիպումների վերաբերյալ, անդամ կամ գործընկեր հանդիսացող ընկերությունների էջերը՝ նրանց մասին կարեւորագույն անհրաժեշտ տեղեկատվությամբ:",
+        "Այս միասնական թվային հարթակը, լինելով Համահայկական Բիզնես համայնքը ներկայացնող մասնագիտացված հարթակ, արդի տեխնոլոգիական ժամանակներում նպատակ ունի առավելագույնս արագ եւ համակարգված տեղեկատվություն տրամադրել փորձված, կայացած եւ ճանապարհ անցած ընկերությունների վերաբերյալ, որը կարող է օգտակար լինել սպառողների, գնորդների, մատակարարների, ներդրողների եւ այլ կոնտրագենտների համար:",
+        "Համահայկական Բիզնես Միության գործերը եւ այս հարթակը համակարգող թիմը ներդնում են առավելագույն ջանքերը, որպեսզի այստեղ ներառվեն բացառապես ստուգված, հուսալի, իրենց ոլորտում առաջատար հանդիսացող հայկական ծագմամբ այնպիսի տնտեսավարող սուբյեկտները, ովքեր իրենց գործունեության հիմքում բացի շահույթ հետապնդելուց հետեւողական են բիզնես էթիկայի, բարեվարքության, ազնվության եւ կայուն գործընկերության արժեքներին:",
+        "Թեկնածու ընկերություններին դիտարկելիս հաշվի են առնվում նրանց վերաբերմունքը Համահայկական բիզնես համայնքին եւ հակառակը, նրանց համապատասխանությունը միասնականության եւ կամեցողության արժեքային սկզբունքներին, նրանց նվիրումը հայ ազգին, Հայրենիքի կայուն եւ հզոր ապագայի տեսլականին:",
+        "Այս միասնական թվային հարթակում ներառված են պատվարժան ընկերություններ, որոնց նկատմամբ գերակշռող է հասարակության, սպառողների, գործընկերների եւ այլ կողմերի դրական վերաբերմունքը եւ բացակայում են հակառակը հավաստող ծանրակշիռ փաստարկներ:",
+        "Ամեն ընկերություն չի կարող ներկայացված լինել այս հարթակում, քանզի գործում են կանոններ, որոնք նույնական են եւ կիրառելի ինչպես եւ Համահայկական Բիզնես Միության անդամ կամ գործընկեր դառնալու պարագայում:",
+        "Հայկական ծագումը եւ տպավորիչ ֆինանսատնտեսական ցուցանիշները դեռեւս երաշխիք չեն, որ տվյալ Ընկերությունը կարող է դառնալ Համահայկական Բիզնես Միության անդամ եւ ներառվել այս հարթակում, քանզի Միության յուրաքանչյուր անդամ – ընկերության դիրքորոշումը կարող է որոշիչ լինել նորերի ընդգրկման հարցում:",
+      ],
+      highlights: [
+        "Համաշխարհային հայկական բիզնես էկոհամակարգ",
+        "Ստուգված եւ հուսալի ընկերություններ",
+        "Բիզնես էթիկա, ազնվություն եւ կայուն գործընկերություն",
       ],
     },
     contact: {
@@ -96,7 +120,7 @@ export const messages = {
       pastSection: "Ավարտված միջոցառումներ",
     },
     footer: {
-      text: "ABC - Armenian Business Club. Միասին կառուցում ենք հնարավորություններ։",
+      text: "ABC - Միասին կառուցում ենք հնարավորություններ։",
     },
   },
   ru: {
@@ -109,7 +133,6 @@ export const messages = {
       admin: "Админ",
     },
     common: {
-      slogan: "Строим мосты, создаём возможности.",
       connectNow: "Присоединиться",
       noData: "Нет данных",
       readMore: "Подробнее",
@@ -120,29 +143,54 @@ export const messages = {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
         "Присоединяйся к мощному сообществу армянского бизнеса и расширяй свои возможности по всему миру",
+      welcomeTitle: "Добро пожаловать",
+      welcomeItems: [
+        "Если Вы хотите среди компаний, действующих в Республике Армения и созданных армянами по всему миру, найти надежных, проверенных и высококлассных поставщиков, покупателей, инвесторов и других разнообразных партнеров, то Добро пожаловать на эту Платформу...",
+        "Если Вы хотите среди компаний, действующих в Республике Армения и созданных армянами по всему миру, найти высококлассные и состоявшиеся хозяйствующие субъекты по отраслям деятельности с ключевой информацией о них, то Добро пожаловать на эту Платформу...",
+        "Если Вы хотите стать членом или партнером Всеармянского Бизнес Союза, считая, что соответствуете миссии и ценностям Союза, то Добро пожаловать на эту Платформу...",
+      ],
       whoTitle: "Кто мы",
       whoText:
         "ABC - это портал, где армянские компании общаются, сотрудничают и находят новые возможности для роста.",
       missionTitle: "Наша миссия",
       missionText:
-        "Создать сильную платформу для объединения армянских компаний, обмена опытом и расширения международных связей.",
-      whyTitle: "Почему выбрать ABC",
+        "Миссия Всеармянского Бизнес Союза — объединение потенциала Армянского бизнеса на единой платформе, что создаст предпосылки для получения преимуществ членскими компаниями в конкурентной борьбе и более эффективного преодоления различных вызовов. В основе миссии заложен идеологический подход: «Армяне — вместе, могучее, чем когда-либо».",
+      whyTitle: "Присоединяйся к ABC",
       whyItems: [
-        "Доступ к глобальному армянскому бизнес-сообществу",
-        "Новые партнерства и клиенты",
-        "Совместное развитие и обмен опытом",
+        "Всеармянский Бизнес Союз (ABC) принадлежит своим членам.",
+        "Членами Всеармянского Бизнес Союза (ABC) являются организации, а не отдельные лица.",
+        "Новым членом Всеармянского Бизнес Союза (ABC) становится организация, чья заявка одобрена простым большинством организаций-членов.",
+        "Членство во Всеармянском Бизнес Союзе (ABC) не предусматривает членских или вступительных взносов.",
+        "Основой членства во Всеармянском Бизнес Союзе (ABC) является идейное и ценностное соответствие, а не материальная составляющая.",
+        "В Всеармянском Бизнес Союзе (ABC) поощряется содержательная деятельность Союза, инициативность членов, действия, направленные на взаимопомощь и поддержку; при этом участники не должны быть перегружены формальными требованиями или процедурами.",
+        "Основные направления деятельности Всеармянского Бизнес Союза (ABC):",
       ],
+      whyFocusItems: [
+        "Обмен опытом (знаниями)",
+        "Организация эффективной среды и процессов для инвестиций (привлечения финансирования)",
+        "Преодоление индивидуальных или системных проблем и вызовов",
+      ],
+      whyFocusTitle: "Основные направления ABC",
       testimonialsTitle: "Отзывы",
       partnersTitle: "Наши партнеры",
     },
     about: {
       title: "О нас",
       intro:
-        "Армянскому бизнесу нужна единая сильная среда. ABC объединяет компании в одном пространстве для общения, роста и совместного развития нашей красивой страны.",
+        "Это единая платформа Всеармянского Бизнес Союза, которая объединяет потенциал армянского бизнеса вне зависимости от географии, включая резидентные и нерезидентные компании, действующие в Республике Армения, а также компании и корпорации, созданные армянами по всему миру.",
       blocks: [
-        "Мы строим мост между бизнесом Армении и диаспоры.",
-        "Платформа помогает находить партнеров, проекты и возможности.",
-        "Наша цель - долгосрочный вклад в развитие экономики Армении.",
+        "Здесь вы можете найти информацию о деятельности Всеармянского Бизнес Союза, проводимых мероприятиях и встречах, а также страницы компаний-членов и партнёров с необходимой ключевой информацией о них.",
+        "Данная единая цифровая платформа, являясь специализированной площадкой, представляющей всеармянское бизнес сообщество, в условиях современных технологий направлена на максимально быстрое и системное предоставление информации о проверенных, состоявшихся и опытных компаниях, что может быть полезно для потребителей, покупателей, поставщиков, инвесторов и других контрагентов.",
+        "Команда, координирующая деятельность Всеармянского Бизнес Союза и данную платформу, прилагает максимальные усилия, чтобы здесь были представлены исключительно проверенные, надёжные и ведущие в своей сфере хозяйствующие субъекты армянского происхождения, которые, помимо стремления к прибыли, последовательно придерживаются ценностей деловой этики, добросовестности, честности и устойчивого партнёрства.",
+        "При рассмотрении компаний-кандидатов учитывается их отношение к всеармянскому бизнес сообществу и наоборот, их соответствие ценностным принципам единства и доброй воли, их преданность армянскому народу и видению стабильного и сильного будущего Родины.",
+        "На данной единой цифровой платформе представлены достойные компании, в отношении которых преобладает положительное мнение общества, потребителей, партнёров и других сторон, и отсутствуют весомые аргументы, свидетельствующие об обратном.",
+        "Не каждая компания может быть представлена на данной платформе, поскольку действуют правила, которые идентичны и применимы также при вступлении в члены или партнёры Всеармянского Бизнес Союза.",
+        "Армянское происхождение и впечатляющие финансово-экономические показатели сами по себе не являются гарантией того, что компания может стать членом Всеармянского Бизнес Союза и быть включённой в данную платформу, поскольку позиция каждого члена Союза — компании может иметь решающее значение при принятии решения о включении новых участников.",
+      ],
+      highlights: [
+        "Глобальная экосистема армянского бизнеса",
+        "Проверенные и надёжные компании",
+        "Деловая этика, честность и устойчивое партнёрство",
       ],
     },
     contact: {
@@ -188,7 +236,7 @@ export const messages = {
       pastSection: "Прошедшие мероприятия",
     },
     footer: {
-      text: "ABC - Armenian Business Club. Строим возможности вместе.",
+      text: "ABC - Строим возможности вместе.",
     },
   },
   en: {
@@ -201,7 +249,6 @@ export const messages = {
       admin: "Admin",
     },
     common: {
-      slogan: "Building Bridges, Creating Opportunities",
       connectNow: "Connect Now",
       noData: "No data found",
       readMore: "Read more",
@@ -212,29 +259,54 @@ export const messages = {
       heroTitle: "Armenian Business Club",
       heroSubtitle:
         "Join the strong Armenian business community and expand your opportunities worldwide",
+      welcomeTitle: "Welcome",
+      welcomeItems: [
+        "If You want to find reliable, verified, and high-quality suppliers, buyers, investors, and other diverse partners among companies operating in the Republic of Armenia and those established by Armenians worldwide, Welcome to this Platform...",
+        "If you want to find high-quality and established business entities by industry, with essential information about them, among companies operating in the Republic of Armenia and those established by Armenians worldwide, Welcome to this Platform...",
+        "If you want to become a member or partner of the Pan-Armenian Business Union, believing that you align with the mission and values of the Union, Welcome to this Platform...",
+      ],
       whoTitle: "Who We Are",
       whoText:
         "ABC is a platform where Armenian companies communicate, collaborate, and build long-term partnerships across the globe.",
       missionTitle: "Our Mission",
       missionText:
-        "To create a trusted community for Armenian businesses to share opportunities, expand markets, and grow together.",
-      whyTitle: "Why Connect to ABC",
+        "The mission of the Pan-Armenian Business Union is to unite the potential of Armenian businesses on a single platform, creating conditions for member companies to gain a competitive advantage and more smoothly overcome diverse challenges. The mission is based on the ideological approach: “Armenians together, powerful than ever.”",
+      whyTitle: "Join ABC",
       whyItems: [
-        "Access to a worldwide Armenian business network",
-        "Faster partnership and deal opportunities",
-        "Knowledge sharing and joint growth",
+        "The Pan-Armenian Business Union (ABC) belongs to its members.",
+        "Members of the Pan-Armenian Business Union (ABC) are organizations, not individuals.",
+        "A new member of the Pan-Armenian Business Union (ABC) is an organization whose application has been approved by a simple majority of the member organizations.",
+        "Membership in the Pan-Armenian Business Union (ABC) does not involve any membership or entrance fees.",
+        "Membership in the Pan-Armenian Business Union (ABC) is based on alignment in ideas and values, rather than on any material contribution.",
+        "The Pan-Armenian Business Union (ABC) encourages substantive engagement in its activities, promotes members’ initiative, and supports actions aimed at mutual assistance and collaboration. Members should not be burdened with formal requirements or excessive procedures.",
+        "The main areas of activity of the Pan-Armenian Business Union (ABC) are:",
       ],
+      whyFocusItems: [
+        "Exchange of experience (knowledge)",
+        "Organization of an effective environment and processes for investment (fundraising)",
+        "Overcoming individual and systemic challenges and problems",
+      ],
+      whyFocusTitle: "ABC Main Focus Areas",
       testimonialsTitle: "Testimonials",
       partnersTitle: "Our Partners",
     },
     about: {
       title: "About Us",
       intro:
-        "Armenian businesses need one strong community. ABC brings companies together in one place for communication, collaboration, and growth while helping our beautiful country move forward.",
+        "This is the unified platform of the Pan-Armenian Business Union, which brings together the potential of Armenian businesses regardless of geography, including resident and non-resident companies operating in the Republic of Armenia, as well as companies and corporations established by Armenians around the world.",
       blocks: [
-        "We connect Armenian founders, teams, and investors worldwide.",
-        "We help members discover trusted partners and new markets.",
-        "We grow stronger together by sharing value and opportunities.",
+        "Here you can find information about the activities of the Pan-Armenian Business Union, its organized events and meetings, as well as the pages of member and partner companies containing essential key information about them.",
+        "This unified digital platform, serving as a specialized platform representing the Pan-Armenian business community, aims in the modern technological era to provide fast and well-structured information about proven, established, and experienced companies, which may be useful for consumers, buyers, suppliers, investors, and other counterparties.",
+        "The team coordinating the activities of the Pan-Armenian Business Union and this platform makes every effort to ensure that only verified, reliable, and leading business entities of Armenian origin are included those that, beyond pursuing profit, consistently adhere to the values of business ethics, integrity, honesty, and sustainable partnership.",
+        "When reviewing candidate companies, consideration is given to their attitude toward the Pan-Armenian business community and vice versa, their alignment with the values of unity and goodwill, as well as their dedication to the Armenian nation and the vision of a stable and strong future for the Motherland.",
+        "This unified digital platform features reputable companies toward which there is predominantly positive sentiment from society, consumers, partners, and other parties, and where there is an absence of substantial evidence to the contrary.",
+        "Not every company can be represented on this platform, as there are rules in place that are identical to and applicable when becoming a member or partner of the Pan-Armenian Business Union.",
+        "Armenian origin and impressive financial and economic performance alone do not guarantee that a company can become a member of the Pan-Armenian Business Union or be included on this platform, as the position of each member company of the Union may be decisive in the inclusion of new members.",
+      ],
+      highlights: [
+        "Global Armenian business ecosystem",
+        "Verified and trusted companies",
+        "Business ethics, integrity, and sustainable partnership",
       ],
     },
     contact: {
@@ -280,7 +352,7 @@ export const messages = {
       pastSection: "Past events",
     },
     footer: {
-      text: "ABC - Armenian Business Club. Building opportunities together.",
+      text: "ABC - Building opportunities together.",
     },
   },
 };
