@@ -38,7 +38,7 @@ export default function NavBar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`border-b-2 pb-1 text-sm font-semibold transition-colors ${
+              className={`border-b-2 pb-1 text-[15px] font-bold transition-colors ${
                 isActiveLink(link.href)
                   ? 'border-blue-600 text-blue-600'
                   : 'border-transparent text-slate-700 hover:text-blue-500'
