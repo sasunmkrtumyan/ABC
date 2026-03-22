@@ -176,14 +176,14 @@ export default function HomePageClient() {
 
         <RevealSection className="rounded-3xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-10">
           <SectionHeader icon={<HeartHandshake className="h-6 w-6" />} title={t.landing.partnersTitle} />
-          <div className="relative mt-2 min-h-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 md:h-[280px] lg:h-[700px]">
-            <Image
-              src={sectionImages.partners}
-              alt={t.landing.partnersTitle}
-              fill
-              className="object-fill max-w-[1100px] mx-auto h-[700px] p-4 py-7 rounded-xl overflow-hidden"
-            />
-          </div>
+          <Image
+  src={sectionImages.partners}
+  alt={t.landing.partnersTitle}
+  width={1100}
+  height={700}
+  sizes="100vw"
+  className="w-full h-auto object-contain"
+/>
         </RevealSection>
       </div>
     </main>
