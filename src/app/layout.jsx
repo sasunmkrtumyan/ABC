@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata = {
   title: 'Pan-Armenian Business Union',
-  description: 'Building Bridges, Creating Opportunities.',
+  description: 'Armenians together, powerful than ever ✊',
   icons: {
     icon: '/img/logo.png',
     shortcut: '/img/logo.png',
