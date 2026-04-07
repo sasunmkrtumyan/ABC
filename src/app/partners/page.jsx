@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import { Link2, Mail, MapPin, Phone } from 'lucide-react';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 import { pickTextByLanguage } from '../../lib/localize';
 import { getSession } from '../../lib/supabase/auth';
@@ -12,8 +13,19 @@ import autoTable from 'jspdf-autotable';
 const PAGE_SIZE = 10;
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 500];
 
+function isAvifImage(url = '') {
+  return /\.avif(\?|#|$)/i.test(String(url || ''));
+}
+
 function normalizeLookupKey(value) {
   return String(value || '').trim().toLowerCase();
+}
+
+function normalizeWebsiteLink(value = '') {
+  const text = String(value || '').trim();
+  if (!text) return '';
+  if (/^(https?:\/\/|mailto:|tel:)/i.test(text)) return text;
+  return `https://${text}`;
 }
 
 function safePdfFileName(value) {
@@ -329,13 +341,34 @@ export default function PartnersPage() {
                             alt={pickTextByLanguage(item.name, language) || 'logo'}
                             width={48}
                             height={48}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-contain"
+                            unoptimized={isAvifImage(item.logoUrl)}
                           />
                         ) : null}
                       </div>
                       <Link href={`/partner/${item.slug}`} className="font-semibold text-blue-500 hover:underline">
                         {pickTextByLanguage(item.name, language)}
                       </Link>
+                    </div>
+                    <div className="mt-2 space-y-1 text-xs text-slate-600">
+                      {item.location ? (
+                        <p className="flex items-center gap-1.5">
+                          <MapPin size={14} className="shrink-0" />
+                          <span className="truncate">{item.location}</span>
+                        </p>
+                      ) : null}
+                      {(item.links || []).slice(0, 2).map((linkValue) => {
+                        const href = normalizeWebsiteLink(linkValue);
+                        if (!href) return null;
+                        return (
+                          <p key={`${item.id}-${href}`} className="flex items-center gap-1.5">
+                            <Link2 size={14} className="shrink-0" />
+                            <a href={href} target="_blank" rel="noopener noreferrer" className="truncate hover:underline">
+                              {linkValue}
+                            </a>
+                          </p>
+                        );
+                      })}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-slate-600">
@@ -347,8 +380,30 @@ export default function PartnersPage() {
                       return translatedTags.length > 0 ? translatedTags.join(', ') : '-';
                     })()}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">{item.email}</td>
-                  <td className="px-4 py-3 text-slate-600">{item?.phones?.[0] || '-'}</td>
+                  <td className="px-4 py-3 text-slate-600">
+                    {item.email ? (
+                      <a href={`mailto:${item.email}`} className="flex items-center gap-1.5 hover:underline">
+                        <Mail size={14} className="shrink-0" />
+                        <span className="truncate">{item.email}</span>
+                      </a>
+                    ) : (
+                      '-'
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-slate-600">
+                    {item?.phones?.length ? (
+                      <div className="space-y-1">
+                        {item.phones.slice(0, 2).map((phone) => (
+                          <p key={`${item.id}-${phone}`} className="flex items-center gap-1.5">
+                            <Phone size={14} className="shrink-0" />
+                            <span>{phone}</span>
+                          </p>
+                        ))}
+                      </div>
+                    ) : (
+                      '-'
+                    )}
+                  </td>
                 </tr>
               ))
             )}

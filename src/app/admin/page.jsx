@@ -5,6 +5,7 @@ import { getSession, onAuthStateChange, signInWithPassword, signOut as supabaseS
 import { createEvent, deleteEvent, fetchEvents, updateEvent } from '@/lib/supabase/events.js';
 import { createPartner, deletePartner, fetchPartners, updatePartner } from '@/lib/supabase/partners.js';
 import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
+import RichTextEditor from '@/components/RichTextEditor.jsx';
 import Link from 'next/link'; // Ավելացրել ենք Link հղման համար
 import { useEffect, useMemo, useState } from 'react';
 
@@ -44,6 +45,9 @@ function getPartnerSubmitErrorMessage(error, userId = '') {
   if (message.includes('relation') && message.includes('partners')) {
     return "Գործողությունը ձախողվեց: partners աղյուսակը Supabase-ում չկա։ Գործարկեք supabase/schema.sql և հետո notify pgrst, 'reload schema';";
   }
+  if (message.includes('column') && message.includes('links') && message.includes('does not exist')) {
+    return "Գործողությունը ձախողվեց: partners աղյուսակում links դաշտը չկա։ Supabase SQL Editor-ում գործարկեք՝ alter table public.partners add column if not exists links text[] not null default '{}'::text[];";
+  }
 
   return `Գործողությունը ձախողվեց: ${rawMessage || 'անհայտ սխալ'}`;
 }
@@ -75,6 +79,7 @@ const emptyForm = {
   email: '',
   location: '',
   phones: '',
+  links: [''],
   tags: [],
   logoUrl: '',
 };
@@ -108,6 +113,20 @@ function getTagLabel(tag) {
   if (!tag) return '';
   if (typeof tag.name === 'string') return tag.name;
   return tag.name?.am || tag.name?.en || tag.name?.ru || tag.slug || '';
+}
+
+function getLocationHref(location = '') {
+  const value = String(location || '').trim();
+  if (!value) return '';
+  if (/^https?:\/\//i.test(value)) return value;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`;
+}
+
+function normalizeWebsiteLink(value = '') {
+  const text = String(value || '').trim();
+  if (!text) return '';
+  if (/^(https?:\/\/|mailto:|tel:)/i.test(text)) return text;
+  return `https://${text}`;
 }
 
 export default function AdminPage() {
@@ -214,6 +233,7 @@ export default function AdminPage() {
       email: item.email || '',
       location: item.location || '',
       phones: (item.phones || []).join(', '),
+      links: item.links?.length ? item.links : [''],
       tags: item.tags || [],
       logoUrl: item.logoUrl || '',
     });
@@ -267,12 +287,13 @@ export default function AdminPage() {
         slug,
         name: { am: form.name, en: form.name, ru: form.name },
         description: { am: form.descriptionAm, en: form.descriptionEn, ru: form.descriptionRu },
-        email: form.email,
-        location: form.location,
+        email: form.email.trim(),
+        location: form.location.trim(),
         phones: form.phones
           .split(',')
           .map((p) => p.trim())
           .filter(Boolean),
+        links: (form.links || []).map(normalizeWebsiteLink).filter(Boolean),
         tags: form.tags,
         logoUrl: logoUrl || form.logoUrl,
       };
@@ -528,7 +549,25 @@ export default function AdminPage() {
                 >
                   <div>
                     <p className="font-bold text-slate-800">{pickLocalizedValue(item.name)}</p>
-                    <p className="text-sm text-slate-500">{item.email}</p>
+                    <div className="text-sm text-slate-500">
+                      {item.email ? (
+                        <a href={`mailto:${item.email}`} className="underline hover:text-blue-600">
+                          {item.email}
+                        </a>
+                      ) : null}
+                      {item.location ? (
+                        <p>
+                          <a
+                            href={getLocationHref(item.location)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-blue-600"
+                          >
+                            {item.location}
+                          </a>
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
                   <div className="gap-2 flex">
                     <button
@@ -562,25 +601,24 @@ export default function AdminPage() {
               className="md:col-span-2 rounded-xl border-slate-300 px-4 py-3 border"
               required
             />
-            <textarea
+            <RichTextEditor
               value={form.descriptionAm}
-              onChange={(e) => setForm({ ...form, descriptionAm: e.target.value })}
+              onChange={(nextValue) => setForm({ ...form, descriptionAm: nextValue })}
               placeholder="Նկարագրություն (AM)"
-              className="rounded-xl border-slate-300 px-4 py-3 h-32 border"
             />
-            <textarea
+            <RichTextEditor
               value={form.descriptionRu}
-              onChange={(e) => setForm({ ...form, descriptionRu: e.target.value })}
+              onChange={(nextValue) => setForm({ ...form, descriptionRu: nextValue })}
               placeholder="Описание (RU)"
-              className="rounded-xl border-slate-300 px-4 py-3 h-32 border"
             />
-            <textarea
+            <RichTextEditor
               value={form.descriptionEn}
-              onChange={(e) => setForm({ ...form, descriptionEn: e.target.value })}
+              onChange={(nextValue) => setForm({ ...form, descriptionEn: nextValue })}
               placeholder="Description (EN)"
-              className="md:col-span-2 rounded-xl border-slate-300 px-4 py-3 h-32 border"
+              className="md:col-span-2"
             />
             <input
+              type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder="Email*"
@@ -590,7 +628,7 @@ export default function AdminPage() {
             <input
               value={form.location}
               onChange={(e) => setForm({ ...form, location: e.target.value })}
-              placeholder="Հասցե"
+              placeholder="Հասցե կամ Google Maps հղում"
               className="rounded-xl border-slate-300 px-4 py-3 border"
             />
             <input
@@ -599,6 +637,44 @@ export default function AdminPage() {
               placeholder="Հեռախոսներ (ստորակետով)"
               className="md:col-span-2 rounded-xl border-slate-300 px-4 py-3 border"
             />
+            <div className="md:col-span-2 space-y-2 rounded-xl border border-slate-200 p-4">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-slate-700">Links</p>
+                <button
+                  type="button"
+                  onClick={() => setForm({ ...form, links: [...(form.links || []), ''] })}
+                  className="rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-semibold"
+                >
+                  + Add link
+                </button>
+              </div>
+              {(form.links || []).map((linkValue, index) => (
+                <div key={`partner-link-${index}`} className="flex gap-2">
+                  <input
+                    value={linkValue}
+                    onChange={(e) => {
+                      const nextLinks = [...(form.links || [])];
+                      nextLinks[index] = e.target.value;
+                      setForm({ ...form, links: nextLinks });
+                    }}
+                    placeholder="https://example.com"
+                    className="flex-1 rounded-xl border border-slate-300 px-4 py-3"
+                  />
+                  {(form.links || []).length > 1 ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const nextLinks = (form.links || []).filter((_, i) => i !== index);
+                        setForm({ ...form, links: nextLinks.length ? nextLinks : [''] });
+                      }}
+                      className="rounded-xl bg-red-50 px-3 py-2 text-sm font-semibold text-red-600"
+                    >
+                      Remove
+                    </button>
+                  ) : null}
+                </div>
+              ))}
+            </div>
 
             <div className="md:col-span-2 p-4 border-slate-200 rounded-xl border">
               <p className="mb-3 font-semibold text-slate-700">Tags*</p>

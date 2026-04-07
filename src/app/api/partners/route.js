@@ -36,7 +36,9 @@ function normalizePartner(row) {
     slug: row.slug,
     name: row.name,
     email: row.email,
+    location: row.location || "",
     phones: row.phones || [],
+    links: row.links || [],
     tags: row.tags || [],
     logoUrl: row.logo_url || "",
   };

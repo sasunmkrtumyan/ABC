@@ -13,11 +13,15 @@ create table if not exists public.partners (
   email text not null,
   location text not null default '',
   phones text[] not null default '{}'::text[],
+  links text[] not null default '{}'::text[],
   tags text[] not null default '{}'::text[],
   logo_url text not null default '',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.partners
+add column if not exists links text[] not null default '{}'::text[];
 
 create table if not exists public.tags (
   id uuid primary key default gen_random_uuid(),

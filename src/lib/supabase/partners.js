@@ -10,6 +10,7 @@ function fromRow(row) {
     email: row.email,
     location: row.location || "",
     phones: row.phones || [],
+    links: row.links || [],
     tags: row.tags || [],
     logoUrl: row.logo_url || "",
     createdAt: row.created_at,
@@ -25,6 +26,7 @@ function toRow(payload = {}) {
     email: payload.email,
     location: payload.location || "",
     phones: payload.phones || [],
+    ...(payload.links !== undefined ? { links: payload.links || [] } : {}),
     tags: payload.tags || [],
     ...(payload.logoUrl !== undefined ? { logo_url: payload.logoUrl } : {}),
   };
