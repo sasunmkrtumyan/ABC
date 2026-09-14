@@ -18,7 +18,7 @@ const sectionImages = {
   mission: '/img/mission.avif',
   why: '/img/mission.avif',
   partners: '/img/logos.avif',
-  connect: '/img/connect.png',
+  connect: '/img/connect.avif',
 };
 
 function SectionHeader({ icon, title, badge }) {
