@@ -16,11 +16,13 @@ function fromRow(row) {
   if (!row) return null;
   return {
     id: row.id,
+    publicId: row.public_id ?? null,
     title: row.title || {},
     description: row.description || {},
     hasDetails: Boolean(row.has_details),
     details: row.details || {},
     eventAt: row.event_at || null,
+    hasTime: row.has_time !== false,
     mode: row.mode || "offline",
     place: row.place || "",
     imageUrl: row.image_url || "",
@@ -38,6 +40,7 @@ function toRow(payload = {}) {
     has_details: Boolean(payload.hasDetails),
     details: payload.details || {},
     event_at: payload.eventAt || null,
+    has_time: payload.hasTime !== false,
     mode: payload.mode || "offline",
     place: payload.place || "",
     image_url: payload.imageUrl || "",
@@ -57,7 +60,9 @@ export async function fetchEvents() {
 }
 
 export async function fetchEventById(eventId) {
-  const { data, error } = await supabase.from("events").select("*").eq("id", eventId).maybeSingle();
+  const identifier = String(eventId || "").trim();
+  const idColumn = /^\d+$/.test(identifier) ? "public_id" : "id";
+  const { data, error } = await supabase.from("events").select("*").eq(idColumn, identifier).maybeSingle();
   if (error) {
     if (isMissingEventsTable(error)) return null;
     throw error;

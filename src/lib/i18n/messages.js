@@ -19,7 +19,7 @@ export const messages = {
     common: {
       connectNow: "Միացիր հիմա",
       noData: "Տվյալներ չկան",
-      readMore: "Ավելին",
+      readMore: "Տեսնել ավելին",
       page: "Էջ",
       of: "ից",
     },

@@ -9,17 +9,20 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { pickTextByLanguage } from '@/lib/localize';
 import { fetchEventById } from '@/lib/supabase/events';
 
-function formatEventDate(dateValue, language) {
+function formatEventDate(dateValue, language, hasTime = true) {
   const date = new Date(dateValue);
   if (Number.isNaN(date.getTime())) return '-';
   const locale = language === 'am' ? 'hy-AM' : language === 'ru' ? 'ru-RU' : 'en-US';
-  return new Intl.DateTimeFormat(locale, {
+  const options = {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date);
+  };
+  if (hasTime) {
+    options.hour = '2-digit';
+    options.minute = '2-digit';
+  }
+  return new Intl.DateTimeFormat(locale, options).format(date);
 }
 
 export default function EventDetailsPage() {
@@ -102,7 +105,7 @@ export default function EventDetailsPage() {
           <div className="mt-6 grid gap-3 border-b border-slate-200 pb-7 sm:grid-cols-2">
             <p className="flex items-start gap-2 text-sm text-slate-600">
               <CalendarDays className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
-              <span>{formatEventDate(event.eventAt, language)}</span>
+              <span>{formatEventDate(event.eventAt, language, event.hasTime)}</span>
             </p>
             <p className="flex items-start gap-2 text-sm text-slate-600">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />

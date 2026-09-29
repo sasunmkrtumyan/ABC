@@ -114,7 +114,8 @@ const emptyEventForm = {
   detailsAm: '',
   detailsRu: '',
   detailsEn: '',
-  eventAt: '',
+  eventDate: '',
+  eventTime: '',
   mode: 'offline',
   place: '',
   contactEmail: '',
@@ -157,6 +158,23 @@ function richTextHasContent(value = '') {
     .replace(/<[^>]*>/g, '')
     .replace(/&nbsp;/gi, ' ')
     .trim().length > 0;
+}
+
+function getLocalEventDateParts(value, hasTime = true) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return { eventDate: '', eventTime: '' };
+  const pad = (part) => String(part).padStart(2, '0');
+  return {
+    eventDate: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+    eventTime: hasTime ? `${pad(date.getHours())}:${pad(date.getMinutes())}` : '',
+  };
+}
+
+function formatAdminEventDate(item) {
+  if (!item?.eventAt) return '-';
+  const date = new Date(item.eventAt);
+  if (Number.isNaN(date.getTime())) return '-';
+  return item.hasTime === false ? date.toLocaleDateString() : date.toLocaleString();
 }
 
 export default function AdminPage() {
@@ -285,6 +303,7 @@ export default function AdminPage() {
   const fillEventEditForm = (id) => {
     const item = events.find((eventItem) => eventItem.id === id);
     if (!item) return;
+    const eventDateParts = getLocalEventDateParts(item.eventAt, item.hasTime);
     setEventEditingId(id);
     setEventForm({
       titleAm: item.title?.am || '',
@@ -297,7 +316,8 @@ export default function AdminPage() {
       detailsAm: item.details?.am || '',
       detailsRu: item.details?.ru || '',
       detailsEn: item.details?.en || '',
-      eventAt: item.eventAt ? new Date(item.eventAt).toISOString().slice(0, 16) : '',
+      eventDate: eventDateParts.eventDate,
+      eventTime: eventDateParts.eventTime,
       mode: item.mode || 'offline',
       place: item.place || '',
       contactEmail: item.contactEmail || '',
@@ -354,7 +374,7 @@ export default function AdminPage() {
     setEventSubmitting(true);
     setError('');
     try {
-      if (!eventForm.eventAt) throw new Error('Նշեք ամսաթիվ և ժամ');
+      if (!eventForm.eventDate) throw new Error('Նշեք միջոցառման ամսաթիվը');
       if (eventForm.mode === 'offline' && !eventForm.place.trim()) {
         throw new Error('Օֆլայն միջոցառման համար նշեք վայրը');
       }
@@ -375,6 +395,9 @@ export default function AdminPage() {
         );
       }
 
+      const eventDateTime = new Date(`${eventForm.eventDate}T${eventForm.eventTime || '00:00'}`);
+      if (Number.isNaN(eventDateTime.getTime())) throw new Error('Նշեք վավեր ամսաթիվ');
+
       const payload = {
         title: {
           am: eventForm.titleAm.trim(),
@@ -394,7 +417,8 @@ export default function AdminPage() {
               en: eventForm.detailsEn,
             }
           : {},
-        eventAt: new Date(eventForm.eventAt).toISOString(),
+        eventAt: eventDateTime.toISOString(),
+        hasTime: Boolean(eventForm.eventTime),
         mode: eventForm.mode,
         place: eventForm.mode === 'offline' ? eventForm.place.trim() : '',
         imageUrl,
@@ -420,7 +444,9 @@ export default function AdminPage() {
         );
       } else if (
         message.toLowerCase().includes('has_details') ||
-        message.toLowerCase().includes('details')
+        message.toLowerCase().includes('details') ||
+        message.toLowerCase().includes('has_time') ||
+        message.toLowerCase().includes('public_id')
       ) {
         setError(
           "Գործողությունը ձախողվեց: Events աղյուսակի նոր դաշտերը բացակայում են։ Supabase-ում նորից գործարկեք supabase/schema.sql։"
@@ -812,8 +838,7 @@ export default function AdminPage() {
                   <div>
                     <p className="font-bold text-slate-800">{pickLocalizedValue(item.title)}</p>
                     <p className="text-sm text-slate-500">
-                      {item.eventAt ? new Date(item.eventAt).toLocaleString() : '-'} |{' '}
-                      {item.mode === 'online' ? 'Առցանց' : 'Օֆլայն'}
+                      {formatAdminEventDate(item)} | {item.mode === 'online' ? 'Առցանց' : 'Օֆլայն'}
                     </p>
                   </div>
                   <div className="gap-2 flex">
@@ -889,7 +914,7 @@ export default function AdminPage() {
                 <span>
                   <span className="block font-bold text-slate-800">Ավելացնել ամբողջական բովանդակություն</span>
                   <span className="mt-1 block text-sm text-slate-500">
-                    Միացնելու դեպքում միջոցառման քարտում կերևա «Ավելին» կոճակը։
+                    Միացնելու դեպքում միջոցառման քարտում կերևա «Տեսնել ավելին» կոճակը։
                   </span>
                 </span>
                 <span className="relative inline-flex shrink-0">
@@ -939,13 +964,26 @@ export default function AdminPage() {
               </div>
             ) : null}
 
-            <input
-              type="datetime-local"
-              value={eventForm.eventAt}
-              onChange={(e) => setEventForm({ ...eventForm, eventAt: e.target.value })}
-              className="rounded-xl border-slate-300 px-4 py-3 border"
-              required
-            />
+            <label className="flex flex-col gap-2 text-sm font-semibold text-slate-700">
+              Ամսաթիվ *
+              <input
+                type="date"
+                value={eventForm.eventDate}
+                onChange={(e) => setEventForm({ ...eventForm, eventDate: e.target.value })}
+                className="rounded-xl border-slate-300 px-4 py-3 border"
+                required
+              />
+            </label>
+
+            <label className="flex flex-col gap-2 text-sm font-semibold text-slate-700">
+              Ժամ (ոչ պարտադիր)
+              <input
+                type="time"
+                value={eventForm.eventTime}
+                onChange={(e) => setEventForm({ ...eventForm, eventTime: e.target.value })}
+                className="rounded-xl border-slate-300 px-4 py-3 border"
+              />
+            </label>
 
             <select
               value={eventForm.mode}

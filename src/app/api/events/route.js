@@ -13,11 +13,13 @@ function isMissingEventsTable(error) {
 function normalizeEvent(row) {
   return {
     id: row.id,
+    publicId: row.public_id ?? null,
     title: row.title || {},
     description: row.description || {},
     hasDetails: Boolean(row.has_details),
     details: row.details || {},
     eventAt: row.event_at || null,
+    hasTime: row.has_time !== false,
     mode: row.mode || "offline",
     place: row.place || "",
     imageUrl: row.image_url || "",

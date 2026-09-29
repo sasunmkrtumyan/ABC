@@ -10,11 +10,13 @@ import { getSession } from '@/lib/supabase/auth';
 function normalizeRestEvent(row) {
   return {
     id: row.id,
+    publicId: row.public_id ?? null,
     title: row.title || {},
     description: row.description || {},
     hasDetails: Boolean(row.has_details),
     details: row.details || {},
     eventAt: row.event_at || null,
+    hasTime: row.has_time !== false,
     mode: row.mode || 'offline',
     place: row.place || '',
     imageUrl: row.image_url || '',
@@ -54,17 +56,24 @@ async function getAuthHeaders() {
   };
 }
 
-function formatEventDate(dateValue, language) {
+function formatEventDate(dateValue, language, hasTime = true) {
   const date = new Date(dateValue);
   if (Number.isNaN(date.getTime())) return '-';
   const locale = language === 'am' ? 'hy-AM' : language === 'ru' ? 'ru-RU' : 'en-US';
-  return new Intl.DateTimeFormat(locale, {
+  const options = {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(date);
+  };
+  if (hasTime) {
+    options.hour = '2-digit';
+    options.minute = '2-digit';
+  }
+  return new Intl.DateTimeFormat(locale, options).format(date);
+}
+
+function formatCardDescription(value) {
+  return String(value || '').replace(/,\s*/g, ',\n');
 }
 
 function getCountdown(dateValue, nowMs) {
@@ -193,7 +202,7 @@ export default function EventsPage() {
                             </div>
                           )}
                         </div>
-                        <div className="p-6 lg:p-8">
+                        <div className="flex h-full flex-col p-6 lg:p-8">
                           <div className="gap-2 mb-4 flex flex-wrap items-center">
                             <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">
                               {t.events.upcoming}
@@ -204,12 +213,12 @@ export default function EventsPage() {
                           </div>
                           <h3 className="text-2xl font-black text-slate-800">{pickTextByLanguage(event.title, language)}</h3>
                           <p className="mt-4 whitespace-pre-wrap leading-relaxed text-slate-700">
-                            {pickTextByLanguage(event.description, language)}
+                            {formatCardDescription(pickTextByLanguage(event.description, language))}
                           </p>
                           <div className="mt-5 grid gap-3 sm:grid-cols-2">
                             <p className="text-sm text-slate-600 flex items-start gap-2">
                               <CalendarDays className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
-                              <span>{formatEventDate(event.eventAt, language)}</span>
+                              <span>{formatEventDate(event.eventAt, language, event.hasTime)}</span>
                             </p>
                             <p className="text-sm text-slate-600 flex items-start gap-2">
                               <MapPin className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
@@ -229,7 +238,7 @@ export default function EventsPage() {
                             ) : null}
                           </div>
                           {countdown ? (
-                            <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800">
+                            <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-green-800">
                               <p className="font-semibold">{t.events.countdownTitle}</p>
                               <p className="text-sm">
                                 {countdown.days} {t.events.days} / {countdown.hours} {t.events.hours}
@@ -237,12 +246,14 @@ export default function EventsPage() {
                             </div>
                           ) : null}
                           {event.hasDetails ? (
-                            <Link
-                              href={`/events/${event.id}`}
-                              className="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white transition hover:bg-blue-700"
-                            >
-                              {t.common.readMore}
-                            </Link>
+                            <div className="mt-auto flex justify-end pt-6">
+                              <Link
+                                href={`/events/${event.publicId || event.id}`}
+                                className="inline-flex rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white transition hover:bg-blue-700"
+                              >
+                                {t.common.readMore}
+                              </Link>
+                            </div>
                           ) : null}
                         </div>
                       </div>
@@ -272,7 +283,7 @@ export default function EventsPage() {
                           <div className="h-full w-full flex items-center justify-center text-slate-400">{t.events.noImage}</div>
                         )}
                       </div>
-                      <div className="p-6 lg:p-8">
+                      <div className="flex h-full flex-col p-6 lg:p-8">
                         <div className="gap-2 mb-4 flex flex-wrap items-center">
                           <span className="rounded-full bg-slate-200 px-3 py-1 text-xs font-bold text-slate-700">
                             {t.events.past}
@@ -283,12 +294,12 @@ export default function EventsPage() {
                         </div>
                         <h3 className="text-2xl font-black text-slate-800">{pickTextByLanguage(event.title, language)}</h3>
                         <p className="mt-4 whitespace-pre-wrap leading-relaxed text-slate-700">
-                          {pickTextByLanguage(event.description, language)}
+                          {formatCardDescription(pickTextByLanguage(event.description, language))}
                         </p>
                         <div className="mt-5 grid gap-3 sm:grid-cols-2">
                           <p className="text-sm text-slate-600 flex items-start gap-2">
                             <CalendarDays className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
-                            <span>{formatEventDate(event.eventAt, language)}</span>
+                            <span>{formatEventDate(event.eventAt, language, event.hasTime)}</span>
                           </p>
                           <p className="text-sm text-slate-600 flex items-start gap-2">
                             <MapPin className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
@@ -308,12 +319,14 @@ export default function EventsPage() {
                           ) : null}
                         </div>
                         {event.hasDetails ? (
-                          <Link
-                            href={`/events/${event.id}`}
-                            className="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white transition hover:bg-blue-700"
-                          >
-                            {t.common.readMore}
-                          </Link>
+                          <div className="mt-auto flex justify-end pt-6">
+                            <Link
+                              href={`/events/${event.publicId || event.id}`}
+                              className="inline-flex rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white transition hover:bg-blue-700"
+                            >
+                              {t.common.readMore}
+                            </Link>
+                          </div>
                         ) : null}
                       </div>
                     </div>
