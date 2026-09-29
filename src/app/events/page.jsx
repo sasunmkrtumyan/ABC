@@ -222,7 +222,11 @@ export default function EventsPage() {
                             </p>
                             <p className="text-sm text-slate-600 flex items-start gap-2">
                               <MapPin className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
-                              <span>{event.mode === 'offline' ? event.place || '-' : t.events.onlineEvent}</span>
+                              <span className="whitespace-pre-line">
+                                {event.mode === 'offline'
+                                  ? formatCardDescription(event.place || '-')
+                                  : t.events.onlineEvent}
+                              </span>
                             </p>
                             {event.contactEmail ? (
                               <p className="text-sm text-slate-600 flex items-start gap-2">
@@ -303,7 +307,11 @@ export default function EventsPage() {
                           </p>
                           <p className="text-sm text-slate-600 flex items-start gap-2">
                             <MapPin className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
-                            <span>{event.mode === 'offline' ? event.place || '-' : t.events.onlineEvent}</span>
+                            <span className="whitespace-pre-line">
+                              {event.mode === 'offline'
+                                ? formatCardDescription(event.place || '-')
+                                : t.events.onlineEvent}
+                            </span>
                           </p>
                           {event.contactEmail ? (
                             <p className="text-sm text-slate-600 flex items-start gap-2">

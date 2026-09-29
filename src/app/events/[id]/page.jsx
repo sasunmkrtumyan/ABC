@@ -25,6 +25,10 @@ function formatEventDate(dateValue, language, hasTime = true) {
   return new Intl.DateTimeFormat(locale, options).format(date);
 }
 
+function formatEventPlace(value) {
+  return String(value || '').replace(/,\s*/g, ',\n');
+}
+
 export default function EventDetailsPage() {
   const { id } = useParams();
   const { language, t } = useLanguage();
@@ -109,7 +113,9 @@ export default function EventDetailsPage() {
             </p>
             <p className="flex items-start gap-2 text-sm text-slate-600">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
-              <span>{event.mode === 'offline' ? event.place || '-' : t.events.onlineEvent}</span>
+              <span className="whitespace-pre-line">
+                {event.mode === 'offline' ? formatEventPlace(event.place || '-') : t.events.onlineEvent}
+              </span>
             </p>
             {event.contactEmail ? (
               <p className="flex items-start gap-2 text-sm text-slate-600">
