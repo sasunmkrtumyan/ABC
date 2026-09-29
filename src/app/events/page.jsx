@@ -73,7 +73,9 @@ function formatEventDate(dateValue, language, hasTime = true) {
 }
 
 function formatCardDescription(value) {
-  return String(value || '').replace(/,\s*/g, ',\n');
+  return String(value || '')
+    .replace(/,\s*/g, ',\n')
+    .replace(/\n(?=[^,\n]*\|\s*DAY\s+\d+)/gi, '\n\n');
 }
 
 function getCountdown(dateValue, nowMs) {
@@ -222,7 +224,7 @@ export default function EventsPage() {
                             </p>
                             <p className="text-sm text-slate-600 flex items-start gap-2">
                               <MapPin className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
-                              <span className="whitespace-pre-line">
+                              <span className="whitespace-pre-wrap">
                                 {event.mode === 'offline'
                                   ? formatCardDescription(event.place || '-')
                                   : t.events.onlineEvent}
@@ -307,7 +309,7 @@ export default function EventsPage() {
                           </p>
                           <p className="text-sm text-slate-600 flex items-start gap-2">
                             <MapPin className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
-                            <span className="whitespace-pre-line">
+                            <span className="whitespace-pre-wrap">
                               {event.mode === 'offline'
                                 ? formatCardDescription(event.place || '-')
                                 : t.events.onlineEvent}

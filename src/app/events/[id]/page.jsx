@@ -26,7 +26,9 @@ function formatEventDate(dateValue, language, hasTime = true) {
 }
 
 function formatEventPlace(value) {
-  return String(value || '').replace(/,\s*/g, ',\n');
+  return String(value || '')
+    .replace(/,\s*/g, ',\n')
+    .replace(/\n(?=[^,\n]*\|\s*DAY\s+\d+)/gi, '\n\n');
 }
 
 export default function EventDetailsPage() {
@@ -113,7 +115,7 @@ export default function EventDetailsPage() {
             </p>
             <p className="flex items-start gap-2 text-sm text-slate-600">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
-              <span className="whitespace-pre-line">
+              <span className="whitespace-pre-wrap">
                 {event.mode === 'offline' ? formatEventPlace(event.place || '-') : t.events.onlineEvent}
               </span>
             </p>

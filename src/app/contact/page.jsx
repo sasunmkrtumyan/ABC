@@ -35,7 +35,7 @@ export default function ContactPage() {
         <h1 className="text-4xl font-black text-brand.dark">{t.contact.title}</h1>
         <p className="mt-3 text-slate-600">{t.contact.subtitle}</p>
 
-        <div className="mt-8 gap-4 md:grid-cols-2 grid">
+        <div className="mt-8 grid gap-x-4 gap-y-8 md:grid-cols-2">
           <div className="rounded-xl border-slate-200 p-5 border">
             <p className="text-xs font-bold tracking-wider text-slate-500 uppercase">{t.contact.office}</p>
             <p className="mt-2 text-slate-700">{contactMock.office}</p>
