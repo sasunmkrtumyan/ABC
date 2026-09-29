@@ -73,6 +73,10 @@ function formatEventDate(dateValue, language, hasTime = true) {
 }
 
 function formatCardDescription(value) {
+  return String(value || '');
+}
+
+function formatEventPlace(value) {
   return String(value || '')
     .replace(/,\s*/g, ',\n')
     .replace(/\n(?=[^,\n]*\|\s*DAY\s+\d+)/gi, '\n\n');
@@ -226,7 +230,7 @@ export default function EventsPage() {
                               <MapPin className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
                               <span className="whitespace-pre-wrap">
                                 {event.mode === 'offline'
-                                  ? formatCardDescription(event.place || '-')
+                                  ? formatEventPlace(event.place || '-')
                                   : t.events.onlineEvent}
                               </span>
                             </p>
@@ -311,7 +315,7 @@ export default function EventsPage() {
                             <MapPin className="mt-0.5 h-4 w-4 text-slate-500 shrink-0" />
                             <span className="whitespace-pre-wrap">
                               {event.mode === 'offline'
-                                ? formatCardDescription(event.place || '-')
+                                ? formatEventPlace(event.place || '-')
                                 : t.events.onlineEvent}
                             </span>
                           </p>
