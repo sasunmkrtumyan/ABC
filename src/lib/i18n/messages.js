@@ -84,6 +84,7 @@ export const messages = {
       phone: "Հեռախոս",
       email: "Էլ․ հասցե",
       hours: "Աշխատանքային ժամեր",
+      followUs: "Հետևեք մեզ",
     },
     partners: {
       title: "Գործընկերներ",
@@ -201,6 +202,7 @@ export const messages = {
       phone: "Телефон",
       email: "Эл. почта",
       hours: "Часы работы",
+      followUs: "Подписывайтесь на нас",
     },
     partners: {
       title: "Партнеры",
@@ -318,6 +320,7 @@ export const messages = {
       phone: "Phone",
       email: "Email",
       hours: "Working Hours",
+      followUs: "Follow us",
     },
     partners: {
       title: "Partners",

@@ -1,5 +1,6 @@
 'use client';
 
+import { Facebook, Instagram } from 'lucide-react';
 import RevealSection from '../../components/RevealSection';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 
@@ -9,6 +10,21 @@ const contactMock = {
   email: 'info@abc1111.am',
   hours: 'Mon - Fri, 10:00 - 19:00',
 };
+
+const socialLinks = [
+  {
+    name: 'Facebook',
+    href: 'https://www.facebook.com/share/19hAJY2RAk/?mibextid=wwXIfr',
+    Icon: Facebook,
+    className: 'bg-[#1877F2] focus:ring-[#1877F2]',
+  },
+  {
+    name: 'Instagram',
+    href: 'https://www.instagram.com/pan_armenian_business_union?stkn=OHF2d3ZtZ3VhMXFu&utm_source=qr',
+    Icon: Instagram,
+    className: 'bg-gradient-to-br from-[#833AB4] via-[#E1306C] to-[#FCAF45] focus:ring-[#E1306C]',
+  },
+];
 
 export default function ContactPage() {
   const { t } = useLanguage();
@@ -35,6 +51,24 @@ export default function ContactPage() {
           <div className="rounded-xl border-slate-200 p-5 border">
             <p className="text-xs font-bold tracking-wider text-slate-500 uppercase">{t.contact.hours}</p>
             <p className="mt-2 text-slate-700">{contactMock.hours}</p>
+          </div>
+          <div className="rounded-xl border-slate-200 p-5 border md:col-span-2">
+            <p className="text-sm font-bold tracking-wider text-slate-500">{t.contact.followUs}</p>
+            <div className="mt-3 flex gap-3">
+              {socialLinks.map(({ name, href, Icon, className }) => (
+                <a
+                  key={name}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={name}
+                  title={name}
+                  className={`inline-flex h-11 w-11 items-center justify-center rounded-full text-white shadow-sm transition hover:scale-105 hover:opacity-85 focus:outline-none focus:ring-2 focus:ring-offset-2 ${className}`}
+                >
+                  <Icon aria-hidden="true" size={23} strokeWidth={2.25} />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </RevealSection>
