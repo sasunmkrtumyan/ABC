@@ -118,6 +118,7 @@ export const messages = {
       hours: "ժամ",
       upcomingSection: "Առաջիկա միջոցառումներ",
       pastSection: "Ավարտված միջոցառումներ",
+      backToEvents: "Վերադառնալ միջոցառումներին",
     },
     footer: {
       text: "ABC - Armenians together, powerful than ever",
@@ -234,6 +235,7 @@ export const messages = {
       hours: "часов",
       upcomingSection: "Предстоящие мероприятия",
       pastSection: "Прошедшие мероприятия",
+      backToEvents: "Вернуться к мероприятиям",
     },
     footer: {
       text: "ABC - Armenians together, powerful than ever",
@@ -350,6 +352,7 @@ export const messages = {
       hours: "hours",
       upcomingSection: "Upcoming events",
       pastSection: "Past events",
+      backToEvents: "Back to events",
     },
     footer: {
       text: "ABC - Armenians together, powerful than ever",

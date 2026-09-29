@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { CalendarDays, Mail, MapPin, Phone } from 'lucide-react';
+import Link from 'next/link';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { pickTextByLanguage } from '@/lib/localize';
 import { getSession } from '@/lib/supabase/auth';
@@ -11,6 +12,8 @@ function normalizeRestEvent(row) {
     id: row.id,
     title: row.title || {},
     description: row.description || {},
+    hasDetails: Boolean(row.has_details),
+    details: row.details || {},
     eventAt: row.event_at || null,
     mode: row.mode || 'offline',
     place: row.place || '',
@@ -233,6 +236,14 @@ export default function EventsPage() {
                               </p>
                             </div>
                           ) : null}
+                          {event.hasDetails ? (
+                            <Link
+                              href={`/events/${event.id}`}
+                              className="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white transition hover:bg-blue-700"
+                            >
+                              {t.common.readMore}
+                            </Link>
+                          ) : null}
                         </div>
                       </div>
                     </article>
@@ -296,6 +307,14 @@ export default function EventsPage() {
                             </p>
                           ) : null}
                         </div>
+                        {event.hasDetails ? (
+                          <Link
+                            href={`/events/${event.id}`}
+                            className="mt-6 inline-flex rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white transition hover:bg-blue-700"
+                          >
+                            {t.common.readMore}
+                          </Link>
+                        ) : null}
                       </div>
                     </div>
                   </article>

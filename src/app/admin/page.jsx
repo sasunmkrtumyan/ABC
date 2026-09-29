@@ -110,6 +110,10 @@ const emptyEventForm = {
   descriptionAm: '',
   descriptionRu: '',
   descriptionEn: '',
+  hasDetails: false,
+  detailsAm: '',
+  detailsRu: '',
+  detailsEn: '',
   eventAt: '',
   mode: 'offline',
   place: '',
@@ -146,6 +150,13 @@ function normalizeWebsiteLink(value = '') {
   if (!text) return '';
   if (/^(https?:\/\/|mailto:|tel:)/i.test(text)) return text;
   return `https://${text}`;
+}
+
+function richTextHasContent(value = '') {
+  return String(value)
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/gi, ' ')
+    .trim().length > 0;
 }
 
 export default function AdminPage() {
@@ -282,6 +293,10 @@ export default function AdminPage() {
       descriptionAm: item.description?.am || '',
       descriptionRu: item.description?.ru || '',
       descriptionEn: item.description?.en || '',
+      hasDetails: Boolean(item.hasDetails),
+      detailsAm: item.details?.am || '',
+      detailsRu: item.details?.ru || '',
+      detailsEn: item.details?.en || '',
       eventAt: item.eventAt ? new Date(item.eventAt).toISOString().slice(0, 16) : '',
       mode: item.mode || 'offline',
       place: item.place || '',
@@ -343,6 +358,12 @@ export default function AdminPage() {
       if (eventForm.mode === 'offline' && !eventForm.place.trim()) {
         throw new Error('Օֆլայն միջոցառման համար նշեք վայրը');
       }
+      if (
+        eventForm.hasDetails &&
+        ![eventForm.detailsAm, eventForm.detailsRu, eventForm.detailsEn].every(richTextHasContent)
+      ) {
+        throw new Error('Լրացրեք միջոցառման ամբողջական բովանդակությունը բոլոր երեք լեզուներով');
+      }
       if (!isEventEdit && !eventImageFile) throw new Error('Նոր միջոցառման համար ընտրեք նկար');
 
       let imageUrl = eventForm.imageUrl || '';
@@ -365,6 +386,14 @@ export default function AdminPage() {
           ru: eventForm.descriptionRu.trim(),
           en: eventForm.descriptionEn.trim(),
         },
+        hasDetails: eventForm.hasDetails,
+        details: eventForm.hasDetails
+          ? {
+              am: eventForm.detailsAm,
+              ru: eventForm.detailsRu,
+              en: eventForm.detailsEn,
+            }
+          : {},
         eventAt: new Date(eventForm.eventAt).toISOString(),
         mode: eventForm.mode,
         place: eventForm.mode === 'offline' ? eventForm.place.trim() : '',
@@ -388,6 +417,13 @@ export default function AdminPage() {
       if (message.toLowerCase().includes('events table is missing')) {
         setError(
           "Գործողությունը ձախողվեց: Events աղյուսակը Supabase-ում չկա։ Գործարկեք supabase/schema.sql և հետո SQL Editor-ում կատարեք՝ notify pgrst, 'reload schema';"
+        );
+      } else if (
+        message.toLowerCase().includes('has_details') ||
+        message.toLowerCase().includes('details')
+      ) {
+        setError(
+          "Գործողությունը ձախողվեց: Events աղյուսակի նոր դաշտերը բացակայում են։ Supabase-ում նորից գործարկեք supabase/schema.sql։"
         );
       } else {
         setError(`Գործողությունը ձախողվեց: ${message}`);
@@ -847,6 +883,61 @@ export default function AdminPage() {
               className="md:col-span-2 rounded-xl border-slate-300 px-4 py-3 h-32 border"
               required
             />
+
+            <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <label className="flex cursor-pointer items-center justify-between gap-4">
+                <span>
+                  <span className="block font-bold text-slate-800">Ավելացնել ամբողջական բովանդակություն</span>
+                  <span className="mt-1 block text-sm text-slate-500">
+                    Միացնելու դեպքում միջոցառման քարտում կերևա «Ավելին» կոճակը։
+                  </span>
+                </span>
+                <span className="relative inline-flex shrink-0">
+                  <input
+                    type="checkbox"
+                    checked={eventForm.hasDetails}
+                    onChange={(e) => setEventForm({ ...eventForm, hasDetails: e.target.checked })}
+                    className="peer sr-only"
+                  />
+                  <span className="h-7 w-12 rounded-full bg-slate-300 transition peer-checked:bg-blue-600 peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500 peer-focus-visible:ring-offset-2 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5" />
+                </span>
+              </label>
+            </div>
+
+            {eventForm.hasDetails ? (
+              <div className="md:col-span-2 space-y-6 rounded-2xl border border-blue-100 bg-blue-50/40 p-5">
+                <div>
+                  <h3 className="font-bold text-slate-800">Միջոցառման ամբողջական բովանդակություն</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Կարող եք օգտագործել վերնագրեր, ցուցակներ, հղումներ, գույներ և տեքստի հավասարեցում։
+                  </p>
+                </div>
+                <div>
+                  <p className="mb-2 text-sm font-semibold text-slate-700">Հայերեն (AM)*</p>
+                  <RichTextEditor
+                    value={eventForm.detailsAm}
+                    onChange={(nextValue) => setEventForm((current) => ({ ...current, detailsAm: nextValue }))}
+                    placeholder="Ամբողջական բովանդակություն հայերեն"
+                  />
+                </div>
+                <div>
+                  <p className="mb-2 text-sm font-semibold text-slate-700">Русский (RU)*</p>
+                  <RichTextEditor
+                    value={eventForm.detailsRu}
+                    onChange={(nextValue) => setEventForm((current) => ({ ...current, detailsRu: nextValue }))}
+                    placeholder="Полное содержание на русском"
+                  />
+                </div>
+                <div>
+                  <p className="mb-2 text-sm font-semibold text-slate-700">English (EN)*</p>
+                  <RichTextEditor
+                    value={eventForm.detailsEn}
+                    onChange={(nextValue) => setEventForm((current) => ({ ...current, detailsEn: nextValue }))}
+                    placeholder="Full content in English"
+                  />
+                </div>
+              </div>
+            ) : null}
 
             <input
               type="datetime-local"

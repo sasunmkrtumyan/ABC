@@ -18,6 +18,8 @@ function fromRow(row) {
     id: row.id,
     title: row.title || {},
     description: row.description || {},
+    hasDetails: Boolean(row.has_details),
+    details: row.details || {},
     eventAt: row.event_at || null,
     mode: row.mode || "offline",
     place: row.place || "",
@@ -33,6 +35,8 @@ function toRow(payload = {}) {
   return {
     title: payload.title || {},
     description: payload.description || {},
+    has_details: Boolean(payload.hasDetails),
+    details: payload.details || {},
     event_at: payload.eventAt || null,
     mode: payload.mode || "offline",
     place: payload.place || "",
@@ -50,6 +54,15 @@ export async function fetchEvents() {
     throw error;
   }
   return (data || []).map(fromRow);
+}
+
+export async function fetchEventById(eventId) {
+  const { data, error } = await supabase.from("events").select("*").eq("id", eventId).maybeSingle();
+  if (error) {
+    if (isMissingEventsTable(error)) return null;
+    throw error;
+  }
+  return fromRow(data);
 }
 
 export async function createEvent(payload) {

@@ -15,6 +15,8 @@ function normalizeEvent(row) {
     id: row.id,
     title: row.title || {},
     description: row.description || {},
+    hasDetails: Boolean(row.has_details),
+    details: row.details || {},
     eventAt: row.event_at || null,
     mode: row.mode || "offline",
     place: row.place || "",

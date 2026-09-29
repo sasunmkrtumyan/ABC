@@ -34,6 +34,8 @@ create table if not exists public.events (
   id uuid primary key default gen_random_uuid(),
   title jsonb not null,
   description jsonb not null,
+  has_details boolean not null default false,
+  details jsonb not null default '{}'::jsonb,
   event_at timestamptz not null,
   mode text not null check (mode in ('online', 'offline')),
   place text not null default '',
@@ -43,6 +45,12 @@ create table if not exists public.events (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.events
+add column if not exists has_details boolean not null default false;
+
+alter table public.events
+add column if not exists details jsonb not null default '{}'::jsonb;
 
 -- Admin allow-list for write access.
 create table if not exists public.admins (
