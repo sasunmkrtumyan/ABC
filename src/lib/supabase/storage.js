@@ -2,13 +2,38 @@ import { supabase } from "./client";
 
 const BUCKET = "partner-logos";
 
-export async function uploadPartnerLogo(file, slug) {
+function safeSegment(value, fallback = "file") {
+  return (
+    String(value || fallback)
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9-_]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "") || fallback
+  );
+}
+
+function resolveExtension(file) {
+  const fileName = String(file?.name || "");
+  const byName = fileName.includes(".") ? fileName.split(".").pop().toLowerCase() : "";
+  if (byName && /^[a-z0-9]+$/.test(byName) && byName.length <= 8) return byName;
+
+  const mime = String(file?.type || "").toLowerCase();
+  if (mime === "image/jpeg") return "jpg";
+  if (mime === "image/png") return "png";
+  if (mime === "image/webp") return "webp";
+  if (mime === "image/gif") return "gif";
+  if (mime === "image/avif") return "avif";
+  return "bin";
+}
+
+async function uploadPublicImage(file, folder, key, client = supabase) {
   if (!file) throw new Error("Missing file");
 
-  const safeName = String(file.name || "logo").replace(/\s+/g, "-");
-  const path = `partners/${slug}-${Date.now()}-${safeName}`;
+  const extension = resolveExtension(file);
+  const objectPath = `${folder}/${safeSegment(key, folder)}-${Date.now()}.${extension}`;
 
-  const { error: uploadError } = await supabase.storage.from(BUCKET).upload(path, file, {
+  const { error: uploadError } = await client.storage.from(BUCKET).upload(objectPath, file, {
     cacheControl: "3600",
     upsert: false,
     contentType: file.type || "application/octet-stream",
@@ -16,24 +41,19 @@ export async function uploadPartnerLogo(file, slug) {
 
   if (uploadError) throw uploadError;
 
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+  const { data } = client.storage.from(BUCKET).getPublicUrl(objectPath);
   return data.publicUrl;
 }
 
+export async function uploadPartnerLogo(file, slug) {
+  return uploadPublicImage(file, "partners", slug);
+}
+
 export async function uploadEventImage(file, key = "event") {
-  if (!file) throw new Error("Missing file");
+  return uploadPublicImage(file, "events", key);
+}
 
-  const safeName = String(file.name || "event-image").replace(/\s+/g, "-");
-  const path = `events/${key}-${Date.now()}-${safeName}`;
-
-  const { error: uploadError } = await supabase.storage.from(BUCKET).upload(path, file, {
-    cacheControl: "3600",
-    upsert: false,
-    contentType: file.type || "application/octet-stream",
-  });
-  if (uploadError) throw uploadError;
-
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
-  return data.publicUrl;
+export async function uploadPublicImageWithClient(client, file, folder, key) {
+  return uploadPublicImage(file, folder, key, client);
 }
 

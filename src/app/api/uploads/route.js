@@ -1,7 +1,6 @@
-import { randomUUID } from "crypto";
-import { promises as fs } from "fs";
-import path from "path";
 import { NextResponse } from "next/server";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { uploadPublicImageWithClient } from "@/lib/supabase/storage";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -9,26 +8,14 @@ export const revalidate = 0;
 const ALLOWED_TYPES = new Set(["partner", "event"]);
 
 function safeSegment(value, fallback = "file") {
-  return String(value || fallback)
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9-_]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "") || fallback;
-}
-
-function resolveExtension(file) {
-  const fileName = String(file?.name || "");
-  const byName = path.extname(fileName).replace(".", "").toLowerCase();
-  if (byName) return byName;
-
-  const mime = String(file?.type || "").toLowerCase();
-  if (mime === "image/jpeg") return "jpg";
-  if (mime === "image/png") return "png";
-  if (mime === "image/webp") return "webp";
-  if (mime === "image/gif") return "gif";
-  if (mime === "image/avif") return "avif";
-  return "bin";
+  return (
+    String(value || fallback)
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9-_]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "") || fallback
+  );
 }
 
 export async function POST(request) {
@@ -37,6 +24,7 @@ export async function POST(request) {
     const typeValue = safeSegment(formData.get("type"), "");
     const entityKey = safeSegment(formData.get("key"), "item");
     const file = formData.get("file");
+    const accessToken = request.headers.get("authorization");
 
     if (!ALLOWED_TYPES.has(typeValue)) {
       return NextResponse.json({ message: "Invalid upload type." }, { status: 400 });
@@ -50,18 +38,17 @@ export async function POST(request) {
       return NextResponse.json({ message: "Only image uploads are allowed." }, { status: 400 });
     }
 
-    const extension = resolveExtension(file);
-    const fileName = `${entityKey}-${Date.now()}-${randomUUID().slice(0, 8)}.${extension}`;
-    const targetDir = path.join(process.cwd(), "public", "uploads", `${typeValue}s`);
-    const absoluteFilePath = path.join(targetDir, fileName);
-    const publicPath = `/uploads/${typeValue}s/${fileName}`;
+    if (!accessToken) {
+      return NextResponse.json({ message: "Missing authorization." }, { status: 401 });
+    }
 
-    await fs.mkdir(targetDir, { recursive: true });
-    const arrayBuffer = await file.arrayBuffer();
-    await fs.writeFile(absoluteFilePath, Buffer.from(arrayBuffer));
+    const supabase = createSupabaseServerClient({ accessToken });
+    const folder = `${typeValue}s`;
+    const publicUrl = await uploadPublicImageWithClient(supabase, file, folder, entityKey);
 
-    return NextResponse.json({ path: publicPath }, { status: 201 });
+    return NextResponse.json({ path: publicUrl }, { status: 201 });
   } catch (error) {
+    console.error("Upload failed", error);
     return NextResponse.json(
       { message: `Failed to upload file. ${String(error?.message || "")}`.trim() },
       { status: 500 }
