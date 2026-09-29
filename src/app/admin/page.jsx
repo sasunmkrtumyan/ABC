@@ -32,6 +32,10 @@ function getPartnerSubmitErrorMessage(error, userId = '') {
   const rawMessage = String(error?.message || error || '');
   const message = rawMessage.toLowerCase();
 
+  if (message.includes('missing authorization') || message.includes('նիստը')) {
+    return 'Գործողությունը ձախողվեց: նիստը չի գտնվել։ Թարմացրեք էջը (Ctrl+Shift+R), նորից մուտք գործեք և կրկին ստեղծեք միջոցառումը։';
+  }
+
   if (message.includes('row-level security') || message.includes('permission denied')) {
     const sqlHint = userId
       ? `insert into public.admins (user_id) values ('${userId}') on conflict (user_id) do nothing;`
@@ -55,9 +59,35 @@ function getPartnerSubmitErrorMessage(error, userId = '') {
 
 async function uploadAdminImage(file, type, key) {
   if (!file) throw new Error('Missing file');
-  if (type === 'partner') return uploadPartnerLogo(file, key);
-  if (type === 'event') return uploadEventImage(file, key);
-  throw new Error('Invalid upload type.');
+  if (type !== 'partner' && type !== 'event') throw new Error('Invalid upload type.');
+
+  const { data } = await getSession();
+  const accessToken = data?.session?.access_token;
+  if (!accessToken) {
+    throw new Error('Նիստը չի գտնվել։ Թարմացրեք էջը, նորից մուտք գործեք և կրկին փորձեք։');
+  }
+
+  try {
+    if (type === 'partner') return await uploadPartnerLogo(file, key);
+    return await uploadEventImage(file, key);
+  } catch (directUploadError) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', type);
+    formData.append('key', key || 'item');
+    formData.append('access_token', accessToken);
+
+    const response = await fetch('/api/uploads', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: formData,
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(payload?.message || directUploadError?.message || 'Image upload failed');
+    }
+    return String(payload?.path || '').trim();
+  }
 }
 
 const emptyForm = {

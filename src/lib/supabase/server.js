@@ -29,3 +29,15 @@ export function createSupabaseServerClient(options = {}) {
       : undefined,
   });
 }
+
+export function createSupabaseServiceClient() {
+  const serviceKey = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+  if (!serviceKey) return null;
+
+  return createClient(supabaseUrl, serviceKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+}
