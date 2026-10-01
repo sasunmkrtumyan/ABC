@@ -63,6 +63,20 @@ on public.events (public_id);
 alter table public.events
 add column if not exists has_time boolean not null default true;
 
+-- Homepage partner sliders. `slider` picks which of the two marquees a row belongs to.
+create table if not exists public.slider_images (
+  id uuid primary key default gen_random_uuid(),
+  slider text not null check (slider in ('top', 'bottom')),
+  image_url text not null,
+  alt text not null default '',
+  position integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists slider_images_slider_position_idx
+on public.slider_images (slider, position);
+
 -- Admin allow-list for write access.
 create table if not exists public.admins (
   user_id uuid primary key references auth.users(id) on delete cascade
@@ -91,10 +105,17 @@ before update on public.events
 for each row
 execute function public.set_updated_at();
 
+drop trigger if exists set_slider_images_updated_at on public.slider_images;
+create trigger set_slider_images_updated_at
+before update on public.slider_images
+for each row
+execute function public.set_updated_at();
+
 -- RLS
 alter table public.partners enable row level security;
 alter table public.tags enable row level security;
 alter table public.events enable row level security;
+alter table public.slider_images enable row level security;
 alter table public.admins enable row level security;
 
 -- Public read
@@ -113,6 +134,12 @@ using (true);
 drop policy if exists "Public read events" on public.events;
 create policy "Public read events"
 on public.events
+for select
+using (true);
+
+drop policy if exists "Public read slider images" on public.slider_images;
+create policy "Public read slider images"
+on public.slider_images
 for select
 using (true);
 
@@ -171,6 +198,25 @@ with check (exists (select 1 from public.admins where user_id = auth.uid()));
 drop policy if exists "Admins delete events" on public.events;
 create policy "Admins delete events"
 on public.events
+for delete
+using (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins insert slider images" on public.slider_images;
+create policy "Admins insert slider images"
+on public.slider_images
+for insert
+with check (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins update slider images" on public.slider_images;
+create policy "Admins update slider images"
+on public.slider_images
+for update
+using (exists (select 1 from public.admins where user_id = auth.uid()))
+with check (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins delete slider images" on public.slider_images;
+create policy "Admins delete slider images"
+on public.slider_images
 for delete
 using (exists (select 1 from public.admins where user_id = auth.uid()));
 

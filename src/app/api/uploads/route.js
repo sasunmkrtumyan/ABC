@@ -5,7 +5,7 @@ import { uploadPublicImageWithClient } from "@/lib/supabase/storage";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const ALLOWED_TYPES = new Set(["partner", "event"]);
+const ALLOWED_TYPES = new Set(["partner", "event", "slider"]);
 
 function safeSegment(value, fallback = "file") {
   return (

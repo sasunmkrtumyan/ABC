@@ -4,9 +4,16 @@ import { slugify } from '@/lib/slugify.js';
 import { getSession, onAuthStateChange, signInWithPassword, signOut as supabaseSignOut } from '@/lib/supabase/auth.js';
 import { createEvent, deleteEvent, fetchEvents, updateEvent } from '@/lib/supabase/events.js';
 import { createPartner, deletePartner, fetchPartners, updatePartner } from '@/lib/supabase/partners.js';
-import { uploadEventImage, uploadPartnerLogo } from '@/lib/supabase/storage.js';
+import {
+  createSliderImages,
+  deleteSliderImage,
+  fetchSliderImages,
+  reorderSliderImages,
+} from '@/lib/supabase/sliders.js';
+import { uploadEventImage, uploadPartnerLogo, uploadSliderImage } from '@/lib/supabase/storage.js';
 import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
 import RichTextEditor from '@/components/RichTextEditor.jsx';
+import SortableImageGrid from '@/components/SortableImageGrid.jsx';
 import Link from 'next/link'; // Ավելացրել ենք Link հղման համար
 import { useEffect, useMemo, useState } from 'react';
 
@@ -57,9 +64,16 @@ function getPartnerSubmitErrorMessage(error, userId = '') {
   return `Գործողությունը ձախողվեց: ${rawMessage || 'անհայտ սխալ'}`;
 }
 
+const UPLOADERS = {
+  partner: uploadPartnerLogo,
+  event: uploadEventImage,
+  slider: uploadSliderImage,
+};
+
 async function uploadAdminImage(file, type, key) {
   if (!file) throw new Error('Missing file');
-  if (type !== 'partner' && type !== 'event') throw new Error('Invalid upload type.');
+  const directUpload = UPLOADERS[type];
+  if (!directUpload) throw new Error('Invalid upload type.');
 
   const { data } = await getSession();
   const accessToken = data?.session?.access_token;
@@ -68,8 +82,7 @@ async function uploadAdminImage(file, type, key) {
   }
 
   try {
-    if (type === 'partner') return await uploadPartnerLogo(file, key);
-    return await uploadEventImage(file, key);
+    return await directUpload(file, key);
   } catch (directUploadError) {
     const formData = new FormData();
     formData.append('file', file);
@@ -170,6 +183,11 @@ function getLocalEventDateParts(value, hasTime = true) {
   };
 }
 
+const SLIDER_PANELS = [
+  { key: 'top', title: 'Վերևի սլայդեր', hint: 'Շարժվում է դեպի աջ' },
+  { key: 'bottom', title: 'Ներքևի սլայդեր', hint: 'Շարժվում է դեպի ձախ' },
+];
+
 function formatAdminEventDate(item) {
   if (!item?.eventAt) return '-';
   const date = new Date(item.eventAt);
@@ -199,6 +217,8 @@ export default function AdminPage() {
   const [eventImageFile, setEventImageFile] = useState(null);
   const [eventEditingId, setEventEditingId] = useState(null);
   const [eventSubmitting, setEventSubmitting] = useState(false);
+  const [sliders, setSliders] = useState({ top: [], bottom: [] });
+  const [sliderBusyKey, setSliderBusyKey] = useState('');
 
   const isEdit = useMemo(() => Boolean(editingId), [editingId]);
   const isEventEdit = useMemo(() => Boolean(eventEditingId), [eventEditingId]);
@@ -223,10 +243,16 @@ export default function AdminPage() {
 
   const loadSupabaseData = async () => {
     try {
-      const [partnersData, tagsData, eventsData] = await Promise.all([fetchPartners(), fetchTags(), fetchEvents()]);
+      const [partnersData, tagsData, eventsData, slidersData] = await Promise.all([
+        fetchPartners(),
+        fetchTags(),
+        fetchEvents(),
+        fetchSliderImages(),
+      ]);
       setPartners(partnersData);
       setAvailableTags(tagsData);
       setEvents(eventsData);
+      setSliders(slidersData);
     } catch (loadError) {
       setError(`Supabase սխալ: ${loadError?.message}`);
     }
@@ -487,6 +513,66 @@ export default function AdminPage() {
     }
   };
 
+  const getSliderErrorMessage = (sliderError) => {
+    const message = String(sliderError?.message || '');
+    if (message.toLowerCase().includes('slider_images')) {
+      return "Գործողությունը ձախողվեց: slider_images աղյուսակը Supabase-ում չկա։ Գործարկեք supabase/schema.sql և հետո SQL Editor-ում կատարեք՝ notify pgrst, 'reload schema';";
+    }
+    return `Գործողությունը ձախողվեց: ${message || 'անհայտ սխալ'}`;
+  };
+
+  const handleSliderUpload = async (sliderKey, fileList) => {
+    const files = Array.from(fileList || []);
+    if (!files.length) return;
+
+    setSliderBusyKey(sliderKey);
+    setError('');
+    try {
+      const uploaded = await Promise.all(
+        files.map(async (file) => ({
+          imageUrl: await uploadAdminImage(file, 'slider', `${sliderKey}-${slugify(file.name) || 'image'}`),
+          alt: file.name.replace(/\.[^.]+$/, ''),
+        })),
+      );
+      await createSliderImages(sliderKey, uploaded);
+      await loadSupabaseData();
+      showSuccess(`Ավելացվեց ${uploaded.length} նկար`);
+    } catch (uploadError) {
+      setError(getSliderErrorMessage(uploadError));
+    } finally {
+      setSliderBusyKey('');
+    }
+  };
+
+  const handleSliderReorder = async (sliderKey, nextImages) => {
+    const previousImages = sliders[sliderKey];
+    setSliders((current) => ({ ...current, [sliderKey]: nextImages }));
+    try {
+      await reorderSliderImages(nextImages);
+    } catch (reorderError) {
+      setSliders((current) => ({ ...current, [sliderKey]: previousImages }));
+      setError(getSliderErrorMessage(reorderError));
+    }
+  };
+
+  const handleSliderRemove = async (sliderKey, image) => {
+    if (!confirm('Համոզվա՞ծ եք:')) return;
+    setSliderBusyKey(sliderKey);
+    setError('');
+    try {
+      await deleteSliderImage(image.id);
+      const remaining = sliders[sliderKey].filter((item) => item.id !== image.id);
+      setSliders((current) => ({ ...current, [sliderKey]: remaining }));
+      await reorderSliderImages(remaining);
+      showSuccess('Նկարը ջնջվեց');
+    } catch (removeError) {
+      setError(getSliderErrorMessage(removeError));
+      await loadSupabaseData();
+    } finally {
+      setSliderBusyKey('');
+    }
+  };
+
   const exportPartnersCSV = () => {
     const headers = ['Անուն (Name)', 'Կատեգորիա (Category)', 'Email', 'Հեռախոս (Phone)'];
     const escapeCsv = (str) => `"${String(str).replace(/"/g, '""')}"`;
@@ -591,6 +677,12 @@ export default function AdminPage() {
           className={`px-6 py-3 font-bold transition-all ${activeTab === 'add-event' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`}
         >
           {isEventEdit ? 'Խմբագրել միջոցառում' : 'Ավելացնել միջոցառում'}
+        </button>
+        <button
+          onClick={() => setActiveTab('sliders')}
+          className={`px-6 py-3 font-bold transition-all ${activeTab === 'sliders' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`}
+        >
+          Սլայդերներ
         </button>
         <button
           onClick={() => setActiveTab('tags')}
@@ -1047,6 +1139,55 @@ export default function AdminPage() {
             </div>
           </form>
         </section>
+      )}
+
+      {activeTab === 'sliders' && (
+        <div className="space-y-6">
+          <p className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 text-sm text-slate-600">
+            Այս նկարները ցուցադրվում են գլխավոր էջի «Մեր գործընկերները» բաժնի երկու սլայդերներում։ Քաշեք նկարները՝
+            հերթականությունը փոխելու համար։
+          </p>
+
+          {SLIDER_PANELS.map((panel) => {
+            const panelImages = sliders[panel.key] || [];
+            const isBusy = sliderBusyKey === panel.key;
+
+            return (
+              <section key={panel.key} className="rounded-2xl bg-white p-6 shadow-sm">
+                <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-800">{panel.title}</h2>
+                    <p className="text-sm text-slate-500">
+                      {panel.hint} · {panelImages.length} նկար
+                    </p>
+                  </div>
+                  <label className="cursor-pointer rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white transition hover:bg-blue-700">
+                    {isBusy ? 'Բեռնվում է...' : '+ Ավելացնել նկարներ'}
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      disabled={isBusy}
+                      className="hidden"
+                      onChange={(e) => {
+                        handleSliderUpload(panel.key, e.target.files);
+                        e.target.value = '';
+                      }}
+                    />
+                  </label>
+                </div>
+
+                <SortableImageGrid
+                  items={panelImages}
+                  disabled={isBusy}
+                  onReorder={(nextImages) => handleSliderReorder(panel.key, nextImages)}
+                  onRemove={(image) => handleSliderRemove(panel.key, image)}
+                  emptyLabel="Դեռ նկարներ չկան։ Ավելացրեք առաջինը։"
+                />
+              </section>
+            );
+          })}
+        </div>
       )}
 
       {/* Tab 3: Tags Management */}

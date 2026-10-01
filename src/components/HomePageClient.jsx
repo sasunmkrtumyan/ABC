@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useLanguage } from '../lib/i18n/LanguageContext';
+import LogoMarquee from './LogoMarquee';
 import RevealSection from './RevealSection';
 
 const sectionImages = {
@@ -36,9 +37,11 @@ function SectionHeader({ icon, title, badge }) {
   );
 }
 
-export default function HomePageClient() {
+export default function HomePageClient({ sliders = { top: [], bottom: [] } }) {
   const { t } = useLanguage();
   const [activeWelcomeIndex, setActiveWelcomeIndex] = useState(0);
+
+  const hasSliderImages = sliders.top.length > 0 || sliders.bottom.length > 0;
 
   return (
     <main>
@@ -176,14 +179,21 @@ export default function HomePageClient() {
 
         <RevealSection className="rounded-3xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-10">
           <SectionHeader icon={<HeartHandshake className="h-6 w-6" />} title={t.landing.partnersTitle} />
-          <Image
-  src={sectionImages.partners}
-  alt={t.landing.partnersTitle}
-  width={1100}
-  height={700}
-  sizes="100vw"
-  className="w-full h-auto object-contain"
-/>
+          {hasSliderImages ? (
+            <div className="space-y-10">
+              <LogoMarquee items={sliders.top} direction="right" />
+              <LogoMarquee items={sliders.bottom} direction="left" />
+            </div>
+          ) : (
+            <Image
+              src={sectionImages.partners}
+              alt={t.landing.partnersTitle}
+              width={1100}
+              height={700}
+              sizes="100vw"
+              className="h-auto w-full object-contain"
+            />
+          )}
         </RevealSection>
       </div>
     </main>

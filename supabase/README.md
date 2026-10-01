@@ -6,6 +6,9 @@
 
 2. SQL:
    - Open SQL Editor and run `supabase/schema.sql`.
+   - The script is idempotent, so re-run it after pulling changes that add tables
+     (for example `slider_images`, which powers the homepage partner sliders).
+   - If a new table is not picked up right away, run `notify pgrst, 'reload schema';`.
 
 3. Create admin user:
    - In Auth -> Users, create an email/password user (the email should match `NEXT_PUBLIC_ADMIN_EMAIL`).

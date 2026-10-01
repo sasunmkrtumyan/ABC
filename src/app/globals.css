@@ -47,25 +47,56 @@ a {
 .marquee-shell {
   overflow: hidden;
   width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
 
 .marquee-track {
   display: flex;
   width: max-content;
-  gap: 16px;
   animation: abc-marquee 24s linear infinite;
+}
+
+.marquee-set {
+  display: flex;
+  flex: 0 0 auto;
+}
+
+/* Spacing lives on the items, not as a track `gap`, so each repetition is the
+   same width and the gap between the last and first logo matches the rest. */
+.marquee-item {
+  position: relative;
+  flex: 0 0 auto;
+  width: 160px;
+  height: 80px;
+  margin-right: 24px;
 }
 
 .marquee-shell:hover .marquee-track {
   animation-play-state: paused;
 }
 
+/* Shift by one repetition's measured width, set by LogoMarquee. */
 @keyframes abc-marquee {
   from {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(calc(-1 * var(--marquee-shift, 50%)));
+  }
+}
+
+@media (max-width: 640px) {
+  .marquee-item {
+    width: 120px;
+    height: 64px;
+    margin-right: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
   }
 }
 
