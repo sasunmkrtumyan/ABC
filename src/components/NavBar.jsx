@@ -16,6 +16,7 @@ export default function NavBar() {
     { href: '/about', label: t.nav.about },
     { href: '/events', label: t.nav.events },
     { href: '/partners', label: t.nav.partners },
+    { href: '/investments', label: t.nav.investments },
     { href: '/contact', label: t.nav.contact },
   ];
 

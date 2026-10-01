@@ -14,6 +14,7 @@ import { uploadEventImage, uploadPartnerLogo, uploadSliderImage } from '@/lib/su
 import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
 import RichTextEditor from '@/components/RichTextEditor.jsx';
 import SortableImageGrid from '@/components/SortableImageGrid.jsx';
+import InvestmentsAdmin from '@/components/admin/InvestmentsAdmin.jsx';
 import Link from 'next/link'; // Ավելացրել ենք Link հղման համար
 import { useEffect, useMemo, useState } from 'react';
 
@@ -644,7 +645,7 @@ export default function AdminPage() {
       </div>
 
       {/* Tabs Navigation */}
-      <div className="mb-6 gap-2 border-slate-200 flex border-b pb-px">
+      <div className="mb-6 gap-2 border-slate-200 flex flex-wrap border-b pb-px">
         <button
           onClick={() => {
             setActiveTab('partners');
@@ -677,6 +678,18 @@ export default function AdminPage() {
           className={`px-6 py-3 font-bold transition-all ${activeTab === 'add-event' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`}
         >
           {isEventEdit ? 'Խմբագրել միջոցառում' : 'Ավելացնել միջոցառում'}
+        </button>
+        <button
+          onClick={() => setActiveTab('investments')}
+          className={`px-6 py-3 font-bold transition-all ${activeTab === 'investments' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`}
+        >
+          Ներդրումների ցանկ
+        </button>
+        <button
+          onClick={() => setActiveTab('add-investment')}
+          className={`px-6 py-3 font-bold transition-all ${activeTab === 'add-investment' ? 'border-blue-600 text-blue-600 border-b-2' : 'text-slate-500'}`}
+        >
+          Ավելացնել ներդրում
         </button>
         <button
           onClick={() => setActiveTab('sliders')}
@@ -1139,6 +1152,10 @@ export default function AdminPage() {
             </div>
           </form>
         </section>
+      )}
+
+      {(activeTab === 'investments' || activeTab === 'add-investment') && (
+        <InvestmentsAdmin partners={partners} mode={activeTab} onModeChange={setActiveTab} />
       )}
 
       {activeTab === 'sliders' && (

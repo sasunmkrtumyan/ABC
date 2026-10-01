@@ -63,6 +63,35 @@ on public.events (public_id);
 alter table public.events
 add column if not exists has_time boolean not null default true;
 
+create table if not exists public.investments (
+  id uuid primary key default gen_random_uuid(),
+  partner_id uuid references public.partners(id) on delete set null,
+  slug text not null unique,
+  company_name text not null,
+  company_image_url text not null default '',
+  title jsonb not null,
+  summary jsonb not null,
+  details jsonb not null default '{}'::jsonb,
+  amount numeric(18, 2),
+  currency text not null default 'USD',
+  investment_type text not null check (investment_type in ('equity', 'loan', 'strategic', 'grant', 'other')),
+  sector text not null default '',
+  location text not null default '',
+  deadline date,
+  website text not null default '',
+  emails text[] not null default '{}'::text[],
+  phones text[] not null default '{}'::text[],
+  status text not null default 'draft' check (status in ('draft', 'open', 'closed')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists investments_status_created_at_idx
+on public.investments (status, created_at desc);
+
+create index if not exists investments_partner_id_idx
+on public.investments (partner_id);
+
 -- Homepage partner sliders. `slider` picks which of the two marquees a row belongs to.
 create table if not exists public.slider_images (
   id uuid primary key default gen_random_uuid(),
@@ -105,6 +134,12 @@ before update on public.events
 for each row
 execute function public.set_updated_at();
 
+drop trigger if exists set_investments_updated_at on public.investments;
+create trigger set_investments_updated_at
+before update on public.investments
+for each row
+execute function public.set_updated_at();
+
 drop trigger if exists set_slider_images_updated_at on public.slider_images;
 create trigger set_slider_images_updated_at
 before update on public.slider_images
@@ -115,6 +150,7 @@ execute function public.set_updated_at();
 alter table public.partners enable row level security;
 alter table public.tags enable row level security;
 alter table public.events enable row level security;
+alter table public.investments enable row level security;
 alter table public.slider_images enable row level security;
 alter table public.admins enable row level security;
 
@@ -136,6 +172,18 @@ create policy "Public read events"
 on public.events
 for select
 using (true);
+
+drop policy if exists "Public read published investments" on public.investments;
+create policy "Public read published investments"
+on public.investments
+for select
+using (status in ('open', 'closed'));
+
+drop policy if exists "Admins read all investments" on public.investments;
+create policy "Admins read all investments"
+on public.investments
+for select
+using (exists (select 1 from public.admins where user_id = auth.uid()));
 
 drop policy if exists "Public read slider images" on public.slider_images;
 create policy "Public read slider images"
@@ -198,6 +246,25 @@ with check (exists (select 1 from public.admins where user_id = auth.uid()));
 drop policy if exists "Admins delete events" on public.events;
 create policy "Admins delete events"
 on public.events
+for delete
+using (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins insert investments" on public.investments;
+create policy "Admins insert investments"
+on public.investments
+for insert
+with check (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins update investments" on public.investments;
+create policy "Admins update investments"
+on public.investments
+for update
+using (exists (select 1 from public.admins where user_id = auth.uid()))
+with check (exists (select 1 from public.admins where user_id = auth.uid()));
+
+drop policy if exists "Admins delete investments" on public.investments;
+create policy "Admins delete investments"
+on public.investments
 for delete
 using (exists (select 1 from public.admins where user_id = auth.uid()));
 

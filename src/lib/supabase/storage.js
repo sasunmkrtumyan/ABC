@@ -53,6 +53,10 @@ export async function uploadEventImage(file, key = "event") {
   return uploadPublicImage(file, "events", key);
 }
 
+export async function uploadInvestmentImage(file, key = "investment") {
+  return uploadPublicImage(file, "investments", key);
+}
+
 export async function uploadSliderImage(file, key = "slider") {
   return uploadPublicImage(file, "sliders", key);
 }
