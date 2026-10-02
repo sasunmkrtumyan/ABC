@@ -23,6 +23,7 @@ function normalizeEvent(row) {
     mode: row.mode || "offline",
     place: row.place || "",
     imageUrl: row.image_url || "",
+    detailImageUrl: row.detail_image_url || "",
     contactEmail: row.contact_email || "",
     contactPhone: row.contact_phone || "",
   };

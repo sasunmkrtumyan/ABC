@@ -26,6 +26,7 @@ function fromRow(row) {
     mode: row.mode || "offline",
     place: row.place || "",
     imageUrl: row.image_url || "",
+    detailImageUrl: row.detail_image_url || "",
     contactEmail: row.contact_email || "",
     contactPhone: row.contact_phone || "",
     createdAt: row.created_at,
@@ -44,6 +45,7 @@ function toRow(payload = {}) {
     mode: payload.mode || "offline",
     place: payload.place || "",
     image_url: payload.imageUrl || "",
+    detail_image_url: payload.detailImageUrl || "",
     contact_email: payload.contactEmail || "",
     contact_phone: payload.contactPhone || "",
   };

@@ -42,6 +42,7 @@ create table if not exists public.events (
   mode text not null check (mode in ('online', 'offline')),
   place text not null default '',
   image_url text not null default '',
+  detail_image_url text not null default '',
   contact_email text not null default '',
   contact_phone text not null default '',
   created_at timestamptz not null default now(),
@@ -62,6 +63,9 @@ on public.events (public_id);
 
 alter table public.events
 add column if not exists has_time boolean not null default true;
+
+alter table public.events
+add column if not exists detail_image_url text not null default '';
 
 create table if not exists public.investments (
   id uuid primary key default gen_random_uuid(),

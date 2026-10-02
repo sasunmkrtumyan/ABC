@@ -135,6 +135,7 @@ const emptyEventForm = {
   contactEmail: '',
   contactPhone: '',
   imageUrl: '',
+  detailImageUrl: '',
 };
 
 function pickLocalizedValue(valueByLang = {}) {
@@ -216,6 +217,7 @@ export default function AdminPage() {
   const [newTagName, setNewTagName] = useState('');
   const [eventForm, setEventForm] = useState(emptyEventForm);
   const [eventImageFile, setEventImageFile] = useState(null);
+  const [eventDetailImageFile, setEventDetailImageFile] = useState(null);
   const [eventEditingId, setEventEditingId] = useState(null);
   const [eventSubmitting, setEventSubmitting] = useState(false);
   const [sliders, setSliders] = useState({ top: [], bottom: [] });
@@ -325,6 +327,7 @@ export default function AdminPage() {
     setEventForm(emptyEventForm);
     setEventEditingId(null);
     setEventImageFile(null);
+    setEventDetailImageFile(null);
   };
 
   const fillEventEditForm = (id) => {
@@ -350,6 +353,7 @@ export default function AdminPage() {
       contactEmail: item.contactEmail || '',
       contactPhone: item.contactPhone || '',
       imageUrl: item.imageUrl || '',
+      detailImageUrl: item.detailImageUrl || '',
     });
     setActiveTab('add-event');
   };
@@ -413,13 +417,14 @@ export default function AdminPage() {
       }
       if (!isEventEdit && !eventImageFile) throw new Error('Նոր միջոցառման համար ընտրեք նկար');
 
+      const imageKey = slugify(eventForm.titleEn || eventForm.titleAm || 'event');
       let imageUrl = eventForm.imageUrl || '';
       if (eventImageFile) {
-        imageUrl = await uploadAdminImage(
-          eventImageFile,
-          'event',
-          slugify(eventForm.titleEn || eventForm.titleAm || 'event')
-        );
+        imageUrl = await uploadAdminImage(eventImageFile, 'event', imageKey);
+      }
+      let detailImageUrl = eventForm.detailImageUrl || '';
+      if (eventDetailImageFile) {
+        detailImageUrl = await uploadAdminImage(eventDetailImageFile, 'event', `${imageKey}-detail`);
       }
 
       const eventDateTime = new Date(`${eventForm.eventDate}T${eventForm.eventTime || '00:00'}`);
@@ -449,6 +454,7 @@ export default function AdminPage() {
         mode: eventForm.mode,
         place: eventForm.mode === 'offline' ? eventForm.place.trim() : '',
         imageUrl,
+        detailImageUrl,
         contactEmail: eventForm.contactEmail.trim(),
         contactPhone: eventForm.contactPhone.trim(),
       };
@@ -473,7 +479,8 @@ export default function AdminPage() {
         message.toLowerCase().includes('has_details') ||
         message.toLowerCase().includes('details') ||
         message.toLowerCase().includes('has_time') ||
-        message.toLowerCase().includes('public_id')
+        message.toLowerCase().includes('public_id') ||
+        message.toLowerCase().includes('detail_image_url')
       ) {
         setError(
           "Գործողությունը ձախողվեց: Events աղյուսակի նոր դաշտերը բացակայում են։ Supabase-ում նորից գործարկեք supabase/schema.sql։"
@@ -1122,11 +1129,27 @@ export default function AdminPage() {
               className="rounded-xl border-slate-300 px-4 py-3 border"
             />
 
-            <div className="md:col-span-2">
-              <p className="mb-2 text-sm font-medium text-slate-500">Նկար (պարտադիր նոր միջոցառման համար)</p>
+            <div>
+              <p className="mb-2 text-sm font-medium text-slate-500">Քարտի նկար (պարտադիր նոր միջոցառման համար)</p>
+              {eventForm.imageUrl ? (
+                <img src={eventForm.imageUrl} alt="" className="mb-3 h-28 w-full rounded-xl object-cover" />
+              ) : null}
               <input
                 type="file"
-                onChange={(e) => setEventImageFile(e.target.files?.[0])}
+                onChange={(e) => setEventImageFile(e.target.files?.[0] || null)}
+                className="w-full"
+                accept="image/*"
+              />
+            </div>
+
+            <div>
+              <p className="mb-2 text-sm font-medium text-slate-500">Մանրամասների էջի նկար</p>
+              {eventForm.detailImageUrl ? (
+                <img src={eventForm.detailImageUrl} alt="" className="mb-3 h-28 w-full rounded-xl object-cover" />
+              ) : null}
+              <input
+                type="file"
+                onChange={(e) => setEventDetailImageFile(e.target.files?.[0] || null)}
                 className="w-full"
                 accept="image/*"
               />

@@ -84,6 +84,7 @@ export default function EventDetailsPage() {
 
   const title = pickTextByLanguage(event.title, language);
   const detailsHtml = prepareHtmlForRender(pickTextByLanguage(event.details, language));
+  const heroImage = event.detailImageUrl || event.imageUrl;
 
   return (
     <main className="container-abc py-12">
@@ -93,9 +94,9 @@ export default function EventDetailsPage() {
       </Link>
 
       <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-        {event.imageUrl ? (
+        {heroImage ? (
           <div className="max-h-[520px] overflow-hidden bg-slate-100">
-            <img src={event.imageUrl} alt={title || 'event'} className="h-full max-h-[520px] w-full object-cover" />
+            <img src={heroImage} alt={title || 'event'} className="h-full max-h-[520px] w-full object-cover" />
           </div>
         ) : null}
 
