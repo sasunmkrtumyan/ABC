@@ -536,12 +536,19 @@ export default function AdminPage() {
     setSliderBusyKey(sliderKey);
     setError('');
     try {
-      const uploaded = await Promise.all(
-        files.map(async (file) => ({
-          imageUrl: await uploadAdminImage(file, 'slider', `${sliderKey}-${slugify(file.name) || 'image'}`),
-          alt: file.name.replace(/\.[^.]+$/, ''),
-        })),
-      );
+      // Upload in small parallel batches so large selections (100+) stay reliable.
+      const UPLOAD_BATCH_SIZE = 5;
+      const uploaded = [];
+      for (let i = 0; i < files.length; i += UPLOAD_BATCH_SIZE) {
+        const batch = files.slice(i, i + UPLOAD_BATCH_SIZE);
+        const batchUploaded = await Promise.all(
+          batch.map(async (file) => ({
+            imageUrl: await uploadAdminImage(file, 'slider', `${sliderKey}-${slugify(file.name) || 'image'}`),
+            alt: file.name.replace(/\.[^.]+$/, ''),
+          })),
+        );
+        uploaded.push(...batchUploaded);
+      }
       await createSliderImages(sliderKey, uploaded);
       await loadSupabaseData();
       showSuccess(`Ավելացվեց ${uploaded.length} նկար`);
@@ -1185,7 +1192,7 @@ export default function AdminPage() {
         <div className="space-y-6">
           <p className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 text-sm text-slate-600">
             Այս նկարները ցուցադրվում են գլխավոր էջի «Մեր գործընկերները» բաժնի երկու սլայդերներում։ Քաշեք նկարները՝
-            հերթականությունը փոխելու համար։
+            հերթականությունը փոխելու համար։ Նկարների քանակի սահման չկա — կարող եք ավելացնել որքան ուզում եք։
           </p>
 
           {SLIDER_PANELS.map((panel) => {

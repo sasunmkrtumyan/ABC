@@ -251,7 +251,7 @@ export const messages = {
     investments: {
       title: "Инвестиционные возможности",
       intro:
-        "Откройте проверенные инвестиционные возможности компаний-партнеров ABC и свяжитесь напрямую с бизнесами, готовыми к росту.",
+        "Здесь вы увидите инвестиционные проекты партнёров ABC, а за подробностями обращайтесь в соответствующую компанию или в службу поддержки ABC.",
       search: "Поиск по компании или названию",
       allTypes: "Все типы",
       allSectors: "Все отрасли",
@@ -400,7 +400,7 @@ export const messages = {
     investments: {
       title: "Investment Opportunities",
       intro:
-        "Discover verified funding opportunities from ABC partner companies and connect directly with businesses ready to grow.",
+        "Here you will see investment projects from ABC partners, and for details contact the company in question or ABC’s support team.",
       search: "Search by company or title",
       allTypes: "All types",
       allSectors: "All sectors",
