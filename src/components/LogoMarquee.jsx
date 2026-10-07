@@ -45,11 +45,11 @@ export default function LogoMarquee({ items: rawItems = [], direction = 'left', 
                   quality={70}
                   // Only https/local sources are allowed by the image optimizer config.
                   unoptimized={!/^(https:\/\/|\/)/.test(item.imageUrl)}
-                  // Lazy everywhere: the strip sits far below the fold, so on first load no logo
-                  // is requested (no flood of image requests competing with the page's JS/taps
-                  // on mobile). Logos load as the strip nears the viewport; copy 2 reuses the
-                  // same cached URLs.
-                  loading="lazy"
+                  // Eager: the track is wider than the viewport and constantly sliding, so lazy
+                  // tiles that start off-screen scroll into view still blank (the gaps). The
+                  // logos are small, resized by next/image, and every repeat reuses the same URL,
+                  // so this is only one request per distinct logo.
+                  loading="eager"
                   draggable={false}
                 />
               </div>
