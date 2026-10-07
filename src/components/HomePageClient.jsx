@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useLanguage } from '../lib/i18n/LanguageContext';
-import LogoMarquee from './LogoMarquee';
 import RevealSection from './RevealSection';
 
 const sectionImages = {
@@ -37,11 +36,11 @@ function SectionHeader({ icon, title, badge }) {
   );
 }
 
-export default function HomePageClient({ sliders = { top: [], bottom: [] } }) {
+// `partners` is a server-rendered slot (streamed in via Suspense) so the slider data
+// never blocks the first paint of the rest of the page.
+export default function HomePageClient({ partners = null }) {
   const { t } = useLanguage();
   const [activeWelcomeIndex, setActiveWelcomeIndex] = useState(0);
-
-  const hasSliderImages = sliders.top.length > 0 || sliders.bottom.length > 0;
 
   return (
     <main>
@@ -49,7 +48,7 @@ export default function HomePageClient({ sliders = { top: [], bottom: [] } }) {
         <div className="absolute -left-16 -top-14 h-48 w-48 rounded-full bg-white/10 blur-2xl"></div>
         <div className="absolute -bottom-20 right-0 h-64 w-64 rounded-full bg-[#F2A800]/30 blur-3xl"></div>
         <div className="container-abc relative">
-          <RevealSection className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-sm md:p-8 lg:p-10">
+          <div className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-sm md:p-8 lg:p-10">
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-black leading-tight md:text-5xl">{t.landing.welcomeTitle}</h1>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-blue-100 md:text-base">{t.common.slogan}</p>
@@ -84,12 +83,14 @@ export default function HomePageClient({ sliders = { top: [], bottom: [] } }) {
                   src={sectionImages.welcome}
                   alt="Welcome"
                   fill
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  quality={70}
                   className="object-cover"
                   priority
                 />
               </div>
             </div>
-          </RevealSection>
+          </div>
         </div>
       </section>
 
@@ -119,6 +120,8 @@ export default function HomePageClient({ sliders = { top: [], bottom: [] } }) {
                 src={sectionImages.mission}
                 alt="ABC mission"
                 fill
+                sizes="(min-width: 768px) 45vw, 100vw"
+                quality={70}
                 className="object-cover transition-transform duration-700 hover:scale-105"
               />
             </div>
@@ -170,6 +173,8 @@ export default function HomePageClient({ sliders = { top: [], bottom: [] } }) {
                   alt="Connect"
                   width={800}
                   height={400}
+                  sizes="(min-width: 1024px) 28vw, 100vw"
+                  quality={70}
                   className="h-auto w-full object-contain"
                 />
               </div>
@@ -179,21 +184,7 @@ export default function HomePageClient({ sliders = { top: [], bottom: [] } }) {
 
         <RevealSection className="rounded-3xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-10">
           <SectionHeader icon={<HeartHandshake className="h-6 w-6" />} title={t.landing.partnersTitle} />
-          {hasSliderImages ? (
-            <div className="space-y-10">
-              <LogoMarquee items={sliders.top} direction="right" />
-              <LogoMarquee items={sliders.bottom} direction="left" />
-            </div>
-          ) : (
-            <Image
-              src={sectionImages.partners}
-              alt={t.landing.partnersTitle}
-              width={1100}
-              height={700}
-              sizes="100vw"
-              className="h-auto w-full object-contain"
-            />
-          )}
+          {partners}
         </RevealSection>
       </div>
     </main>

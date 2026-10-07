@@ -52,12 +52,29 @@ a {
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
 
+/*
+ * Pure-CSS infinite loop. The track holds two identical sets and slides by exactly
+ * one set width. Tile size is fixed, so the distance is simply count x tile width
+ * (unitless vars so the duration can be derived with calc()).
+ */
 .marquee-track {
+  --marquee-tile: 184; /* tile width + gap, px */
+  --marquee-speed: 95; /* px per second */
+  --marquee-distance: calc(var(--marquee-count) * var(--marquee-tile) * 1px);
   display: flex;
   width: max-content;
   will-change: transform;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
+  animation-duration: calc(var(--marquee-count) * var(--marquee-tile) / var(--marquee-speed) * 1s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.marquee-left {
+  animation-name: marquee-left;
+}
+
+.marquee-right {
+  animation-name: marquee-right;
 }
 
 .marquee-set {
@@ -65,16 +82,12 @@ a {
   flex: 0 0 auto;
 }
 
-/* Fixed tile size so layout (and loop width) is stable before images finish loading. */
 .marquee-item {
   position: relative;
   flex: 0 0 auto;
   width: 160px;
   height: 80px;
   margin-right: 24px;
-  border-radius: 10px;
-  background: #f1f5f9;
-  overflow: hidden;
 }
 
 .marquee-item img {
@@ -87,7 +100,37 @@ a {
   -webkit-user-drag: none;
 }
 
+@keyframes marquee-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(-1 * var(--marquee-distance)), 0, 0);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translate3d(calc(-1 * var(--marquee-distance)), 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Pause on hover only for real mice; touch devices keep a sticky :hover and would freeze. */
+@media (hover: hover) and (pointer: fine) {
+  .marquee-shell:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
 @media (max-width: 640px) {
+  .marquee-track {
+    --marquee-tile: 136;
+    --marquee-speed: 75;
+  }
+
   .marquee-item {
     width: 120px;
     height: 64px;
@@ -97,7 +140,7 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
-    transform: none !important;
+    animation: none;
   }
 }
 

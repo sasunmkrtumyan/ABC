@@ -8,16 +8,24 @@ export default function RevealSection({ className, children }) {
 
   useEffect(() => {
     const target = ref.current;
-    if (!target) return;
+    if (!target) return undefined;
+
+    // Without IntersectionObserver (or if it never fires) content must not stay hidden.
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return undefined;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(target);
+          observer.disconnect();
         }
       },
-      { threshold: 0.15 },
+      // Low threshold + positive bottom margin: tall sections are revealed as soon as
+      // they approach the viewport instead of waiting until 15% of them is on screen.
+      { threshold: 0.01, rootMargin: '0px 0px 80px 0px' },
     );
 
     observer.observe(target);
@@ -28,7 +36,8 @@ export default function RevealSection({ className, children }) {
     <section
       ref={ref}
       className={[
-        'transition-all duration-700',
+        // Only opacity/transform are animated (never `all`) to avoid layout/paint work.
+        'transition-[opacity,transform] duration-700 motion-reduce:transition-none',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0',
         className || '',
       ]
