@@ -95,13 +95,26 @@ export async function createSliderImages(slider, images = []) {
 }
 
 export async function deleteSliderImage(imageId) {
-  const { error } = await supabase.from("slider_images").delete().eq("id", imageId);
+  // Ask for the deleted rows back: row level security makes a blocked delete succeed with
+  // zero affected rows and no error, which would leave the image on the homepage.
+  const { data, error } = await supabase
+    .from("slider_images")
+    .delete()
+    .eq("id", imageId)
+    .select("id");
   if (error) throw error;
+  if (!data?.length) {
+    throw new Error(
+      "Slider image was not deleted (no permission or it no longer exists). Make sure you are signed in as an admin listed in public.admins."
+    );
+  }
   return true;
 }
 
 /** Persists a new order by writing each item's index back as its position. */
 export async function reorderSliderImages(orderedImages = []) {
+  if (!orderedImages.length) return true;
+
   const updates = orderedImages.map((image, index) =>
     supabase.from("slider_images").update({ position: index }).eq("id", image.id),
   );

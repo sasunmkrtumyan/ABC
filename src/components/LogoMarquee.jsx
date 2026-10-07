@@ -2,7 +2,9 @@ import Image from 'next/image';
 
 // Keep in sync with the tile sizes in globals.css (.marquee-item).
 const MIN_TILE_WIDTH = 136; // smallest tile (mobile) incl. gap, used to size one "set"
-const MIN_SET_WIDTH = 2800; // one set must be wider than any viewport so the loop never shows a gap
+// One set must be wider than the strip itself (max ~1140px inside the page container), not the
+// whole screen. Keeping it small matters on phones: fewer <img> nodes and a narrower layer.
+const MIN_SET_WIDTH = 1300;
 
 /**
  * Infinite logo strip driven purely by a CSS animation.
@@ -43,9 +45,11 @@ export default function LogoMarquee({ items: rawItems = [], direction = 'left', 
                   quality={70}
                   // Only https/local sources are allowed by the image optimizer config.
                   unoptimized={!/^(https:\/\/|\/)/.test(item.imageUrl)}
-                  // The first copy loads right away so logos are painted before they scroll in;
-                  // the second copy reuses the same (cached) URLs.
-                  loading={copyIndex === 0 ? 'eager' : 'lazy'}
+                  // Lazy everywhere: the strip sits far below the fold, so on first load no logo
+                  // is requested (no flood of image requests competing with the page's JS/taps
+                  // on mobile). Logos load as the strip nears the viewport; copy 2 reuses the
+                  // same cached URLs.
+                  loading="lazy"
                   draggable={false}
                 />
               </div>

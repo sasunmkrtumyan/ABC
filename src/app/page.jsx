@@ -7,6 +7,8 @@ import { fetchSliderImages } from '../lib/supabase/sliders';
 
 // Slider images are read per request so admin changes show up immediately.
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 function PartnersFallbackImage() {
   return (
@@ -15,33 +17,39 @@ function PartnersFallbackImage() {
       alt="Partners"
       width={1100}
       height={700}
-      sizes="(min-width: 1280px) 1100px, 100vw"
+      sizes="(min-width: 1280px) 1100px, calc(100vw - 5rem)"
       quality={70}
       className="h-auto w-full object-contain"
     />
   );
 }
 
-// Placeholder with the same height as the two marquee rows to avoid layout shift.
+// Same height as the two marquee rows (64px <=640px, 80px above, see globals.css) and the same
+// space-y-10 gap, so swapping in the real strips causes no layout shift.
 function PartnersSkeleton() {
   return (
     <div className="space-y-10" aria-hidden="true">
-      <div className="h-16 animate-pulse rounded-xl bg-slate-100 sm:h-20" />
-      <div className="h-16 animate-pulse rounded-xl bg-slate-100 sm:h-20" />
+      <div className="h-16 animate-pulse rounded-xl bg-slate-100 min-[641px]:h-20" />
+      <div className="h-16 animate-pulse rounded-xl bg-slate-100 min-[641px]:h-20" />
     </div>
   );
 }
 
 async function PartnersSliders() {
   let sliders = { top: [], bottom: [] };
+  let loaded = false;
 
   try {
     sliders = await fetchSliderImages(createSupabaseServerClient());
+    loaded = true;
   } catch {
     // Fall back to the static partners image if the sliders cannot be loaded.
   }
 
-  if (!sliders.top.length && !sliders.bottom.length) return <PartnersFallbackImage />;
+  if (!loaded) return <PartnersFallbackImage />;
+  // Sliders loaded fine but are empty (e.g. the admin removed every image): show nothing
+  // instead of the static fallback, which would look like the removed images are still there.
+  if (!sliders.top.length && !sliders.bottom.length) return null;
 
   return (
     <div className="space-y-10">

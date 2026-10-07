@@ -47,23 +47,24 @@ a {
 .marquee-shell {
   overflow: hidden;
   width: 100%;
-  touch-action: pan-y;
+  touch-action: pan-y; /* vertical page scroll always wins over the strip */
   -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
 
 /*
- * Pure-CSS infinite loop. The track holds two identical sets and slides by exactly
- * one set width. Tile size is fixed, so the distance is simply count x tile width
- * (unitless vars so the duration can be derived with calc()).
+ * Pure-CSS infinite loop. The track holds two identical sets, so sliding by -50% of
+ * the track is exactly one set. Tile size is fixed, so the duration is simply
+ * count x tile width / speed (unitless vars so it can be derived with calc()).
+ * No will-change: an animating transform is promoted to its own layer anyway, and
+ * a permanent hint keeps a wide layer in memory on phones.
  */
 .marquee-track {
   --marquee-tile: 184; /* tile width + gap, px */
   --marquee-speed: 95; /* px per second */
-  --marquee-distance: calc(var(--marquee-count) * var(--marquee-tile) * 1px);
   display: flex;
   width: max-content;
-  will-change: transform;
+  pointer-events: none; /* taps/scrolls always reach the page, never the strip */
   animation-duration: calc(var(--marquee-count) * var(--marquee-tile) / var(--marquee-speed) * 1s);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -97,6 +98,8 @@ a {
   object-fit: contain;
   pointer-events: none;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none; /* no iOS long-press image menu */
   -webkit-user-drag: none;
 }
 
@@ -105,13 +108,13 @@ a {
     transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate3d(calc(-1 * var(--marquee-distance)), 0, 0);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 @keyframes marquee-right {
   from {
-    transform: translate3d(calc(-1 * var(--marquee-distance)), 0, 0);
+    transform: translate3d(-50%, 0, 0);
   }
   to {
     transform: translate3d(0, 0, 0);
@@ -126,9 +129,15 @@ a {
 }
 
 @media (max-width: 640px) {
+  /* A mask on a shell with an animating child is re-rendered every frame on iOS/Android GPUs. */
+  .marquee-shell {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
   .marquee-track {
     --marquee-tile: 136;
-    --marquee-speed: 75;
+    --marquee-speed: 60;
   }
 
   .marquee-item {

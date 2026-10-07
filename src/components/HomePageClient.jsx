@@ -45,10 +45,10 @@ export default function HomePageClient({ partners = null }) {
   return (
     <main>
       <section className="relative overflow-hidden bg-gradient-to-br from-[#D90012] via-[#0033A0] to-[#0B1F5B] py-16 text-white md:py-20">
-        <div className="absolute -left-16 -top-14 h-48 w-48 rounded-full bg-white/10 blur-2xl"></div>
-        <div className="absolute -bottom-20 right-0 h-64 w-64 rounded-full bg-[#F2A800]/30 blur-3xl"></div>
+        <div className="absolute -left-16 -top-14 hidden h-48 w-48 rounded-full bg-white/10 blur-2xl md:block"></div>
+        <div className="absolute -bottom-20 right-0 hidden h-64 w-64 rounded-full bg-[#F2A800]/30 blur-3xl md:block"></div>
         <div className="container-abc relative">
-          <div className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-sm md:p-8 lg:p-10">
+          <div className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl md:p-8 md:backdrop-blur-sm lg:p-10">
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-black leading-tight md:text-5xl">{t.landing.welcomeTitle}</h1>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-blue-100 md:text-base">{t.common.slogan}</p>
@@ -78,12 +78,12 @@ export default function HomePageClient({ partners = null }) {
                 </div>
               </div>
 
-              <div className="relative min-h-[280px] overflow-hidden rounded-3xl border border-white/20 bg-white/15 shadow-xl backdrop-blur-sm md:min-h-[360px]">
+              <div className="relative min-h-[280px] overflow-hidden rounded-3xl border border-white/20 bg-white/15 shadow-xl md:min-h-[360px] md:backdrop-blur-sm">
                 <Image
                   src={sectionImages.welcome}
                   alt="Welcome"
                   fill
-                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  sizes="(min-width: 1024px) 40vw, (min-width: 768px) 80vw, calc(100vw - 5rem)"
                   quality={70}
                   className="object-cover"
                   priority
@@ -120,7 +120,7 @@ export default function HomePageClient({ partners = null }) {
                 src={sectionImages.mission}
                 alt="ABC mission"
                 fill
-                sizes="(min-width: 768px) 45vw, 100vw"
+                sizes="(min-width: 768px) 45vw, calc(100vw - 5rem)"
                 quality={70}
                 className="object-cover transition-transform duration-700 hover:scale-105"
               />
@@ -173,7 +173,7 @@ export default function HomePageClient({ partners = null }) {
                   alt="Connect"
                   width={800}
                   height={400}
-                  sizes="(min-width: 1024px) 28vw, 100vw"
+                  sizes="(min-width: 1024px) 28vw, calc(100vw - 6rem)"
                   quality={70}
                   className="h-auto w-full object-contain"
                 />
