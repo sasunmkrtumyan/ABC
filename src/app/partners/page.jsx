@@ -266,7 +266,7 @@ export default function PartnersPage() {
 
   return (
     <main className="container-abc py-12">
-      <h1 className="text-4xl font-black text-brand.dark">{t.partners.title}</h1>
+      <h1 className="text-3xl md:text-4xl font-black text-brand.dark">{t.partners.title}</h1>
       {loadError ? <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{loadError}</p> : null}
 
       <div className="mt-6 gap-4 md:flex-row flex flex-col">
@@ -299,20 +299,20 @@ export default function PartnersPage() {
         ) : null}
       </div>
 
-      <div className="mt-6 rounded-2xl border-slate-200 bg-white overflow-y-auto border">
+      <div className="mt-6 rounded-2xl border-slate-200 bg-white overflow-x-auto border">
         <table className="divide-slate-200 min-w-full divide-y">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">
+              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-center uppercase">
                 {t.partners.table.name}
               </th>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">
+              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-center uppercase">
                 {t.partners.table.categories}
               </th>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">
+              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-center uppercase">
                 {t.partners.table.email}
               </th>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">
+              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-center uppercase">
                 {t.partners.table.phone}
               </th>
             </tr>
@@ -334,7 +334,7 @@ export default function PartnersPage() {
             ) : (
               partners.map((item) => (
                 <tr key={item.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 whitespace-nowrap">
                     <div className="gap-3 flex items-center">
                       <div className="h-12 w-12 rounded-md border-slate-200 bg-slate-100 shrink-0 overflow-hidden border">
                         {item.logoUrl ? (
@@ -373,7 +373,7 @@ export default function PartnersPage() {
                       })}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-slate-600">
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">
                     {(() => {
                       const translatedTags = (item.tags || [])
                         .map((tagKey) => categoryMap.get(normalizeLookupKey(tagKey)))
@@ -382,7 +382,7 @@ export default function PartnersPage() {
                       return translatedTags.length > 0 ? translatedTags.join(', ') : '-';
                     })()}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">
                     {item.email ? (
                       <a href={`mailto:${item.email}`} className="flex items-center gap-1.5 hover:underline">
                         <Mail size={14} className="shrink-0" />
@@ -392,7 +392,7 @@ export default function PartnersPage() {
                       '-'
                     )}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">
                     {item?.phones?.length ? (
                       <div className="space-y-1">
                         {item.phones.slice(0, 2).map((phone) => (
