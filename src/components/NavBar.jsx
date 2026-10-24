@@ -15,14 +15,14 @@ export default function NavBar() {
     { href: '/', label: t.nav.home },
     { href: '/about', label: t.nav.about },
     { href: '/events', label: t.nav.events },
-    { href: '/partners', label: t.nav.partners },
+    { href: '/digital_businessbook', label: t.nav.partners },
     { href: '/investments', label: t.nav.investments },
     { href: '/contact', label: t.nav.contact },
   ];
 
   const isActiveLink = (href) => {
     if (href === '/') return pathname === '/';
-    if (href === '/partners') return pathname === '/partners' || pathname?.startsWith('/partner/');
+    if (href === '/digital_businessbook') return pathname === '/digital_businessbook' || pathname?.startsWith('/partner/');
     return pathname === href || pathname?.startsWith(`${href}/`);
   };
 

@@ -6,7 +6,7 @@ Next.js + Tailwind + Firebase portal for Armenian Business Club.
 
 - `/` landing page with animated sections and partner logo slider
 - `/about` about Armenian business community
-- `/partners` searchable/filterable/paginated partners table
+- `/digital_businessbook` searchable/filterable/paginated partners table
 - `/partner/[slug]` dynamic partner details page
 - `/contact` contact information page
 - `/admin` Armenian-only admin panel (login + CRUD)

@@ -11,6 +11,12 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // The "Partners" page was renamed to "Digital Businessbook".
+      { source: "/partners", destination: "/digital_businessbook", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
