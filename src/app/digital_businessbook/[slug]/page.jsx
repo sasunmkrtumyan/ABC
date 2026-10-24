@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Link2, Mail, MapPin, Phone } from "lucide-react";
+import { Link2, Loader2, Mail, MapPin, Phone } from "lucide-react";
 import { fetchPartnerBySlug } from "../../../lib/supabase/partners";
 import { prepareHtmlForRender } from "../../../lib/html";
 import { useLanguage } from "../../../lib/i18n/LanguageContext";
@@ -24,11 +24,34 @@ export default function PartnerDetailsPage() {
   const { slug } = useParams();
   const { language, t } = useLanguage();
   const [partner, setPartner] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!slug) return;
-    fetchPartnerBySlug(slug).then(setPartner).catch(() => setPartner(null));
+    let cancelled = false;
+    setIsLoading(true);
+    fetchPartnerBySlug(slug)
+      .then((data) => {
+        if (!cancelled) setPartner(data);
+      })
+      .catch(() => {
+        if (!cancelled) setPartner(null);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
+
+  if (isLoading) {
+    return (
+      <main className="container-abc flex min-h-[40vh] items-center justify-center py-12">
+        <Loader2 className="animate-spin text-slate-400" size={40} aria-label="Loading" />
+      </main>
+    );
+  }
 
   if (!partner) {
     return (
