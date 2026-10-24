@@ -99,7 +99,7 @@ export const messages = {
         name: "Անուն",
         categories: "Կատեգորիա",
         email: "Էլ․ հասցե",
-        phone: "Հեռախոս",
+        phone: "Կոնտակտ",
       },
     },
     investments: {
@@ -251,7 +251,7 @@ export const messages = {
         name: "Название",
         categories: "Категория",
         email: "Эл. почта",
-        phone: "Телефон",
+        phone: "Контакт",
       },
     },
     investments: {
@@ -403,7 +403,7 @@ export const messages = {
         name: "Name",
         categories: "Category",
         email: "Email",
-        phone: "Phone",
+        phone: "Contact",
       },
     },
     investments: {
