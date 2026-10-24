@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 import { pickTextByLanguage } from '../../lib/localize';
 import { getSession } from '../../lib/supabase/auth';
@@ -345,14 +345,6 @@ export default function PartnersPage() {
                         {pickTextByLanguage(item.name, language)}
                       </Link>
                     </div>
-                    {item.location ? (
-                      <div className="mt-2 text-xs text-slate-600">
-                        <p className="flex items-center gap-1.5">
-                          <MapPin size={14} className="shrink-0" />
-                          <span className="truncate">{item.location}</span>
-                        </p>
-                      </div>
-                    ) : null}
                   </td>
                   <td className="px-4 py-3 align-middle text-slate-600 whitespace-nowrap">
                     {(() => {
