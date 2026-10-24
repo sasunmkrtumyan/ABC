@@ -10,6 +10,9 @@
      (for example `slider_images`, which powers the homepage partner sliders).
    - If a new table is not picked up right away, run `notify pgrst, 'reload schema';`.
 
+   - Optional: run `supabase/seed_tags.sql` to add the 24 default categories (tags) in EN/AM/RU.
+     It is idempotent, so re-running it skips tags that already exist.
+
 3. Create admin user:
    - In Auth -> Users, create an email/password user (the email should match `NEXT_PUBLIC_ADMIN_EMAIL`).
    - Copy the user's UUID and insert it into `public.admins`:

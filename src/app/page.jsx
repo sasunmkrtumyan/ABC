@@ -14,7 +14,7 @@ function PartnersFallbackImage() {
   return (
     <Image
       src="/img/logos.avif"
-      alt="Partners"
+      alt="Digital Businessbook"
       width={1100}
       height={700}
       sizes="(min-width: 1280px) 1100px, calc(100vw - 5rem)"

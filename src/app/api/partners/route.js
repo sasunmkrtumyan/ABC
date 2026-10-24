@@ -100,12 +100,14 @@ export async function GET(request) {
       items = fallbackResult.data || [];
     }
 
+    // Every tag is a category option, whether or not any partner uses it.
     const { data: tagsData, error: tagsError } = await supabase
       .from("tags")
       .select("name, slug")
       .order("slug", { ascending: true });
     if (tagsError) throw tagsError;
 
+    const seenKeys = new Set();
     const categories = (tagsData || [])
       .map((tag) => {
         const name = parseTagName(tag.name);
@@ -115,7 +117,11 @@ export async function GET(request) {
           name,
         };
       })
-      .filter((tag) => tag.key);
+      .filter((tag) => {
+        if (!tag.key || seenKeys.has(tag.key)) return false;
+        seenKeys.add(tag.key);
+        return true;
+      });
 
     return NextResponse.json(
       {

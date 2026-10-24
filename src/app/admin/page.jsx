@@ -117,6 +117,8 @@ const emptyForm = {
   logoUrl: '',
 };
 
+const emptyTagForm = { en: '', am: '', ru: '' };
+
 const emptyEventForm = {
   titleAm: '',
   titleRu: '',
@@ -214,7 +216,8 @@ export default function AdminPage() {
   const [successMessage, setSuccessMessage] = useState('');
   const [partnerSearch, setPartnerSearch] = useState('');
   const [eventSearch, setEventSearch] = useState('');
-  const [newTagName, setNewTagName] = useState('');
+  const [newTag, setNewTag] = useState(emptyTagForm);
+  const [tagError, setTagError] = useState('');
   const [eventForm, setEventForm] = useState(emptyEventForm);
   const [eventImageFile, setEventImageFile] = useState(null);
   const [eventDetailImageFile, setEventDetailImageFile] = useState(null);
@@ -495,10 +498,29 @@ export default function AdminPage() {
 
   // Tag functions (same logic)
   const addTag = async () => {
-    if (!newTagName.trim()) return;
-    await createTag(newTagName.trim());
-    setNewTagName('');
-    loadSupabaseData();
+    const name = {
+      en: newTag.en.trim(),
+      am: newTag.am.trim(),
+      ru: newTag.ru.trim(),
+    };
+    if (!name.en || !name.am || !name.ru) {
+      setTagError('Լրացրեք tag-ի անունը երեք լեզուներով (EN, AM, RU)');
+      return;
+    }
+    setTagError('');
+    try {
+      await createTag(name);
+      setNewTag(emptyTagForm);
+      showSuccess('Tag-ը ավելացվեց');
+      loadSupabaseData();
+    } catch (tagCreateError) {
+      const message = String(tagCreateError?.message || '');
+      setTagError(
+        message.includes('duplicate key')
+          ? 'Այս tag-ը արդեն գոյություն ունի'
+          : `Tag-ը չհաջողվեց ավելացնել: ${message}`,
+      );
+    }
   };
 
   const removeTag = async (id) => {
@@ -1240,16 +1262,29 @@ export default function AdminPage() {
       {/* Tab 3: Tags Management */}
       {activeTab === 'tags' && (
         <section className="rounded-2xl bg-white p-8 shadow-sm max-w-2xl">
-          <div className="gap-3 mb-8 flex">
-            <input
-              value={newTagName}
-              onChange={(e) => setNewTagName(e.target.value)}
-              placeholder="Նոր tag"
-              className="rounded-xl border-slate-300 px-4 py-3 w-full border"
-            />
+          <div className="gap-3 mb-8 flex flex-col">
+            {[
+              { code: 'en', label: 'English', placeholder: 'Tag name (English)' },
+              { code: 'am', label: 'Հայերեն', placeholder: 'Tag-ի անունը (Հայերեն)' },
+              { code: 'ru', label: 'Русский', placeholder: 'Название тега (Русский)' },
+            ].map((lang) => (
+              <label key={lang.code} className="gap-3 flex items-center">
+                <span className="w-24 text-sm font-semibold text-slate-600 shrink-0">{lang.label}</span>
+                <input
+                  value={newTag[lang.code]}
+                  onChange={(e) => setNewTag({ ...newTag, [lang.code]: e.target.value })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') addTag();
+                  }}
+                  placeholder={lang.placeholder}
+                  className="rounded-xl border-slate-300 px-4 py-3 w-full border"
+                />
+              </label>
+            ))}
+            {tagError ? <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{tagError}</p> : null}
             <button
               onClick={addTag}
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold whitespace-nowrap"
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold whitespace-nowrap self-end"
             >
               Ավելացնել
             </button>
@@ -1257,7 +1292,12 @@ export default function AdminPage() {
           <div className="space-y-3">
             {availableTags.map((tag) => (
               <div key={tag.id} className="p-3 border-slate-100 rounded-xl flex items-center justify-between border">
-                <span className="font-medium">{getTagLabel(tag)}</span>
+                <div className="text-sm">
+                  <p className="font-medium">{tag.name?.en || getTagLabel(tag)}</p>
+                  <p className="text-slate-500">
+                    {tag.name?.am || '-'} · {tag.name?.ru || '-'}
+                  </p>
+                </div>
                 <button onClick={() => removeTag(tag.id)} className="text-red-500 text-sm font-bold">
                   Ջնջել
                 </button>

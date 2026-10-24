@@ -312,7 +312,9 @@ export default function PartnersPage() {
               <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">
                 {t.partners.table.email}
               </th>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">Phone</th>
+              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-left uppercase">
+                {t.partners.table.phone}
+              </th>
             </tr>
           </thead>
           <tbody className="divide-slate-100 divide-y">
@@ -320,13 +322,13 @@ export default function PartnersPage() {
               <tr>
                 <td colSpan="4" className="py-12 text-slate-500 text-center">
                   <div className="mb-3 h-8 w-8 animate-spin border-blue-500 mx-auto rounded-full border-4 border-r-transparent"></div>
-                  <p>Բեռնվում է...</p>
+                  <p>{t.partners.loading}</p>
                 </td>
               </tr>
             ) : partners.length === 0 ? (
               <tr>
                 <td colSpan="4" className="py-8 text-slate-500 text-center">
-                  Գործընկերներ չեն գտնվել:
+                  {t.partners.empty}
                 </td>
               </tr>
             ) : (
