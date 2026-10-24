@@ -327,7 +327,7 @@ export default function PartnersPage() {
             ) : (
               partners.map((item) => (
                 <tr key={item.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 whitespace-nowrap">
+                  <td className="px-4 py-3 align-middle whitespace-nowrap">
                     <div className="gap-3 flex items-center">
                       <div className="h-12 w-12 rounded-md border-slate-200 bg-slate-100 shrink-0 overflow-hidden border">
                         {item.logoUrl ? (
@@ -345,16 +345,16 @@ export default function PartnersPage() {
                         {pickTextByLanguage(item.name, language)}
                       </Link>
                     </div>
-                    <div className="mt-2 space-y-1 text-xs text-slate-600">
-                      {item.location ? (
+                    {item.location ? (
+                      <div className="mt-2 text-xs text-slate-600">
                         <p className="flex items-center gap-1.5">
                           <MapPin size={14} className="shrink-0" />
                           <span className="truncate">{item.location}</span>
                         </p>
-                      ) : null}
-                    </div>
+                      </div>
+                    ) : null}
                   </td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">
+                  <td className="px-4 py-3 align-middle text-slate-600 whitespace-nowrap">
                     {(() => {
                       const translatedTags = (item.tags || [])
                         .map((tagKey) => categoryMap.get(normalizeLookupKey(tagKey)))
@@ -363,7 +363,7 @@ export default function PartnersPage() {
                       return translatedTags.length > 0 ? translatedTags.join(', ') : '-';
                     })()}
                   </td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">
+                  <td className="px-4 py-3 align-middle text-slate-600 whitespace-nowrap">
                     {item.email ? (
                       <a href={`mailto:${item.email}`} className="flex items-center gap-1.5 hover:underline">
                         <Mail size={14} className="shrink-0" />
@@ -373,7 +373,7 @@ export default function PartnersPage() {
                       '-'
                     )}
                   </td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">
+                  <td className="px-4 py-3 align-middle text-slate-600 whitespace-nowrap">
                     {item?.phones?.length ? (
                       <div className="space-y-1">
                         {item.phones.slice(0, 2).map((phone) => (
