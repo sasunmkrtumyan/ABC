@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { Link2, Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import { useLanguage } from '../../lib/i18n/LanguageContext';
 import { pickTextByLanguage } from '../../lib/localize';
 import { getSession } from '../../lib/supabase/auth';
@@ -19,13 +19,6 @@ function isAvifImage(url = '') {
 
 function normalizeLookupKey(value) {
   return String(value || '').trim().toLowerCase();
-}
-
-function normalizeWebsiteLink(value = '') {
-  const text = String(value || '').trim();
-  if (!text) return '';
-  if (/^(https?:\/\/|mailto:|tel:)/i.test(text)) return text;
-  return `https://${text}`;
 }
 
 function safePdfFileName(value) {
@@ -303,16 +296,16 @@ export default function PartnersPage() {
         <table className="divide-slate-200 min-w-full divide-y">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-center uppercase">
+              <th className="px-4 py-3 text-sm font-bold tracking-wider text-slate-500 text-center uppercase">
                 {t.partners.table.name}
               </th>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-center uppercase">
+              <th className="px-4 py-3 text-sm font-bold tracking-wider text-slate-500 text-center uppercase">
                 {t.partners.table.categories}
               </th>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-center uppercase">
+              <th className="px-4 py-3 text-sm font-bold tracking-wider text-slate-500 text-center uppercase">
                 {t.partners.table.email}
               </th>
-              <th className="px-4 py-3 text-xs tracking-wider text-slate-500 text-center uppercase">
+              <th className="px-4 py-3 text-sm font-bold tracking-wider text-slate-500 text-center uppercase">
                 {t.partners.table.phone}
               </th>
             </tr>
@@ -348,7 +341,7 @@ export default function PartnersPage() {
                           />
                         ) : null}
                       </div>
-                      <Link href={`/partner/${item.slug}`} className="font-semibold text-blue-500 hover:underline">
+                      <Link href={`/digital_businessbook/${item.slug}`} className="font-semibold text-blue-500 hover:underline">
                         {pickTextByLanguage(item.name, language)}
                       </Link>
                     </div>
@@ -359,18 +352,6 @@ export default function PartnersPage() {
                           <span className="truncate">{item.location}</span>
                         </p>
                       ) : null}
-                      {(item.links || []).slice(0, 2).map((linkValue) => {
-                        const href = normalizeWebsiteLink(linkValue);
-                        if (!href) return null;
-                        return (
-                          <p key={`${item.id}-${href}`} className="flex items-center gap-1.5">
-                            <Link2 size={14} className="shrink-0" />
-                            <a href={href} target="_blank" rel="noopener noreferrer" className="truncate hover:underline">
-                              {linkValue}
-                            </a>
-                          </p>
-                        );
-                      })}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">

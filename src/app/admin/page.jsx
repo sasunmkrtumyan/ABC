@@ -11,7 +11,7 @@ import {
   reorderSliderImages,
 } from '@/lib/supabase/sliders.js';
 import { uploadEventImage, uploadPartnerLogo, uploadSliderImage } from '@/lib/supabase/storage.js';
-import { createTag, deleteTag, fetchTags } from '@/lib/supabase/tags.js';
+import { createTag, deleteTag, fetchTags, reorderTags } from '@/lib/supabase/tags.js';
 import RichTextEditor from '@/components/RichTextEditor.jsx';
 import SortableImageGrid from '@/components/SortableImageGrid.jsx';
 import InvestmentsAdmin from '@/components/admin/InvestmentsAdmin.jsx';
@@ -218,6 +218,8 @@ export default function AdminPage() {
   const [eventSearch, setEventSearch] = useState('');
   const [newTag, setNewTag] = useState(emptyTagForm);
   const [tagError, setTagError] = useState('');
+  const [draggedTagId, setDraggedTagId] = useState(null);
+  const [dragOverTagId, setDragOverTagId] = useState(null);
   const [eventForm, setEventForm] = useState(emptyEventForm);
   const [eventImageFile, setEventImageFile] = useState(null);
   const [eventDetailImageFile, setEventDetailImageFile] = useState(null);
@@ -519,6 +521,33 @@ export default function AdminPage() {
         message.includes('duplicate key')
           ? 'Այս tag-ը արդեն գոյություն ունի'
           : `Tag-ը չհաջողվեց ավելացնել: ${message}`,
+      );
+    }
+  };
+
+  const handleTagDrop = async (targetId) => {
+    const sourceId = draggedTagId;
+    setDraggedTagId(null);
+    setDragOverTagId(null);
+    if (!sourceId || sourceId === targetId) return;
+
+    const from = availableTags.findIndex((tag) => tag.id === sourceId);
+    const to = availableTags.findIndex((tag) => tag.id === targetId);
+    if (from < 0 || to < 0) return;
+
+    const previous = availableTags;
+    const next = [...availableTags];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    setAvailableTags(next);
+
+    try {
+      await reorderTags(next.map((tag) => tag.id));
+      showSuccess('Tag-երի հերթականությունը պահպանվեց');
+    } catch (reorderError) {
+      setAvailableTags(previous);
+      setTagError(
+        `Հերթականությունը չհաջողվեց պահպանել: ${String(reorderError?.message || '')}. Supabase SQL Editor-ում գործարկեք supabase/tags_position.sql`,
       );
     }
   };
@@ -1290,9 +1319,34 @@ export default function AdminPage() {
             </button>
           </div>
           <div className="space-y-3">
+            <p className="text-xs text-slate-500">Քաշեք tag-երը՝ հերթականությունը փոխելու համար</p>
             {availableTags.map((tag) => (
-              <div key={tag.id} className="p-3 border-slate-100 rounded-xl flex items-center justify-between border">
-                <div className="text-sm">
+              <div
+                key={tag.id}
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.effectAllowed = 'move';
+                  setDraggedTagId(tag.id);
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = 'move';
+                  if (dragOverTagId !== tag.id) setDragOverTagId(tag.id);
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  handleTagDrop(tag.id);
+                }}
+                onDragEnd={() => {
+                  setDraggedTagId(null);
+                  setDragOverTagId(null);
+                }}
+                className={`p-3 rounded-xl flex items-center justify-between gap-3 border cursor-grab active:cursor-grabbing transition ${
+                  draggedTagId === tag.id ? 'opacity-40' : ''
+                } ${dragOverTagId === tag.id && draggedTagId !== tag.id ? 'border-blue-500 bg-blue-50' : 'border-slate-100'}`}
+              >
+                <span className="text-slate-400 select-none text-lg leading-none" aria-hidden="true">⠿</span>
+                <div className="text-sm flex-1">
                   <p className="font-medium">{tag.name?.en || getTagLabel(tag)}</p>
                   <p className="text-slate-500">
                     {tag.name?.am || '-'} · {tag.name?.ru || '-'}

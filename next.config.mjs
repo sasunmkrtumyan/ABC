@@ -15,6 +15,7 @@ const nextConfig = {
     return [
       // The "Partners" page was renamed to "Digital Businessbook".
       { source: "/partners", destination: "/digital_businessbook", permanent: true },
+      { source: "/partner/:slug", destination: "/digital_businessbook/:slug", permanent: true },
     ];
   },
 };

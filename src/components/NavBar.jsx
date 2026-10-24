@@ -22,7 +22,7 @@ export default function NavBar() {
 
   const isActiveLink = (href) => {
     if (href === '/') return pathname === '/';
-    if (href === '/digital_businessbook') return pathname === '/digital_businessbook' || pathname?.startsWith('/partner/');
+    if (href === '/digital_businessbook') return pathname === '/digital_businessbook' || pathname?.startsWith('/digital_businessbook/');
     return pathname === href || pathname?.startsWith(`${href}/`);
   };
 

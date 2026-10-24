@@ -101,10 +101,18 @@ export async function GET(request) {
     }
 
     // Every tag is a category option, whether or not any partner uses it.
-    const { data: tagsData, error: tagsError } = await supabase
+    // Admin-defined (drag & drop) order first; fall back to slug order if `position` column is missing.
+    let { data: tagsData, error: tagsError } = await supabase
       .from("tags")
-      .select("name, slug")
+      .select("name, slug, position")
+      .order("position", { ascending: true, nullsFirst: false })
       .order("slug", { ascending: true });
+    if (tagsError) {
+      ({ data: tagsData, error: tagsError } = await supabase
+        .from("tags")
+        .select("name, slug")
+        .order("slug", { ascending: true }));
+    }
     if (tagsError) throw tagsError;
 
     const seenKeys = new Set();
