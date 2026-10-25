@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Link2, Loader2, Mail, MapPin, Phone } from "lucide-react";
 import { fetchPartnerBySlug } from "../../../lib/supabase/partners";
+import { fetchTags } from "../../../lib/supabase/tags";
 import { prepareHtmlForRender } from "../../../lib/html";
 import { useLanguage } from "../../../lib/i18n/LanguageContext";
 import { pickTextByLanguage } from "../../../lib/localize";
@@ -20,11 +21,30 @@ function normalizeWebsiteLink(value = "") {
   return `https://${text}`;
 }
 
+function normalizeLookupKey(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
 export default function PartnerDetailsPage() {
   const { slug } = useParams();
   const { language, t } = useLanguage();
   const [partner, setPartner] = useState(null);
+  const [allTags, setAllTags] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchTags()
+      .then((data) => {
+        if (!cancelled) setAllTags(data || []);
+      })
+      .catch(() => {
+        if (!cancelled) setAllTags([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!slug) return;
@@ -62,6 +82,20 @@ export default function PartnerDetailsPage() {
   }
 
   const descriptionHtml = prepareHtmlForRender(pickTextByLanguage(partner.description, language));
+  const tagMap = new Map();
+  allTags.forEach((tag) => {
+    [tag.key, tag.slug, tag.name?.en, tag.name?.am, tag.name?.ru].forEach((alias) => {
+      const key = normalizeLookupKey(alias);
+      if (key) tagMap.set(key, tag);
+    });
+  });
+  const translatedTags = (partner.tags || [])
+    .map((tagKey) => {
+      const tag = tagMap.get(normalizeLookupKey(tagKey));
+      if (!tag) return String(tagKey || "").trim();
+      return tag.name?.[language] || tag.name?.en || tag.name?.am || tag.name?.ru || tag.key || String(tagKey);
+    })
+    .filter(Boolean);
   const locationText = String(partner.location || "").trim();
   const locationHref = locationText
     ? /^https?:\/\//i.test(locationText)
@@ -88,7 +122,7 @@ export default function PartnerDetailsPage() {
 
           <div>
             <h1 className="text-4xl font-black text-brand.dark">{pickTextByLanguage(partner.name, language)}</h1>
-            <p className="mt-3 text-slate-600">{(partner.tags || []).join(", ")}</p>
+            <p className="mt-3 text-slate-600">{translatedTags.join(", ")}</p>
             {partner.email ? (
               <p className="mt-2 flex items-center gap-2 text-slate-600">
                 <Mail size={16} className="shrink-0" />
